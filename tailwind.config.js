@@ -11,7 +11,7 @@ module.exports = {
         buttonActive: '#4b4b4b',
         listSelected: '#f7f6fb',
         searchBorder: '#4d647c',
-        modalBackground: '#00000059'
+        modalBackground: '#00000059',
       },
       screens: {
         xsmall: '480px',
@@ -19,7 +19,7 @@ module.exports = {
         medium: '1160px',
         large: '1500px',
         xlarge: '1640px',
-        xxlarge: '2020px'
+        xxlarge: '2020px',
       },
       fontSizes: {
         xsmall: '10px',
@@ -32,4 +32,4 @@ module.exports = {
     },
   },
   plugins: [],
-}
+};
