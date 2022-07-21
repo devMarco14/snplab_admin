@@ -10,7 +10,7 @@ export default function Terms({ contents }: { contents: string }) {
     .filter((string: string) => string !== '');
 
   return (
-    <article className="flex flex-col w-full h-full">
+    <article className="modalChild bg-white w-1/2 h-max flex flex-col">
       <section className="flex items-center max-h-[7%] h-[7%] min-h-[3rem] px-5">
         <button type="button">
           <BsChevronLeft />
