@@ -6,7 +6,11 @@ export default function Landing() {
   return (
     <>
       <h1>Landing</h1>
-      {isModalOpen && <Modal><Test /></Modal>}
+      {isModalOpen && (
+        <Modal>
+          <Test />
+        </Modal>
+      )}
     </>
   );
 }

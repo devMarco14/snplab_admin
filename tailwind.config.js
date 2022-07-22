@@ -11,7 +11,7 @@ module.exports = {
         buttonActive: '#4b4b4b',
         listSelected: '#f7f6fb',
         searchBorder: '#4d647c',
-        modalBackground: '#00000059'
+        modalBackground: '#00000059',
       },
       screens: {
         xsmall: '480px',
