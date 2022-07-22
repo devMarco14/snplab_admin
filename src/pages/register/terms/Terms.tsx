@@ -15,7 +15,7 @@ export default function Terms({ contents, onClose }: TermsPropsType) {
     .filter((string: string) => string !== '');
 
   return (
-    <article className="modalChild flex flex-col z-10 bg-white w-1/2 h-max">
+    <article className="modalChild flex flex-col z-10 bg-white w-screen min-w-[330px] h-screen overflow-scroll small:w-[550px] small:h-[800px]">
       <section className="flex items-center h-[7%] min-h-[3rem]">
         <button
           type="button"
