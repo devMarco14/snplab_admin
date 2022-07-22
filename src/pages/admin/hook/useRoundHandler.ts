@@ -12,10 +12,10 @@ const useRoundHandler = () => {
   });
 
   const { mutate: onPostRound } = useMutation(
-    (body: string) =>
+    (text: string) =>
       postRoundAPI({
         id: Math.floor(Math.random() * 1000),
-        text: body,
+        text,
       }),
     {
       onSuccess: () => {
