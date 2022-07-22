@@ -19,7 +19,7 @@ module.exports = {
         medium: '1160px',
         large: '1500px',
         xlarge: '1640px',
-        xxlarge: '2020px'
+        xxlarge: '2020px',
       },
       fontSizes: {
         xsmall: '10px',
@@ -32,4 +32,4 @@ module.exports = {
     },
   },
   plugins: [],
-}
+};
