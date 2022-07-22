@@ -1,10 +1,13 @@
 import React from 'react';
 import Modal from 'components/modal/Modal';
 import Terms from './terms/Terms';
+import TermsButton from './terms/TermsButton';
 
 export default function Register() {
   const [isModalOpen, setModalOpen] = React.useState<boolean>(false);
   const termsContents = React.useRef<string>('');
+
+  const handleModal = React.useCallback(handleClick, [isModalOpen]);
 
   function handleClick(event: React.MouseEvent) {
     setModalOpen(!isModalOpen);
@@ -21,13 +24,9 @@ export default function Register() {
 
   return (
     <>
-      <button type="button" id="gathering" onClick={handleClick}>
-        개인정보 처리방침
-      </button>
-      <button type="button" id="thirdparty" onClick={handleClick}>
-        제3자 정보제공 동의 안내
-      </button>
       <h1>Register</h1>
+      <TermsButton id="gathering" handleModal={handleModal} />
+      <TermsButton id="thirdparty" handleModal={handleModal} />
       {isModalOpen && (
         <Modal onClick={onCloseModal}>
           <Terms contents={termsContents.current} onClose={onCloseModal} />
