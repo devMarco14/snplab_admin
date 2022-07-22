@@ -1,3 +1,4 @@
+import { Round } from 'libs/types/round';
 import { HttpRequest } from './httpRequest';
 
 const request = new HttpRequest();
@@ -11,7 +12,7 @@ export const getRoundAPI = async () => {
   return response.data;
 };
 
-export const postRoundAPI = async (body: { id: number; text: string }) => {
+export const postRoundAPI = async (body: Round) => {
   const response = await request.post(`/round`, body);
   return response.data;
 };
