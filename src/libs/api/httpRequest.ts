@@ -42,4 +42,9 @@ export class HttpRequest {
     const response = await this.axios.patch(url, data);
     return response;
   }
+
+  async put(url: string, data: any) {
+    const response = await this.axios.put(url, data);
+    return response;
+  }
 }
