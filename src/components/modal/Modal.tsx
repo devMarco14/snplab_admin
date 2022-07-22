@@ -5,14 +5,14 @@ import { ImportChildren } from 'types/interfaces';
 import PortalWrapper from './PortalWrapper';
 
 interface ModalPropsType extends ImportChildren {
-  onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
+  onClick: (event: React.MouseEvent) => void;
 }
 
 export default function Modal({ children, onClick }: ModalPropsType) {
   return (
     <PortalWrapper>
       <div
-        className="w-full h-full absolute inset-0 bg-modalBackground"
+        className="w-full h-full absolute inset-0 bg-modalBackground z-0"
         id="modal-bg"
         onClick={onClick}
       >
