@@ -1,6 +1,7 @@
 import React from 'react';
-import Terms from './terms/Terms';
-import SelectRegion from './region/SelectRegion';
+import Modal from 'components/modal/Modal';
+import Terms from './components/terms/Terms';
+import SelectRegion from './components/region/SelectRegion';
 
 export default function Register() {
   const [isModalOpen, setModalOpen] = React.useState<boolean>(false);
@@ -8,7 +9,11 @@ export default function Register() {
   return (
     <>
       <h1>Register</h1>
-      <SelectRegion contents="gathering" />
+      {isModalOpen && (
+        <Modal>
+          <SelectRegion contents="gathering" />
+        </Modal>
+      )}
     </>
   );
 }
