@@ -11,7 +11,10 @@ module.exports = {
         buttonActive: '#4b4b4b',
         listSelected: '#f7f6fb',
         searchBorder: '#4d647c',
+<<<<<<< HEAD
+=======
         modalBackground: '#00000059',
+>>>>>>> 563a5dfa10ec2bc624f4215f1e8a4c9c87337923
       },
       screens: {
         xsmall: '480px',
