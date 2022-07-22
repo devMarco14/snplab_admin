@@ -5,10 +5,10 @@ import TermsBody from './TermsBody';
 
 interface TermsPropsType {
   contents: string;
-  handleModal: (event: React.MouseEvent) => void;
+  closeModal: (event: React.MouseEvent) => void;
 }
 
-export default function Terms({ contents, handleModal }: TermsPropsType) {
+export default function Terms({ contents, closeModal }: TermsPropsType) {
   const bodyText = contents === 'gathering' ? gathering : thirdparty;
   const processedString = bodyText
     .split('\n')
@@ -21,7 +21,7 @@ export default function Terms({ contents, handleModal }: TermsPropsType) {
           type="button"
           className="flex justify-center items-center w-[40px] h-full min-h-[40px] ml-2"
           id="previous-button"
-          onClick={handleModal}
+          onClick={closeModal}
         >
           <BsChevronLeft id="previous-svg" />
         </button>

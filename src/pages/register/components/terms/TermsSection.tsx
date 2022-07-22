@@ -4,12 +4,19 @@ import { StringIndexedObjects } from 'types/interfaces';
 import TermsButton from './TermsButton';
 
 interface TermsSectionProps {
-  setModal: (event: React.MouseEvent) => void;
+  openModal: (
+    event: React.MouseEvent | React.FocusEvent,
+    target: string,
+  ) => void;
+  closeModal: (event: React.MouseEvent) => void;
+  modalStates: StringIndexedObjects<boolean>;
   setTerms: (value: string) => void;
 }
 
 export default function TermsSection({
-  setModal,
+  openModal,
+  closeModal,
+  modalStates,
   setTerms,
 }: TermsSectionProps) {
   const [areTermsChecked, setTermsChecked] = React.useState<
@@ -24,13 +31,19 @@ export default function TermsSection({
   ).length;
 
   const handleModal = React.useCallback(onClickHandleTerms, [
-    setModal,
+    closeModal,
+    openModal,
     setTerms,
+    modalStates.terms,
   ]);
 
   function onClickHandleTerms(event: React.MouseEvent) {
     const currentTargetId = event.currentTarget.id.split('-')[0];
-    setModal(event);
+    if (modalStates.terms) {
+      closeModal(event);
+    } else {
+      openModal(event, 'terms');
+    }
     setTerms(currentTargetId);
   }
 
