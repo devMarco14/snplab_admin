@@ -5,10 +5,10 @@ import TermsBody from './TermsBody';
 
 interface TermsPropsType {
   contents: string;
-  onClose: (event: React.MouseEvent) => void;
+  handleModal: (event: React.MouseEvent) => void;
 }
 
-export default function Terms({ contents, onClose }: TermsPropsType) {
+export default function Terms({ contents, handleModal }: TermsPropsType) {
   const bodyText = contents === 'gathering' ? gathering : thirdparty;
   const processedString = bodyText
     .split('\n')
@@ -20,10 +20,10 @@ export default function Terms({ contents, onClose }: TermsPropsType) {
         <button
           type="button"
           className="flex justify-center items-center w-[40px] h-full min-h-[40px] ml-2"
-          id="previous"
-          onClick={onClose}
+          id="previous-button"
+          onClick={handleModal}
         >
-          <BsChevronLeft id="svg" />
+          <BsChevronLeft id="previous-svg" />
         </button>
         <p className="ml-2 font-bold">서비스 이용약관</p>
       </section>

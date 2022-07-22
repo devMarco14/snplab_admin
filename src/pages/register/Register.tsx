@@ -8,17 +8,13 @@ export default function Register() {
   const [isModalOpen, setModalOpen] = React.useState<boolean>(false);
   const [termsContents, setTermsContents] = React.useState('');
 
-  const setModal = () => {
-    setModalOpen(!isModalOpen);
-  };
-
   const setTerms = (value: string) => {
     setTermsContents(value);
   };
 
-  const onCloseModal = React.useCallback(closeModal, [isModalOpen]);
+  const onHandleModal = React.useCallback(handleModal, [isModalOpen]);
 
-  function closeModal(event: React.MouseEvent) {
+  function handleModal(event: React.MouseEvent) {
     if ((event.target as HTMLElement).id) {
       setModalOpen(!isModalOpen);
     }
@@ -36,17 +32,17 @@ export default function Register() {
           onFocus={() => setModalOpen(!isModalOpen)}
         />
       </section>
-      <TermsSection setModal={setModal} setTerms={setTerms} />
+      <TermsSection setModal={onHandleModal} setTerms={setTerms} />
       {isModalOpen && (
-        <Modal onClick={onCloseModal}>
-          <Terms contents={termsContents} onClose={onCloseModal} />
+        <Modal onClick={onHandleModal}>
+          <Terms contents={termsContents} handleModal={onHandleModal} />
         </Modal>
       )}
-      {isModalOpen && (
-        <Modal onClick={onCloseModal}>
+      {/* {isModalOpen && (
+        <Modal onClick={onHandleModal}>
           <SelectRegion contents="gathering" />
         </Modal>
-      )}
+      )} */}
     </>
   );
 }

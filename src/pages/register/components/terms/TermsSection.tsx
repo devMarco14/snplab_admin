@@ -4,7 +4,7 @@ import { StringIndexedObjects } from 'types/interfaces';
 import TermsButton from './TermsButton';
 
 interface TermsSectionProps {
-  setModal: () => void;
+  setModal: (event: React.MouseEvent) => void;
   setTerms: (value: string) => void;
 }
 
@@ -29,15 +29,15 @@ export default function TermsSection({
   ]);
 
   function onClickHandleTerms(event: React.MouseEvent) {
-    const currentTargetId = event.currentTarget.id;
-    setModal();
+    const currentTargetId = event.currentTarget.id.split('-')[0];
+    setModal(event);
     setTerms(currentTargetId);
   }
 
   const handleCheck = React.useCallback(onClickHandleCheck, [areTermsChecked]);
 
   function onClickHandleCheck(event: React.MouseEvent) {
-    const currentTargetId = event.currentTarget.id;
+    const currentTargetId = event.currentTarget.id.split('-')[0];
     setTermsChecked({
       ...areTermsChecked,
       [currentTargetId]: !areTermsChecked[currentTargetId],
