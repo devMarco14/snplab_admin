@@ -1,16 +1,10 @@
 import React from 'react';
-<<<<<<< HEAD
 import { AiOutlineCheck } from 'react-icons/ai';
 import Modal from 'components/modal/Modal';
 import { StringIndexedObjects } from 'types/interfaces';
-import Terms from './terms/Terms';
-import TermsButton from './terms/TermsButton';
-import SelectRegion from './region/SelectRegion';
-=======
-import Modal from 'components/modal/Modal';
 import Terms from './components/terms/Terms';
+import TermsButton from './components/terms/TermsButton';
 import SelectRegion from './components/region/SelectRegion';
->>>>>>> e462cb3 (#5 design : 거주 지역 선택창 마크업 및 스타일 작성)
 
 export default function Register() {
   const [isModalOpen, setModalOpen] = React.useState<boolean>(false);
@@ -55,6 +49,15 @@ export default function Register() {
   return (
     <>
       <h1>Register</h1>
+      <section className="flex-center flex-col w-[300px] border-b-[2px] border-solid border-lightgrayFont py-[10px]">
+        <p className="w-full mb-7 font-bold">거주지역</p>
+        <input
+          type="text"
+          placeholder="거주지역 선택"
+          className="w-full"
+          onFocus={() => setModalOpen(!isModalOpen)}
+        />
+      </section>
       <section className="flex-center w-[300px] border-b-[2px] border-solid border-blackFont py-[10px]">
         <button
           type="button"
@@ -94,9 +97,8 @@ export default function Register() {
           <Terms contents={termsContents.current} onClose={onCloseModal} />
         </Modal>
       )}
-      <SelectRegion contents="gathering" />
       {isModalOpen && (
-        <Modal>
+        <Modal onClick={onCloseModal}>
           <SelectRegion contents="gathering" />
         </Modal>
       )}
