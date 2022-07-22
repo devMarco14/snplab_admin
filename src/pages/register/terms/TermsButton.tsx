@@ -1,15 +1,21 @@
 import React from 'react';
 import { AiOutlineCheck } from 'react-icons/ai';
 import { BsChevronRight } from 'react-icons/bs';
+import { StringIndexedObjects } from 'types/interfaces';
 
 interface TermsButtonProps {
   id: string;
   handleModal: (event: React.MouseEvent) => void;
+  totalCheck: StringIndexedObjects<boolean>;
+  handleCheck: (event: React.MouseEvent) => void;
 }
 
-export default function TermsButton({ id, handleModal }: TermsButtonProps) {
-  // ########## 체크 버튼 색상 변경용 - 추후 다른 로직으로 변경 필요
-  const [isClicked, setClicked] = React.useState<boolean>(false);
+export default function TermsButton({
+  id,
+  handleModal,
+  totalCheck,
+  handleCheck,
+}: TermsButtonProps) {
   const buttonLabel =
     id === 'gathering'
       ? '개인정보 처리방침 고지 (필수)'
@@ -20,10 +26,13 @@ export default function TermsButton({ id, handleModal }: TermsButtonProps) {
       <button
         type="button"
         className="flex-center h-[30px] w-[30px]"
-        onClick={() => setClicked(!isClicked)}
+        id={id}
+        onClick={(event: React.MouseEvent) => {
+          handleCheck(event);
+        }}
       >
         <AiOutlineCheck
-          className={`${isClicked ? 'text-blackFont' : 'text-grayFont'}`}
+          className={`${totalCheck[id] ? 'text-blackFont' : 'text-grayFont'}`}
         />
       </button>
       <p className="w-full">{buttonLabel}</p>
