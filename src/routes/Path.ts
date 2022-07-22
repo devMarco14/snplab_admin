@@ -1,7 +1,7 @@
 enum Path {
   LandingPage = '/',
   Register = '/register',
-  Admin = '/admin'
+  Admin = '/admin',
 }
 
 export default Path;
