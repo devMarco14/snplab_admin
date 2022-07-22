@@ -4,6 +4,7 @@ import Modal from 'components/modal/Modal';
 import { StringIndexedObjects } from 'types/interfaces';
 import Terms from './terms/Terms';
 import TermsButton from './terms/TermsButton';
+import SelectRegion from './region/SelectRegion';
 
 export default function Register() {
   const [isModalOpen, setModalOpen] = React.useState<boolean>(false);
@@ -87,6 +88,7 @@ export default function Register() {
           <Terms contents={termsContents.current} onClose={onCloseModal} />
         </Modal>
       )}
+      <SelectRegion contents="gathering" />
     </>
   );
 }
