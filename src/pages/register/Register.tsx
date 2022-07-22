@@ -1,10 +1,16 @@
 import React from 'react';
+<<<<<<< HEAD
 import { AiOutlineCheck } from 'react-icons/ai';
 import Modal from 'components/modal/Modal';
 import { StringIndexedObjects } from 'types/interfaces';
 import Terms from './terms/Terms';
 import TermsButton from './terms/TermsButton';
 import SelectRegion from './region/SelectRegion';
+=======
+import Modal from 'components/modal/Modal';
+import Terms from './components/terms/Terms';
+import SelectRegion from './components/region/SelectRegion';
+>>>>>>> e462cb3 (#5 design : 거주 지역 선택창 마크업 및 스타일 작성)
 
 export default function Register() {
   const [isModalOpen, setModalOpen] = React.useState<boolean>(false);
@@ -89,6 +95,11 @@ export default function Register() {
         </Modal>
       )}
       <SelectRegion contents="gathering" />
+      {isModalOpen && (
+        <Modal>
+          <SelectRegion contents="gathering" />
+        </Modal>
+      )}
     </>
   );
 }

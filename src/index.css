@@ -187,3 +187,15 @@
     align-items: center;
   }
 }
+
+@layer utilities {
+  .selectedItem {
+    @apply text-blackFont;
+    @apply bg-listSelected;
+    @apply rounded-xl;
+  }
+
+  .deSelectedItem {
+    @apply text-grayFont;
+  }
+}
