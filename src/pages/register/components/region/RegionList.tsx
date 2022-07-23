@@ -62,20 +62,22 @@ export default function RegionList({
   function selectRegionByOnWheel(event: React.WheelEvent) {
     const regionList = list as string[];
     const sortedRegionList = regionList.sort();
+    const processedDelta = (event.deltaY / event.deltaY) * 100;
+    const newDelta = event.deltaY < 0 ? -processedDelta : processedDelta;
     const absoluteIndex =
-      (Math.abs(dynamicYCoordinate) + Math.abs(event.deltaY)) / 100;
+      (Math.abs(dynamicYCoordinate) + Math.abs(newDelta)) / 100;
     const maximumLength = -100 * (regionList.length - 2);
 
     switch (true) {
-      case event.deltaY > 0 && dynamicYCoordinate > maximumLength:
+      case newDelta > 0 && dynamicYCoordinate > maximumLength:
         setDynamicYCoordinate(
-          (previousYCoordinate) => previousYCoordinate - event.deltaY,
+          (previousYCoordinate) => previousYCoordinate - newDelta,
         );
         setRegion(sortedRegionList[absoluteIndex + 1]);
         break;
-      case event.deltaY < 0 && dynamicYCoordinate < 0:
+      case newDelta < 0 && dynamicYCoordinate < 0:
         setDynamicYCoordinate(
-          (previousYCoordinate) => previousYCoordinate - event.deltaY,
+          (previousYCoordinate) => previousYCoordinate - newDelta,
         );
         setRegion(sortedRegionList[absoluteIndex - 1]);
         break;
