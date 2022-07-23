@@ -3,8 +3,8 @@ import React from 'react';
 
 function RegisterPage() {
   return (
-    <section className="w-full h-full flex justify-center ">
-      <article className="w-80 border border-solid border-black px-6 text-blackFont sm:w-80">
+    <section className="w-full flex justify-center">
+      <article className="max-w-xs px-6 text-blackFont">
         <div className="w-4/5 mt-4">
           <h1 className="text-md font-bold">
             크라우드워커에 지원하기 위해
@@ -47,7 +47,7 @@ function RegisterPage() {
         </div>
         <div>
           <div className="font-bold">주로 이용하는 교통 수단</div>
-          <div className="text-xs font-bold text-gray-400">
+          <div className="mb-2 text-xs font-bold text-gray-400">
             주로 이용하는 교통수단을 모두 선택해 주세요.
           </div>
           <form className="flex flex-wrap w-11/12 mb-6">
