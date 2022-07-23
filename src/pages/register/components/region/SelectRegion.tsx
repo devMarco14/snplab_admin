@@ -15,6 +15,7 @@ export default function SelectRegion({
 }: SelectRegionProps) {
   const [currentRegion, setCurrentRegion] = React.useState<string>('경기도');
   const [currentCity, setCurrentCity] = React.useState<string>('고양시');
+  const [testSubLists, setTestSubLists] = React.useState<any>();
   const { regionList } = useRegionLists();
   const { subRegionList } = useSubRegionLists(currentRegion);
   const originalState = [''];
@@ -61,11 +62,13 @@ export default function SelectRegion({
           category="main"
           list={regionLists.current}
           current={currentRegion}
+          setRegion={setCurrentRegion}
         />
         <RegionList
           category="sub"
           list={subRegionLists.current}
           current={currentCity}
+          setRegion={setCurrentCity}
         />
       </section>
       <button

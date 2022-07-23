@@ -5,12 +5,14 @@ interface RegionListProps {
   category: string;
   list?: string[];
   current?: string;
+  setRegion: any;
 }
 
 export default function RegionList({
   category,
   list,
   current,
+  setRegion,
 }: RegionListProps) {
   const ulElement = React.useRef<HTMLUListElement | null>(null);
   const headerCategory = category === 'main' ? '시/도' : '시/군/구';
@@ -34,10 +36,6 @@ export default function RegionList({
   }, [current, category]);
 
   const [test, setTest] = React.useState<number>(0);
-
-  React.useEffect(() => {
-    console.log(test);
-  }, [test]);
 
   const returnNormalList = (regionList: string[]) =>
     regionList.map((region: string, index: number) => {
@@ -78,9 +76,19 @@ export default function RegionList({
           case event.deltaY > 0 &&
             test > -100 * ((list as string[]).length - 2):
             setTest((foo) => foo - event.deltaY);
+            setRegion(
+              (list as string[]).sort()[
+                (Math.abs(test) + Math.abs(event.deltaY)) / 100 + 1
+              ],
+            );
             break;
           case event.deltaY < 0 && test < 0:
             setTest((foo) => foo - event.deltaY);
+            setRegion(
+              (list as string[]).sort()[
+                (Math.abs(test) + Math.abs(event.deltaY)) / 100 - 1
+              ],
+            );
             break;
           default:
             setTest((foo) => foo);
