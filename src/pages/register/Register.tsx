@@ -1,98 +1,88 @@
 import React from 'react';
-import { AiOutlineCheck } from 'react-icons/ai';
 import Modal from 'components/modal/Modal';
 import { StringIndexedObjects } from 'types/interfaces';
 import Terms from './components/terms/Terms';
 import SelectRegion from './components/region/SelectRegion';
-import TermsButton from './components/terms/TermsButton';
+import TermsSection from './components/terms/TermsSection';
 
 export default function Register() {
-  const [isModalOpen, setModalOpen] = React.useState<boolean>(false);
-  const [areTermsChecked, setTermsChecked] = React.useState<
+  const [termsContents, setTermsContents] = React.useState('');
+  const [modalStates, setModalStates] = React.useState<
     StringIndexedObjects<boolean>
   >({
-    gathering: false,
-    thirdparty: false,
+    region: false,
+    terms: false,
   });
-  const allTermsChecked = Object.values(areTermsChecked).filter(
-    (status: boolean) => status,
-  ).length;
 
-  const termsContents = React.useRef<string>('');
+  const setTerms = (value: string) => {
+    setTermsContents(value);
+  };
 
-  const handleModal = React.useCallback(onClickHandleTerms, [isModalOpen]);
+  const onOpenModal = React.useCallback(openModal, [modalStates]);
 
-  function onClickHandleTerms(event: React.MouseEvent) {
-    const currentTargetId = event.currentTarget.id;
-    setModalOpen(!isModalOpen);
-    termsContents.current = currentTargetId;
-  }
-
-  const handleCheck = React.useCallback(onClickHandleCheck, [areTermsChecked]);
-
-  function onClickHandleCheck(event: React.MouseEvent) {
-    const currentTargetId = event.currentTarget.id;
-    setTermsChecked({
-      ...areTermsChecked,
-      [currentTargetId]: !areTermsChecked[currentTargetId],
+  function openModal(
+    event: React.MouseEvent | React.FocusEvent,
+    target: string,
+  ) {
+    setModalStates({
+      ...modalStates,
+      [target]: !modalStates[target],
     });
   }
 
-  const onCloseModal = React.useCallback(closeModal, [isModalOpen]);
+  const onCloseModal = React.useCallback(closeModal, [modalStates]);
 
   function closeModal(event: React.MouseEvent) {
     if ((event.target as HTMLElement).id) {
-      setModalOpen(!isModalOpen);
+      const modalKeys = Object.keys(modalStates);
+      const modalOpenValues = Object.values(modalStates);
+      const currentOpenedModals = modalOpenValues
+        .map((state: boolean, index: number) => {
+          let result = '';
+          if (state) {
+            result = modalKeys[index];
+          }
+          return result;
+        })
+        .filter((result: string) => result !== '');
+      currentOpenedModals.forEach((openedModal: string) => {
+        setModalStates({
+          ...modalStates,
+          [openedModal]: !modalStates[openedModal],
+        });
+      });
     }
   }
 
   return (
     <>
       <h1>Register</h1>
-      <section className="flex-center w-[300px] border-b-[2px] border-solid border-blackFont py-[10px]">
-        <button
-          type="button"
-          className={`flex-center w-[25px] h-[25px] rounded-full ${
-            allTermsChecked === 2 ? 'bg-blackFont' : 'bg-white'
-          }`}
-          onClick={() => {
-            setTermsChecked({
-              ...areTermsChecked,
-              gathering: allTermsChecked <= 1,
-              thirdparty: allTermsChecked <= 1,
-            });
-          }}
-        >
-          <AiOutlineCheck
-            className={`${
-              allTermsChecked === 2 ? 'text-white' : 'text-grayFont'
-            }`}
-          />
-        </button>
-        <p className="flex-1 ml-[5px]">이용약관 모두 동의</p>
+      <section className="flex-center flex-col w-[300px] border-b-[2px] border-solid border-lightgrayFont py-[10px]">
+        <p className="w-full mb-7 font-bold">거주지역</p>
+        <input
+          type="text"
+          placeholder="거주지역 선택"
+          className="w-full"
+          id="region-input"
+          onFocus={(event: React.FocusEvent) => openModal(event, 'region')}
+        />
       </section>
-      <TermsButton
-        id="gathering"
-        handleModal={handleModal}
-        totalCheck={areTermsChecked}
-        handleCheck={handleCheck}
+      <TermsSection
+        openModal={onOpenModal}
+        closeModal={onCloseModal}
+        modalStates={modalStates}
+        setTerms={setTerms}
       />
-      <TermsButton
-        id="thirdparty"
-        handleModal={handleModal}
-        totalCheck={areTermsChecked}
-        handleCheck={handleCheck}
-      />
-      {isModalOpen && (
+      {modalStates.terms && (
         <Modal onClick={onCloseModal}>
-          <Terms contents={termsContents.current} onClose={onCloseModal} />
+          <Terms contents={termsContents} closeModal={onCloseModal} />
         </Modal>
       )}
-      {/* {isModalOpen && (
+      {modalStates.region && (
         <Modal onClick={onCloseModal}>
-          <SelectRegion contents="gathering" />
+          <SelectRegion contents="gathering" closeModal={onCloseModal} />
         </Modal>
-      )} */}
+      )}
     </>
   );
 }

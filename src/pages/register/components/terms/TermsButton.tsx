@@ -26,7 +26,7 @@ export default function TermsButton({
       <button
         type="button"
         className="flex-center h-[30px] w-[30px]"
-        id={id}
+        id={`${id}-button-check`}
         onClick={(event: React.MouseEvent) => {
           handleCheck(event);
         }}
@@ -38,11 +38,11 @@ export default function TermsButton({
       <p className="w-full">{buttonLabel}</p>
       <button
         type="button"
-        id={id}
+        id={`${id}-button-more`}
         className="flex-center h-[30px] w-[30px]"
         onClick={handleModal}
       >
-        <BsChevronRight />
+        <BsChevronRight id={`${id}-button-more-svg`} />
       </button>
     </section>
   );
