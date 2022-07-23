@@ -80,7 +80,7 @@ export default function Register() {
       )}
       {modalStates.region && (
         <Modal onClick={onCloseModal}>
-          <SelectRegion contents="gathering" />
+          <SelectRegion contents="gathering" closeModal={onCloseModal} />
         </Modal>
       )}
     </>
