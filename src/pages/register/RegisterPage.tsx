@@ -3,19 +3,21 @@ import React from 'react';
 
 function RegisterPage() {
   return (
-    <section className="w-screen flex justify-center ">
-      <article className="w-full mx-4 border border-solid border-black">
-        <div className="w-3/5">
+    <section className="w-full h-full flex justify-center ">
+      <article className="w-80 border border-solid border-black px-6 text-blackFont sm:w-80">
+        <div className="w-4/5 mt-4">
           <h1 className="text-md font-bold">
-            크라우드워커에 지원하기 위해 필요한 정보를 입력해주세요.
+            크라우드워커에 지원하기 위해
+            <br /> 필요한 정보를 입력해주세요.
           </h1>
         </div>
-        <div>
-          <div>이름</div>
+        <div className="mt-5">
+          <div className="font-bold mb-4">이름</div>
           <input type="text" placeholder="홍길동" />
+          <div className="w-full mt-2 border-b border-solid border-gray-300" />
         </div>
-        <div>
-          <div>성별</div>
+        <div className="my-5">
+          <div className="font-bold mb-4">성별</div>
           <form>
             <input type="radio" id="male" name="gender" value="남자" />
             남자
@@ -23,34 +25,55 @@ function RegisterPage() {
             여자
           </form>
         </div>
-        <div>
-          <div>생년월일</div>
-          <input type="number" placeholder="YYYYMMDD" />
+        <div className="my-5">
+          <div className="font-bold mb-4">생년월일</div>
+          <input type="number" placeholder="YYYY.MM.DD" />
+          <div className="w-full mt-2 border-b border-solid border-gray-300" />
         </div>
-        <div>
-          <div>거주지역</div>
+        <div className="my-5">
+          <div className="font-bold mb-4">거주지역</div>
           <input type="text" placeholder="거주지역 선택" />
+          <div className="w-full mt-2 border-b border-solid border-gray-300" />
         </div>
-        <div>
-          <div>연락처</div>
+        <div className="my-5 mb-4">
+          <div className="font-bold mb-4">연락처</div>
           <input type="number" placeholder="'-'없이 입력해주세요" />
+          <div className="w-full mt-2 border-b border-solid border-gray-300" />
         </div>
-        <div>
-          <div>이메일</div>
+        <div className="my-5">
+          <div className="font-bold mb-4">이메일</div>
           <input type="text" placeholder="MYD@snplab.com" />
+          <div className="w-full mt-2 border-b border-solid border-gray-300" />
         </div>
         <div>
-          <div>주로 이용하는 교통 수단</div>
-          <form className="flex flex-wrap w-5/6">
+          <div className="font-bold">주로 이용하는 교통 수단</div>
+          <div className="text-xs font-bold text-gray-400">
+            주로 이용하는 교통수단을 모두 선택해 주세요.
+          </div>
+          <form className="flex flex-wrap w-11/12 mb-6">
             {TRANSPORATION.map(({ item, id }) => (
               <label className="flex" key={id} htmlFor="transporation">
-                <div className="flex h-7 mr-1 mt-1 rounded-3xl border border-solid border-black items-center px-1.5">
+                <div className="flex h-7 mr-1.5 mt-1 rounded-3xl border border-solid border-gray-300 items-center px-1.5 text-gray-400">
                   {item}
                 </div>
                 <input className="hidden" type="checkbox" id="transporation" />
               </label>
             ))}
           </form>
+        </div>
+        <div className="flex-col">
+          <input className="mb-4" type="checkbox" />
+          이용약관 모두 동의
+          <br />
+          <div className="w-full mb-4 border-b border-solid border-black" />
+          <input className="mb-4" type="checkbox" />
+          개인정보 처리방침 고지( 필수)
+          <br />
+          <input className="mb-4" type="checkbox" />
+          제3자 정보제공 동의(필수)
+        </div>
+        <div className="flex justify-center w-full h-8 mb-4 rounded-xl bg-gray-100 text-gray-400 items-center">
+          지원하기
         </div>
       </article>
     </section>
