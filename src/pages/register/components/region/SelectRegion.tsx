@@ -17,7 +17,7 @@ export default function SelectRegion({
   const [currentCity, setCurrentCity] = React.useState<string>('고양시');
   const { regionList } = useRegionLists();
   const { subRegionList } = useSubRegionLists(currentRegion);
-  const originalState = [''];
+  const originalState = React.useMemo(() => [''], []);
   const regionLists = React.useRef<string[]>(originalState);
   const subRegionLists = React.useRef<string[]>(originalState);
 
@@ -26,7 +26,7 @@ export default function SelectRegion({
       regionLists.current = originalState.concat(regionList.data.sort());
       setCurrentRegion(regionLists.current[1]);
     }
-  }, [regionList]);
+  }, [regionList, originalState]);
 
   React.useEffect(() => {
     if (subRegionList) {
@@ -35,7 +35,15 @@ export default function SelectRegion({
       );
       setCurrentCity(subRegionLists.current[1]);
     }
-  }, [subRegionList, currentRegion]);
+  }, [subRegionList, currentRegion, originalState]);
+
+  const changeRegion = (value: string) => {
+    setCurrentRegion(value);
+  };
+
+  const changeCity = (value: string) => {
+    setCurrentCity(value);
+  };
 
   return (
     <article className="absolute bottom-0 flex flex-col w-full h-3/5 bg-white small:w-[550px] small:h-[80%] small:modalChild">
@@ -61,13 +69,13 @@ export default function SelectRegion({
           category="main"
           list={regionLists.current}
           current={currentRegion}
-          setRegion={setCurrentRegion}
+          setRegion={changeRegion}
         />
         <RegionList
           category="sub"
           list={subRegionLists.current}
           current={currentCity}
-          setRegion={setCurrentCity}
+          setRegion={changeCity}
         />
       </section>
       <button

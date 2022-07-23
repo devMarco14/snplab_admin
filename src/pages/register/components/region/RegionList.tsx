@@ -1,11 +1,12 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
+import { processRegionName } from 'pages/register/utils';
 
 interface RegionListProps {
   category: string;
-  list?: string[];
-  current?: string;
-  setRegion: any;
+  list: string[];
+  current: string;
+  setRegion: (value: string) => void;
 }
 
 export default function RegionList({
@@ -14,6 +15,7 @@ export default function RegionList({
   current,
   setRegion,
 }: RegionListProps) {
+  const [dynamicYCoordinate, setDynamicYCoordinate] = React.useState<number>(0);
   const ulElement = React.useRef<HTMLUListElement | null>(null);
   const headerCategory = category === 'main' ? '시/도' : '시/군/구';
 
@@ -35,17 +37,14 @@ export default function RegionList({
     }
   }, [current, category]);
 
-  const [test, setTest] = React.useState<number>(0);
-
   const returnNormalList = (regionList: string[]) =>
     regionList.map((region: string, index: number) => {
       return (
         <li
           key={`${region[0]}_${index}`}
-          // className={`flex-center h-1/4 text-lg small:text-2xl font-bold translate-y-[${test}%]`}
           className="flex-center h-1/4 text-lg small:text-2xl font-bold"
           style={{
-            transform: `translateY(${test}%)`,
+            transform: `translateY(${dynamicYCoordinate}%)`,
           }}
         >
           {region}
@@ -60,51 +59,41 @@ export default function RegionList({
     return returnNormalList(listWithProcessedName);
   };
 
-  const processRegionName = (regionName: string) => {
-    let newName: string;
-    if (regionName[2] === '남' || regionName[2] === '북') {
-      newName = regionName[0] + regionName[2];
-    } else {
-      newName = regionName.slice(0, 2);
-    }
-    return newName;
-  };
+  function selectRegionByOnWheel(event: React.WheelEvent) {
+    const regionList = list as string[];
+    const sortedRegionList = regionList.sort();
+    const absoluteIndex =
+      (Math.abs(dynamicYCoordinate) + Math.abs(event.deltaY)) / 100;
+    const maximumLength = -100 * (regionList.length - 2);
 
-  const isMouseDown = React.useRef<boolean>(false);
+    switch (true) {
+      case event.deltaY > 0 && dynamicYCoordinate > maximumLength:
+        setDynamicYCoordinate(
+          (previousYCoordinate) => previousYCoordinate - event.deltaY,
+        );
+        setRegion(sortedRegionList[absoluteIndex + 1]);
+        break;
+      case event.deltaY < 0 && dynamicYCoordinate < 0:
+        setDynamicYCoordinate(
+          (previousYCoordinate) => previousYCoordinate - event.deltaY,
+        );
+        setRegion(sortedRegionList[absoluteIndex - 1]);
+        break;
+      default:
+        setDynamicYCoordinate((previousYCoordinate) => previousYCoordinate);
+        break;
+    }
+  }
 
   return (
-    <section className="relative w-full h-full px-5">
+    <section
+      className="relative w-full h-full px-5"
+      onWheel={selectRegionByOnWheel}
+    >
       <h2 className="flex-center h-1/5 w-full text-base small:text-2xl font-bold">
         {headerCategory}
       </h2>
-      <ul
-        ref={ulElement}
-        className="h-full w-full pt-[25px] overflow-hidden"
-        onWheel={(event: React.WheelEvent) => {
-          switch (true) {
-            case event.deltaY > 0 &&
-              test > -100 * ((list as string[]).length - 2):
-              setTest((foo) => foo - event.deltaY);
-              setRegion(
-                (list as string[]).sort()[
-                  (Math.abs(test) + Math.abs(event.deltaY)) / 100 + 1
-                ],
-              );
-              break;
-            case event.deltaY < 0 && test < 0:
-              setTest((foo) => foo - event.deltaY);
-              setRegion(
-                (list as string[]).sort()[
-                  (Math.abs(test) + Math.abs(event.deltaY)) / 100 - 1
-                ],
-              );
-              break;
-            default:
-              setTest((foo) => foo);
-              break;
-          }
-        }}
-      >
+      <ul ref={ulElement} className="h-full w-full pt-[25px] overflow-hidden">
         {category === 'main'
           ? returnProcessedList(list as string[])
           : returnNormalList(list as string[])}
