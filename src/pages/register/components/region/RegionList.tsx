@@ -42,7 +42,11 @@ export default function RegionList({
       return (
         <li
           key={`${region[0]}_${index}`}
-          className={`flex-center h-1/4 text-lg small:text-2xl font-bold translate-y-[${test}%]`}
+          // className={`flex-center h-1/4 text-lg small:text-2xl font-bold translate-y-[${test}%]`}
+          className="flex-center h-1/4 text-lg small:text-2xl font-bold"
+          style={{
+            transform: `translateY(${test}%)`,
+          }}
         >
           {region}
         </li>
@@ -69,37 +73,38 @@ export default function RegionList({
   const isMouseDown = React.useRef<boolean>(false);
 
   return (
-    <section
-      className="relative w-full h-full px-5"
-      onWheel={(event: React.WheelEvent) => {
-        switch (true) {
-          case event.deltaY > 0 &&
-            test > -100 * ((list as string[]).length - 2):
-            setTest((foo) => foo - event.deltaY);
-            setRegion(
-              (list as string[]).sort()[
-                (Math.abs(test) + Math.abs(event.deltaY)) / 100 + 1
-              ],
-            );
-            break;
-          case event.deltaY < 0 && test < 0:
-            setTest((foo) => foo - event.deltaY);
-            setRegion(
-              (list as string[]).sort()[
-                (Math.abs(test) + Math.abs(event.deltaY)) / 100 - 1
-              ],
-            );
-            break;
-          default:
-            setTest((foo) => foo);
-            break;
-        }
-      }}
-    >
+    <section className="relative w-full h-full px-5">
       <h2 className="flex-center h-1/5 w-full text-base small:text-2xl font-bold">
         {headerCategory}
       </h2>
-      <ul ref={ulElement} className="h-full w-full pt-[25px] overflow-hidden">
+      <ul
+        ref={ulElement}
+        className="h-full w-full pt-[25px] overflow-hidden"
+        onWheel={(event: React.WheelEvent) => {
+          switch (true) {
+            case event.deltaY > 0 &&
+              test > -100 * ((list as string[]).length - 2):
+              setTest((foo) => foo - event.deltaY);
+              setRegion(
+                (list as string[]).sort()[
+                  (Math.abs(test) + Math.abs(event.deltaY)) / 100 + 1
+                ],
+              );
+              break;
+            case event.deltaY < 0 && test < 0:
+              setTest((foo) => foo - event.deltaY);
+              setRegion(
+                (list as string[]).sort()[
+                  (Math.abs(test) + Math.abs(event.deltaY)) / 100 - 1
+                ],
+              );
+              break;
+            default:
+              setTest((foo) => foo);
+              break;
+          }
+        }}
+      >
         {category === 'main'
           ? returnProcessedList(list as string[])
           : returnNormalList(list as string[])}
