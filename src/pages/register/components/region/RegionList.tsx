@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 
 interface RegionListProps {
@@ -32,12 +33,18 @@ export default function RegionList({
     }
   }, [current, category]);
 
+  const [test, setTest] = React.useState<number>(0);
+
+  React.useEffect(() => {
+    console.log(test);
+  }, [test]);
+
   const returnNormalList = (regionList: string[]) =>
     regionList.map((region: string, index: number) => {
       return (
         <li
           key={`${region[0]}_${index}`}
-          className="flex-center h-1/4 text-lg small:text-2xl font-bold"
+          className={`flex-center h-1/4 text-lg small:text-2xl font-bold translate-y-[${test}%]`}
         >
           {region}
         </li>
@@ -61,12 +68,30 @@ export default function RegionList({
     return newName;
   };
 
+  const isMouseDown = React.useRef<boolean>(false);
+
   return (
-    <section className="w-full h-full px-5">
+    <section
+      className="relative w-full h-full px-5"
+      onWheel={(event: React.WheelEvent) => {
+        switch (true) {
+          case event.deltaY > 0 &&
+            test > -100 * ((list as string[]).length - 2):
+            setTest((foo) => foo - event.deltaY);
+            break;
+          case event.deltaY < 0 && test < 0:
+            setTest((foo) => foo - event.deltaY);
+            break;
+          default:
+            setTest((foo) => foo);
+            break;
+        }
+      }}
+    >
       <h2 className="flex-center h-1/5 w-full text-base small:text-2xl font-bold">
         {headerCategory}
       </h2>
-      <ul ref={ulElement} className="h-full w-full pt-[25px]">
+      <ul ref={ulElement} className="h-full w-full pt-[25px] overflow-hidden">
         {category === 'main'
           ? returnProcessedList(list as string[])
           : returnNormalList(list as string[])}
