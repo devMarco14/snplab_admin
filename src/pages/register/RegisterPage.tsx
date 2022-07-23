@@ -67,7 +67,7 @@ function RegisterPage() {
           <br />
           <div className="w-full mb-4 border-b border-solid border-black" />
           <input className="mb-4" type="checkbox" />
-          개인정보 처리방침 고지( 필수)
+          개인정보 처리방침 고지(필수)
           <br />
           <input className="mb-4" type="checkbox" />
           제3자 정보제공 동의(필수)
