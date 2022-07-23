@@ -42,7 +42,7 @@ export default function RegionList({
       return (
         <li
           key={`${region[0]}_${index}`}
-          className="flex-center h-1/4 text-lg small:text-2xl font-bold"
+          className="flex-center h-[24%] small:h-[25%] font-bold transition-all duration-300"
           style={{
             transform: `translateY(${dynamicYCoordinate}%)`,
           }}
@@ -93,7 +93,10 @@ export default function RegionList({
       <h2 className="flex-center h-1/5 w-full text-base small:text-2xl font-bold">
         {headerCategory}
       </h2>
-      <ul ref={ulElement} className="h-full w-full pt-[25px] overflow-hidden">
+      <ul
+        ref={ulElement}
+        className="h-full w-full pt-[15px] small:pt-[25px] overflow-hidden"
+      >
         {category === 'main'
           ? returnProcessedList(list as string[])
           : returnNormalList(list as string[])}
