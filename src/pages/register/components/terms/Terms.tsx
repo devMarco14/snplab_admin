@@ -3,19 +3,29 @@ import { BsChevronLeft } from 'react-icons/bs';
 import { gathering, thirdparty } from 'pages/register/assets/termsText';
 import TermsBody from './TermsBody';
 
-export default function Terms({ contents }: { contents: string }) {
+interface TermsPropsType {
+  contents: string;
+  onClose: (event: React.MouseEvent) => void;
+}
+
+export default function Terms({ contents, onClose }: TermsPropsType) {
   const bodyText = contents === 'gathering' ? gathering : thirdparty;
   const processedString = bodyText
     .split('\n')
     .filter((string: string) => string !== '');
 
   return (
-    <article className="flex flex-col w-full h-full">
-      <section className="flex items-center max-h-[7%] h-[7%] min-h-[3rem] px-5">
-        <button type="button">
-          <BsChevronLeft />
+    <article className="modalChild flex flex-col z-10 bg-white w-screen min-w-[330px] h-screen overflow-scroll small:w-[550px] small:h-[800px]">
+      <section className="flex items-center h-[7%] min-h-[3rem]">
+        <button
+          type="button"
+          className="flex justify-center items-center w-[40px] h-full min-h-[40px] ml-2"
+          id="previous"
+          onClick={onClose}
+        >
+          <BsChevronLeft id="svg" />
         </button>
-        <p className="ml-5 font-bold">서비스 이용약관</p>
+        <p className="ml-2 font-bold">서비스 이용약관</p>
       </section>
       <hr className="border-grayFont" />
       <TermsBody bodyText={processedString} />
