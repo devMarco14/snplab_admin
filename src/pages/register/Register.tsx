@@ -2,8 +2,9 @@ import React from 'react';
 import { AiOutlineCheck } from 'react-icons/ai';
 import Modal from 'components/modal/Modal';
 import { StringIndexedObjects } from 'types/interfaces';
-import Terms from './terms/Terms';
-import TermsButton from './terms/TermsButton';
+import Terms from './components/terms/Terms';
+import SelectRegion from './components/region/SelectRegion';
+import TermsButton from './components/terms/TermsButton';
 
 export default function Register() {
   const [isModalOpen, setModalOpen] = React.useState<boolean>(false);
@@ -87,6 +88,11 @@ export default function Register() {
           <Terms contents={termsContents.current} onClose={onCloseModal} />
         </Modal>
       )}
+      {/* {isModalOpen && (
+        <Modal onClick={onCloseModal}>
+          <SelectRegion contents="gathering" />
+        </Modal>
+      )} */}
     </>
   );
 }
