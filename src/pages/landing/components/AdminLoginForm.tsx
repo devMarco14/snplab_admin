@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { FiX as CancelIcon, FiUserCheck as UserIcon } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
+import Path from 'routes/Path';
+import useAdminData from '../hooks/useAdminData';
 
 interface AdminLoginFormPropsType {
   onCancelClick: (event: React.MouseEvent) => void;
@@ -10,8 +13,26 @@ const button =
   'rounded-lg border-solid border-2 p-4 bg-blue-500 text-slate-50 hover:bg-blue-400 ease-in duration-300 ';
 
 function AdminLoginForm({ onCancelClick }: AdminLoginFormPropsType) {
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const { data: adminData } = useAdminData();
+  const navigate = useNavigate();
+
   const handleLogin = (event: React.FormEvent) => {
     event.preventDefault();
+    if (!emailRef?.current?.value || !passwordRef?.current?.value) return;
+
+    const isAdmin = adminData.some(
+      (admin: { email: string; password: string }) =>
+        admin.email === emailRef?.current?.value &&
+        admin.password === passwordRef?.current?.value,
+    );
+
+    isAdmin && navigate(Path.Admin, { replace: true });
+    !isAdmin && alert('login fail!');
+
+    emailRef.current.value = '';
+    passwordRef.current.value = '';
   };
 
   return (
@@ -24,11 +45,17 @@ function AdminLoginForm({ onCancelClick }: AdminLoginFormPropsType) {
         <h1 className="text-base font-semibold">관리자 로그인</h1>
       </strong>
       <div className="flex flex-col">
-        <input type="email" placeholder="관리자 이메일" className={input} />
+        <input
+          type="email"
+          placeholder="관리자 이메일"
+          className={input}
+          ref={emailRef}
+        />
         <input
           type="password"
           placeholder="관리자 비밀번호"
           className={input}
+          ref={passwordRef}
         />
         <button type="submit" className={button}>
           로그인
