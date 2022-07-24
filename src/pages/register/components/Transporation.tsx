@@ -6,7 +6,7 @@ function Transporation() {
 
   return (
     <div>
-      <div className="font-bold">주로 이용하는 교통 수단</div>
+      <div className="mt-4 font-bold">주로 이용하는 교통 수단</div>
       <div className="mb-2 text-xs font-bold text-gray-400">
         주로 이용하는 교통수단을 모두 선택해 주세요.
       </div>

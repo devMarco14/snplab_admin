@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Gender from './components/Gender';
 import Terms from './components/Terms';
 import TextInput from './components/common/TextInput';
@@ -10,8 +10,15 @@ import {
   cellularValidation,
   emailValidation,
 } from './utils/Validator';
+import useInput from './hooks/useInput';
 
 function RegisterPage() {
+  const [name, onNameChange] = useInput('');
+  const [birthday, onBirthdayChange] = useInput('');
+  const [address, onAddressChange] = useInput('');
+  const [cellular, onCellularChange] = useInput('');
+  const [email, onEmailChange] = useInput('');
+
   const nameRef = React.useRef<any>(null);
   const birthdayRef = React.useRef<any>(null);
   const addressRef = React.useRef<any>(null);
@@ -44,8 +51,6 @@ function RegisterPage() {
     setCheckEmail(emailValidation(value));
   };
 
-  console.log('name:::', checkName);
-
   return (
     <section className="w-full flex justify-center">
       <article className="max-w-xs px-4 text-blackFont">
@@ -58,59 +63,77 @@ function RegisterPage() {
         <TextInput
           type="text"
           placeHolder="홍길동"
-          value={undefined}
+          value={name}
+          valid={checkName || name === ''}
           text="이름"
           ref={nameRef}
           onKeyUp={() => {
             handleName(nameRef.current.value);
           }}
+          onChange={(event) => onNameChange(event)}
         />
         <Gender />
         <TextInput
           type="number"
           placeHolder="YYYY.MM.DD"
-          value={undefined}
+          value={birthday}
+          valid={checkBirthday || birthday === ''}
           text="생년월일"
           ref={birthdayRef}
           onKeyUp={() => {
             handleBirthday(birthdayRef.current.value);
           }}
+          onChange={(event) => onBirthdayChange(event)}
         />
         <TextInput
           type="text"
           placeHolder="거주지역 선택"
-          value={undefined}
+          value={address}
+          valid={checkAddress || address === ''}
           text="거주지역"
           ref={addressRef}
           onKeyUp={() => {
             handleAddress(addressRef.current.value);
           }}
+          onChange={(event) => onAddressChange(event)}
         />
         <TextInput
           type="number"
           placeHolder="'-'없이 입력해주세요"
-          value={undefined}
+          value={cellular}
+          valid={checkCellular || cellular === ''}
           text="연락처"
           ref={cellularRef}
           onKeyUp={() => {
             handleCellular(cellularRef.current.value);
           }}
+          onChange={(event) => onCellularChange(event)}
         />
         <TextInput
           type="text"
           placeHolder="MYD@snplab.com"
-          value={undefined}
+          value={email}
+          valid={checkEmail || email === ''}
           text="이메일"
           ref={emailRef}
           onKeyUp={() => {
             handleEmail(emailRef.current.value);
           }}
+          onChange={(event) => onEmailChange(event)}
         />
         <Transporation />
         <Terms />
         <div
-          className="flex justify-center w-full h-9 mb-4 rounded-xl 
-        bg-gray-100 text-gray-400 items-center"
+          className={`flex justify-center w-full h-9 mb-4 rounded-xl 
+        ${
+          checkName &&
+          checkBirthday &&
+          checkAddress &&
+          checkCellular &&
+          checkEmail
+            ? 'bg-gray-800'
+            : 'bg-gray-100'
+        } ${checkName ? 'text-gray-400' : 'text-black'} items-center`}
         >
           지원하기
         </div>
