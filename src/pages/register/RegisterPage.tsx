@@ -3,8 +3,49 @@ import Gender from './components/Gender';
 import Terms from './components/Terms';
 import TextInput from './components/common/TextInput';
 import Transporation from './components/Transporation';
+import {
+  addressValidation,
+  birthdayValidation,
+  nameValidation,
+  cellularValidation,
+  emailValidation,
+} from './utils/Validator';
 
 function RegisterPage() {
+  const nameRef = React.useRef<any>(null);
+  const birthdayRef = React.useRef<any>(null);
+  const addressRef = React.useRef<any>(null);
+  const cellularRef = React.useRef<any>(null);
+  const emailRef = React.useRef<any>(null);
+
+  const [checkName, setCheckName] = React.useState<boolean | null>(null);
+  const [checkBirthday, setCheckBirthday] = React.useState<boolean | null>(
+    null,
+  );
+  const [checkAddress, setCheckAddress] = React.useState<boolean | null>(null);
+  const [checkCellular, setCheckCellular] = React.useState<boolean | null>(
+    null,
+  );
+  const [checkEmail, setCheckEmail] = React.useState<boolean | null>(null);
+
+  const handleName = (value: string) => {
+    setCheckName(nameValidation(value));
+  };
+  const handleBirthday = (value: string) => {
+    setCheckBirthday(birthdayValidation(value));
+  };
+  const handleAddress = (value: string) => {
+    setCheckAddress(addressValidation(value));
+  };
+  const handleCellular = (value: string) => {
+    setCheckCellular(cellularValidation(value));
+  };
+  const handleEmail = (value: string) => {
+    setCheckEmail(emailValidation(value));
+  };
+
+  console.log('name:::', checkName);
+
   return (
     <section className="w-full flex justify-center">
       <article className="max-w-xs px-4 text-blackFont">
@@ -19,6 +60,10 @@ function RegisterPage() {
           placeHolder="홍길동"
           value={undefined}
           text="이름"
+          ref={nameRef}
+          onKeyUp={() => {
+            handleName(nameRef.current.value);
+          }}
         />
         <Gender />
         <TextInput
@@ -26,24 +71,40 @@ function RegisterPage() {
           placeHolder="YYYY.MM.DD"
           value={undefined}
           text="생년월일"
+          ref={birthdayRef}
+          onKeyUp={() => {
+            handleBirthday(birthdayRef.current.value);
+          }}
         />
         <TextInput
           type="text"
           placeHolder="거주지역 선택"
           value={undefined}
           text="거주지역"
+          ref={addressRef}
+          onKeyUp={() => {
+            handleAddress(addressRef.current.value);
+          }}
         />
         <TextInput
           type="number"
           placeHolder="'-'없이 입력해주세요"
           value={undefined}
           text="연락처"
+          ref={cellularRef}
+          onKeyUp={() => {
+            handleCellular(cellularRef.current.value);
+          }}
         />
         <TextInput
           type="text"
           placeHolder="MYD@snplab.com"
           value={undefined}
           text="이메일"
+          ref={emailRef}
+          onKeyUp={() => {
+            handleEmail(emailRef.current.value);
+          }}
         />
         <Transporation />
         <Terms />

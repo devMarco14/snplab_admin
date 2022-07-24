@@ -2,6 +2,8 @@ import React from 'react';
 import { TRANSPORATION } from 'libs/utils/TRANSPORATION';
 
 function Transporation() {
+  const transportationRef = React.useRef<any>(null);
+
   return (
     <div>
       <div className="font-bold">주로 이용하는 교통 수단</div>
@@ -14,6 +16,7 @@ function Transporation() {
             <div
               className="flex h-7 mr-2 mt-1 rounded-3xl border border-solid 
           border-gray-300 px-2 text-gray-400 items-center"
+              ref={transportationRef}
             >
               {item}
             </div>

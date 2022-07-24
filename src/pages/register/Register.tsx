@@ -58,7 +58,7 @@ export default function Register() {
   return (
     <>
       <RegisterPage />
-      <section className="flex-center flex-col w-[300px] border-b-[2px] border-solid border-lightgrayFont py-[10px]">
+      {/* <section className="flex-center flex-col w-[300px] border-b-[2px] border-solid border-lightgrayFont py-[10px]">
         <p className="w-full mb-7 font-bold">거주지역</p>
         <input
           type="text"
@@ -83,7 +83,7 @@ export default function Register() {
         <Modal onClick={onCloseModal}>
           <SelectRegion contents="gathering" closeModal={onCloseModal} />
         </Modal>
-      )}
+      )} */}
     </>
   );
 }

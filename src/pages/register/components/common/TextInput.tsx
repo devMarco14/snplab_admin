@@ -1,54 +1,35 @@
-import React from 'react';
+import React, { forwardRef, MutableRefObject } from 'react';
 
 interface InputProps {
-  type: 'text' | 'number' | 'tel' | 'password';
+  type: 'text' | 'number';
   value: string | undefined;
-  valid?: boolean | null;
-  inputMode?: 'numeric' | 'decimal';
-  onChange?: (value: string) => void;
-  onFocus?: (value: string) => void;
-  onBlur?: (value: string) => void;
-  disabled?: boolean;
-  readOnly?: boolean;
+  // valid?: boolean | null;
   placeHolder?: string;
   text?: string;
-  errMessage?: string;
   maxLength?: number;
+  onKeyUp: any;
 }
 
-function TextInput({
-  type,
-  value,
-  valid,
-  inputMode,
-  onChange,
-  onFocus,
-  onBlur,
-  disabled = false,
-  readOnly = false,
-  placeHolder,
-  text,
-  errMessage,
-  maxLength,
-}: InputProps) {
-  return (
-    <div className="my-5">
-      <div className="font-bold mb-4">{text}</div>
-      <input
-        type={type}
-        inputMode={inputMode}
-        placeholder={placeHolder || ''}
-        value={value}
-        readOnly={readOnly}
-        onChange={(e) => (onChange ? onChange(e.target.value) : null)}
-        onFocus={(e) => (onFocus ? onFocus(e.target.value) : null)}
-        onBlur={(e) => (onBlur ? onBlur(e.target.value) : null)}
-        disabled={disabled}
-        maxLength={maxLength}
-      />
-      <div className="w-full mt-2 border-b border-solid border-gray-300" />
-    </div>
-  );
-}
+// eslint-disable-next-line react/function-component-definition
+const TextInput = React.forwardRef<HTMLInputElement, InputProps>(
+  (props, ref) => {
+    return (
+      <div className="my-5">
+        <div className="font-bold mb-4">{props.text}</div>
+        <input
+          type={props.type}
+          placeholder={props.placeHolder || ''}
+          value={props.value}
+          maxLength={props.maxLength}
+          ref={ref}
+          onKeyUp={props.onKeyUp}
+        />
+        <div className="w-full mt-2 border-b border-solid border-gray-300" />
+      </div>
+    );
+  },
+);
+
+// TextInput = forwardRef<InputProps, PropsType>(TextInput);
 
 export default TextInput;
