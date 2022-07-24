@@ -16,11 +16,9 @@ export default function RegionList({
   current,
   setRegion,
 }: RegionListProps) {
-  // ### 디바운스 적용 필요 ### /
   const [dynamicYCoordinate, setDynamicYCoordinate] = React.useState<number>(0);
   const ulElement = React.useRef<HTMLUListElement | null>(null);
   const headerCategory = category === 'main' ? '시/도' : '시/군/구';
-  const flag = React.useRef<boolean>(false);
 
   React.useEffect(() => {
     if (ulElement.current) {
@@ -92,24 +90,36 @@ export default function RegionList({
     }
   }
 
-  const changeFlag = (event: React.MouseEvent) => {
+  /* ############### 기능 개발중 ############### */
+  const isMouseDown = React.useRef<boolean>(false);
+  const startCoord = React.useRef<number>(0);
+  const movementDistance = React.useRef<number>(0);
+
+  function handleMouseDown(event: React.MouseEvent) {
+    checkMouseDown(event);
+    startCoord.current = event.clientY;
+  }
+
+  const checkMouseDown = (event: React.MouseEvent) => {
     if (event.type === 'mousedown') {
-      flag.current = true;
+      isMouseDown.current = true;
     } else {
-      flag.current = false;
+      isMouseDown.current = false;
     }
   };
 
-  const startCoord = React.useRef<number>(0);
-  const movementDistance = React.useRef<number>(0);
-  const currentIndex = React.useRef<number>(0);
+  function handleMouseMove(event: React.MouseEvent) {
+    if (isMouseDown.current) {
+      updateDistanceThrottled(event);
+    }
+  }
 
-  const bar = throttler(
+  const updateDistanceThrottled = throttler(
     (event: React.MouseEvent) => updateMovementDistance(event),
     100,
   );
 
-  function updateMovementDistance(event: React.MouseEvent) {
+  const updateMovementDistance = (event: React.MouseEvent) => {
     const container = ulElement.current as HTMLElement;
     const firstElement = Array.from(container.children)[0] as HTMLElement;
     const elementHeight = firstElement.offsetHeight;
@@ -119,66 +129,55 @@ export default function RegionList({
         ? Math.floor(movedDistanceWithDirection / elementHeight)
         : Math.ceil(movedDistanceWithDirection / elementHeight);
     movementDistance.current = movementToIndex;
+  };
+
+  function handleMouseUp(event: React.MouseEvent) {
+    checkMouseDown(event);
+    selectRegionByMouseMove(event);
   }
 
-  function selectRegionByMouseMove(event: React.MouseEvent) {
+  const selectRegionByMouseMove = (event: React.MouseEvent) => {
     const regionList = list as string[];
     const sortedRegionList = regionList.sort();
     const indexToMove = movementDistance.current;
     const processedDelta = indexToMove * 100;
-    const absoluteIndex =
-      (Math.abs(dynamicYCoordinate) + Math.abs(processedDelta)) / 100;
     const maximumLength = -100 * (regionList.length - 2);
+    const movedDownwardDistance =
+      dynamicYCoordinate - processedDelta < maximumLength
+        ? maximumLength - (dynamicYCoordinate - processedDelta)
+        : processedDelta;
+    const movedUpwardDistance =
+      dynamicYCoordinate - processedDelta > 0
+        ? processedDelta - dynamicYCoordinate
+        : processedDelta;
+    const directionByProcessedDelta =
+      processedDelta > 0 ? movedDownwardDistance : movedUpwardDistance;
+    const absoluteIndex =
+      Math.abs(dynamicYCoordinate - directionByProcessedDelta) / 100 + 1;
     switch (true) {
       case processedDelta > 0 && dynamicYCoordinate > maximumLength:
-        setDynamicYCoordinate((previousYCoordinate) => {
-          let result: number;
-          if (previousYCoordinate - processedDelta < maximumLength) {
-            result = maximumLength;
-          } else {
-            result = previousYCoordinate - processedDelta;
-          }
-          return result;
-        });
-        setRegion(sortedRegionList[absoluteIndex + 1]);
+        setDynamicYCoordinate((prev) => prev - movedDownwardDistance);
+        setRegion(sortedRegionList[absoluteIndex]);
         break;
       case processedDelta < 0 && dynamicYCoordinate < 0:
-        setDynamicYCoordinate((previousYCoordinate) => {
-          let result: number;
-          if (previousYCoordinate - processedDelta > 0) {
-            result = 0;
-          } else {
-            result = previousYCoordinate - processedDelta;
-          }
-          return result;
-        });
-        setRegion(sortedRegionList[absoluteIndex - 1]);
+        setDynamicYCoordinate((prev) => prev - movedUpwardDistance);
+        setRegion(sortedRegionList[absoluteIndex]);
         break;
       default:
         setDynamicYCoordinate((previousYCoordinate) => previousYCoordinate);
         break;
     }
-  }
+  };
+
+  /* ############### 기능 개발중 ############### */
 
   return (
     <section
       className="relative w-full h-full px-5"
       onWheel={selectRegionByOnWheel}
-      onMouseDown={(event: React.MouseEvent) => {
-        changeFlag(event);
-        startCoord.current = event.clientY;
-        movementDistance.current = 0;
-      }}
-      onMouseUp={(event: React.MouseEvent) => {
-        changeFlag(event);
-        selectRegionByMouseMove(event);
-      }}
-      onMouseMove={(event: React.MouseEvent) => {
-        if (flag.current) {
-          // console.log(event);
-          bar(event);
-        }
-      }}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
     >
       <h2 className="flex-center h-1/5 w-full text-base small:text-2xl font-bold">
         {headerCategory}
