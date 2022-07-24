@@ -11,12 +11,12 @@ function Gender() {
         <div className="flex-1 flex items-center mr-3">
           <div className={genderStyle}>✓</div>
           <input className="hidden" type="radio" id="gender" />
-          <div className="ml-1 text-gray-400">남자</div>
+          <div className="ml-1 text-gray-400">여자</div>
         </div>
         <div className="flex-1 flex items-center">
           <div className={genderStyle}>✓</div>
           <input className="hidden" type="radio" id="gender" />
-          <div className="ml-1 text-gray-400">여자</div>
+          <div className="ml-1 text-gray-400">남자</div>
         </div>
       </label>
     </div>
