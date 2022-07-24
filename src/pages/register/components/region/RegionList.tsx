@@ -15,6 +15,7 @@ export default function RegionList({
   current,
   setRegion,
 }: RegionListProps) {
+  // ### 디바운스 적용 필요 ### /
   const [dynamicYCoordinate, setDynamicYCoordinate] = React.useState<number>(0);
   const ulElement = React.useRef<HTMLUListElement | null>(null);
   const headerCategory = category === 'main' ? '시/도' : '시/군/구';
@@ -36,6 +37,10 @@ export default function RegionList({
       });
     }
   }, [current, category]);
+
+  React.useEffect(() => {
+    setDynamicYCoordinate(0);
+  }, [list]);
 
   const returnNormalList = (regionList: string[]) =>
     regionList.map((region: string, index: number) => {
