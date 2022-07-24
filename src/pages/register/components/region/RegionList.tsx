@@ -27,7 +27,7 @@ export default function RegionList({
         category === 'main' ? processRegionName(current as string) : current;
       lis.forEach((li: Element) => {
         const htmlLi = li as HTMLElement;
-        if (htmlLi.innerText === processedCurrent) {
+        if (htmlLi.innerText === processedCurrent && processedCurrent !== '') {
           htmlLi.classList.remove('deSelectedItem');
           htmlLi.classList.add('selectedItem');
         } else {

@@ -13,8 +13,8 @@ export default function SelectRegion({
   contents,
   closeModal,
 }: SelectRegionProps) {
-  const [currentRegion, setCurrentRegion] = React.useState<string>('경기도');
-  const [currentCity, setCurrentCity] = React.useState<string>('고양시');
+  const [currentRegion, setCurrentRegion] = React.useState<string>('');
+  const [currentCity, setCurrentCity] = React.useState<string>('');
   const { regionList } = useRegionLists();
   const { subRegionList } = useSubRegionLists(currentRegion);
   const originalState = React.useMemo(() => [''], []);

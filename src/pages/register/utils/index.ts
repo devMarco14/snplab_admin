@@ -7,3 +7,13 @@ export const processRegionName = (regionName: string) => {
   }
   return newName;
 };
+
+export const debouncer = (callback: (value?: any) => any, timeout = 100) => {
+  let timer: ReturnType<typeof setTimeout>;
+  return (...args: any) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      callback.apply(this, args);
+    }, timeout);
+  };
+};
