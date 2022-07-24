@@ -4,6 +4,7 @@ import { StringIndexedObjects } from 'types/interfaces';
 import Terms from './components/terms/Terms';
 import SelectRegion from './components/region/SelectRegion';
 import TermsSection from './components/terms/TermsSection';
+import RegisterPage from './RegisterPage';
 
 export default function Register() {
   const [termsContents, setTermsContents] = React.useState('');
@@ -56,7 +57,7 @@ export default function Register() {
 
   return (
     <>
-      <h1>Register</h1>
+      <RegisterPage />
       <section className="flex-center flex-col w-[300px] border-b-[2px] border-solid border-lightgrayFont py-[10px]">
         <p className="w-full mb-7 font-bold">거주지역</p>
         <input
