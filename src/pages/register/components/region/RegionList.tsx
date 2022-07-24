@@ -95,35 +95,48 @@ export default function RegionList({
   const startCoord = React.useRef<number>(0);
   const movementDistance = React.useRef<number>(0);
 
-  function handleMouseDown(event: React.MouseEvent) {
+  function handleMouseDown(event: React.MouseEvent | React.TouchEvent) {
     checkMouseDown(event);
-    startCoord.current = event.clientY;
+    if (event.type === 'mousedown') {
+      startCoord.current = (event as React.MouseEvent).clientY;
+    } else {
+      startCoord.current = (event as React.TouchEvent).touches[0].clientY;
+    }
   }
 
-  const checkMouseDown = (event: React.MouseEvent) => {
-    if (event.type === 'mousedown') {
+  const checkMouseDown = (event: React.MouseEvent | React.TouchEvent) => {
+    if (event.type === 'mousedown' || event.type === 'touchstart') {
       isMouseDown.current = true;
     } else {
       isMouseDown.current = false;
     }
   };
 
-  function handleMouseMove(event: React.MouseEvent) {
+  function handleMouseMove(event: React.MouseEvent | React.TouchEvent) {
     if (isMouseDown.current) {
       updateDistanceThrottled(event);
     }
   }
 
   const updateDistanceThrottled = throttler(
-    (event: React.MouseEvent) => updateMovementDistance(event),
+    (event: React.MouseEvent | React.TouchEvent) =>
+      updateMovementDistance(event),
     100,
   );
 
-  const updateMovementDistance = (event: React.MouseEvent) => {
+  const updateMovementDistance = (
+    event: React.MouseEvent | React.TouchEvent,
+  ) => {
+    let targetMovement: number;
+    if (event.type === 'mousedown') {
+      targetMovement = (event as React.MouseEvent).clientY;
+    } else {
+      targetMovement = (event as React.TouchEvent).touches[0].clientY;
+    }
     const container = ulElement.current as HTMLElement;
     const firstElement = Array.from(container.children)[0] as HTMLElement;
     const elementHeight = firstElement.offsetHeight;
-    const movedDistanceWithDirection = startCoord.current - event.clientY;
+    const movedDistanceWithDirection = startCoord.current - targetMovement;
     const movementToIndex =
       movedDistanceWithDirection > 0
         ? Math.floor(movedDistanceWithDirection / elementHeight)
@@ -131,12 +144,14 @@ export default function RegionList({
     movementDistance.current = movementToIndex;
   };
 
-  function handleMouseUp(event: React.MouseEvent) {
+  function handleMouseUp(event: React.MouseEvent | React.TouchEvent) {
     checkMouseDown(event);
     selectRegionByMouseMove(event);
   }
 
-  const selectRegionByMouseMove = (event: React.MouseEvent) => {
+  const selectRegionByMouseMove = (
+    event: React.MouseEvent | React.TouchEvent,
+  ) => {
     const regionList = list as string[];
     const sortedRegionList = regionList.sort();
     const indexToMove = movementDistance.current;
@@ -144,11 +159,11 @@ export default function RegionList({
     const maximumLength = -100 * (regionList.length - 2);
     const movedDownwardDistance =
       dynamicYCoordinate - processedDelta < maximumLength
-        ? maximumLength - (dynamicYCoordinate - processedDelta)
+        ? maximumLength - (dynamicYCoordinate - processedDelta) - 100
         : processedDelta;
     const movedUpwardDistance =
       dynamicYCoordinate - processedDelta > 0
-        ? processedDelta - dynamicYCoordinate
+        ? processedDelta - dynamicYCoordinate + 100
         : processedDelta;
     const directionByProcessedDelta =
       processedDelta > 0 ? movedDownwardDistance : movedUpwardDistance;
@@ -178,6 +193,9 @@ export default function RegionList({
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
+      onTouchStart={handleMouseDown}
+      onTouchMove={handleMouseMove}
+      onTouchEnd={handleMouseUp}
     >
       <h2 className="flex-center h-1/5 w-full text-base small:text-2xl font-bold">
         {headerCategory}
