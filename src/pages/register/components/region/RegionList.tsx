@@ -128,7 +128,7 @@ export default function RegionList({
     event: React.MouseEvent | React.TouchEvent,
   ) => {
     let targetMovement: number;
-    if (event.type === 'mousedown') {
+    if (event.type === 'mousemove') {
       targetMovement = (event as React.MouseEvent).clientY;
     } else {
       targetMovement = (event as React.TouchEvent).touches[0].clientY;
