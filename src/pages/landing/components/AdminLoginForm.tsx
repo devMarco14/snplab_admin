@@ -37,10 +37,10 @@ function AdminLoginForm({ onCancelClick }: AdminLoginFormPropsType) {
 
   return (
     <form
-      className="modalChild flex flex-col justify-between h-1/2 min-h-[350px] w-8/12 min-w-[300px] z-10 rounded p-4 bg-slate-50"
+      className="modalChild flex flex-col justify-between h-1/2 min-h-[350px] w-8/12 min-w-[300px] max-w-[350px] z-10 rounded p-4 bg-slate-50"
       onSubmit={handleLogin}
     >
-      <strong className="font-normal">
+      <strong className="font-normal text-center">
         <UserIcon className="mx-auto mb-4 text-6xl" />
         <h1 className="text-base font-semibold">관리자 로그인</h1>
       </strong>

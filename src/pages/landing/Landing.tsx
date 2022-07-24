@@ -11,8 +11,12 @@ const button =
 export default function Landing() {
   const [isModalVisible, setModalVisible] = useState(false);
 
-  const handleModalClick = () => {
-    setModalVisible((prevModalVisible) => !prevModalVisible);
+  const handleModalClick = (event: React.MouseEvent) => {
+    const target = event.target as HTMLElement;
+
+    if (target.id === 'modal-bg') {
+      setModalVisible((prevModalVisible) => !prevModalVisible);
+    }
   };
 
   return (
@@ -22,15 +26,19 @@ export default function Landing() {
         <Link className={button} to={Path.Register}>
           지원하기
         </Link>
-        <button className={button} type="submit" onClick={handleModalClick}>
+        <button
+          className={button}
+          type="submit"
+          id="login-button"
+          onClick={() => setModalVisible(true)}
+        >
           관리자 로그인
         </button>
       </strong>
       {isModalVisible && (
-        <>
-          <Modal onClick={handleModalClick} />
+        <Modal onClick={handleModalClick}>
           <AdminLoginForm onCancelClick={() => setModalVisible(false)} />
-        </>
+        </Modal>
       )}
     </section>
   );
