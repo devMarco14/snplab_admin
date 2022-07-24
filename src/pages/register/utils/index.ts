@@ -17,3 +17,16 @@ export const debouncer = (callback: (value?: any) => any, timeout = 100) => {
     }, timeout);
   };
 };
+
+export const throttler = (callback: (value?: any) => any, timeout = 100) => {
+  let wait = false;
+  return (...args: any) => {
+    if (!wait) {
+      callback.apply(this, args);
+      wait = true;
+      setTimeout(() => {
+        wait = false;
+      }, timeout);
+    }
+  };
+};
