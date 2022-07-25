@@ -6,7 +6,7 @@ import RegionList from './RegionList';
 
 interface SelectRegionProps {
   contents: string;
-  closeModal: (event: React.MouseEvent) => void;
+  closeModal: (event: React.MouseEvent, selectedRegion?: string) => void;
 }
 
 export default function SelectRegion({
@@ -47,6 +47,10 @@ export default function SelectRegion({
     setCurrentCity(value);
   };
 
+  function selectRegion(event: React.MouseEvent) {
+    closeModal(event, `${currentRegion} ${currentCity}`);
+  }
+
   return (
     <article className="absolute bottom-0 flex flex-col w-full h-3/5 bg-white small:w-[550px] small:h-[80%] small:modalChild">
       <section className="flex-center max-h-[7%] h-[7%] min-h-[3rem] px-5">
@@ -84,7 +88,7 @@ export default function SelectRegion({
         type="button"
         id="region-submit"
         className="h-[7%] min-h-[50px] m-5 rounded-2xl bg-buttonActive font-bold text-white text-sm small:text-xl"
-        onClick={closeModal}
+        onClick={selectRegion}
       >
         확인
       </button>
