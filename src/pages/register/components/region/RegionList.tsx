@@ -18,6 +18,9 @@ export default function RegionList({
 }: RegionListProps) {
   const [dynamicYCoordinate, setDynamicYCoordinate] = React.useState<number>(0);
   const ulElement = React.useRef<HTMLUListElement | null>(null);
+  const isMouseDown = React.useRef<boolean>(false);
+  const startYCoordinate = React.useRef<number>(0);
+  const reservedYCoordinate = React.useRef<number>(0);
   const headerCategory = category === 'main' ? '시/도' : '시/군/구';
 
   React.useEffect(() => {
@@ -90,17 +93,12 @@ export default function RegionList({
     }
   }
 
-  /* ############### 기능 개발중 ############### */
-  const isMouseDown = React.useRef<boolean>(false);
-  const startCoord = React.useRef<number>(0);
-  const listCoord = React.useRef<number>(0);
-
   function handleMouseDown(event: React.MouseEvent | React.TouchEvent) {
     checkMouseDown(event);
     if (event.type === 'mousedown') {
-      startCoord.current = (event as React.MouseEvent).clientY;
+      startYCoordinate.current = (event as React.MouseEvent).clientY;
     } else {
-      startCoord.current = (event as React.TouchEvent).touches[0].clientY;
+      startYCoordinate.current = (event as React.TouchEvent).touches[0].clientY;
     }
   }
 
@@ -136,7 +134,7 @@ export default function RegionList({
     const regionList = list as string[];
     const maximumLength = -100 * (regionList.length - 2);
     const movedDistanceWithDirection =
-      listCoord.current + targetMovement - startCoord.current;
+      reservedYCoordinate.current + targetMovement - startYCoordinate.current;
     if (dynamicYCoordinate === 0) {
       if (movedDistanceWithDirection < 0) {
         setDynamicYCoordinate(movedDistanceWithDirection);
@@ -158,39 +156,43 @@ export default function RegionList({
   const selectRegionByMouseMove = (
     event: React.MouseEvent | React.TouchEvent,
   ) => {
-    listCoord.current = dynamicYCoordinate;
+    reservedYCoordinate.current = dynamicYCoordinate;
     const regionList = list as string[];
     const maximumLength = -100 * (regionList.length - 2);
-    if (listCoord.current > 0) {
-      setDynamicYCoordinate(0);
-      setRegion(regionList[1]);
-    } else if (listCoord.current < maximumLength - 100) {
-      setDynamicYCoordinate(maximumLength);
-      setRegion(regionList[regionList.length - 1]);
-    } else if (listCoord.current === 0) {
-      setRegion(regionList[1]);
-    } else if (listCoord.current === maximumLength) {
-      setRegion(regionList[regionList.length - 1]);
-    } else {
-      const rawYCoordinate = dynamicYCoordinate;
-      const processedCoordinate = rawYCoordinate - (rawYCoordinate % 100);
-      const rawRegionIndex = Math.abs(Math.floor(rawYCoordinate / 100));
-      let regionIndex =
-        // eslint-disable-next-line no-nested-ternary
-        rawRegionIndex === 0
-          ? rawRegionIndex + 1
-          : rawRegionIndex === regionList.length - 1
-          ? regionList.length - 1
-          : rawRegionIndex;
-      if (event.type === 'mouseleave') {
-        regionIndex += 1;
-      }
-      setDynamicYCoordinate(processedCoordinate);
-      setRegion(regionList[regionIndex]);
+    const rawYCoordinate = dynamicYCoordinate;
+    const processedCoordinate = rawYCoordinate - (rawYCoordinate % 100);
+    const rawRegionIndex = Math.abs(Math.floor(rawYCoordinate / 100));
+    let regionIndex =
+      // eslint-disable-next-line no-nested-ternary
+      rawRegionIndex === 0
+        ? rawRegionIndex + 1
+        : rawRegionIndex === regionList.length - 1
+        ? regionList.length - 1
+        : rawRegionIndex;
+    switch (true) {
+      case reservedYCoordinate.current > 0:
+        setDynamicYCoordinate(0);
+        setRegion(regionList[1]);
+        break;
+      case reservedYCoordinate.current < maximumLength - 100:
+        setDynamicYCoordinate(maximumLength);
+        setRegion(regionList[regionList.length - 1]);
+        break;
+      case reservedYCoordinate.current === 0:
+        setRegion(regionList[1]);
+        break;
+      case reservedYCoordinate.current === maximumLength:
+        setRegion(regionList[regionList.length - 1]);
+        break;
+      default:
+        if (event.type === 'mouseleave') {
+          regionIndex += 1;
+        }
+        setDynamicYCoordinate(processedCoordinate);
+        setRegion(regionList[regionIndex]);
+        break;
     }
   };
-
-  /* ############### 기능 개발중 ############### */
 
   return (
     <section
