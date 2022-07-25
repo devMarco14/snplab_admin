@@ -1,34 +1,42 @@
-import React, { useState } from 'react';
-import useAdminLoad from 'pages/admin/hook/useAdminLoad';
+import React, { MouseEvent } from 'react';
 import { Round } from 'libs/types/round';
-import useToggle from 'hooks/useToggle';
 import { addComma } from 'libs/utils/addComma';
 import {
   AiOutlinePlusSquare as AddIcon,
   AiOutlineRollback as ExitIcon,
 } from 'react-icons/ai';
+import { Members } from 'libs/types/members';
+import useToggle from 'hooks/useToggle';
 import useRoundHandler from '../hook/useRoundHandler';
 
-export default function TabBox() {
-  const [currentTab, setCurrentTab] = useState('1차');
-  const { membersQuery } = useAdminLoad(currentTab);
+interface TabBoxProps {
+  membersData: Members[];
+  currentTab: string;
+  onChangeTab: (e: MouseEvent<HTMLButtonElement>) => void;
+}
+
+export default function TabBox({
+  onChangeTab,
+  membersData,
+  currentTab,
+}: TabBoxProps) {
   const { onPostRound, roundQuery, onChange, value } = useRoundHandler();
   const [isPlus, onTogglePlus] = useToggle();
-  if (membersQuery.isError || roundQuery.isError) return <div>에러</div>;
-  if (membersQuery.isLoading || roundQuery.isLoading) return <div>로딩중</div>;
+  if (roundQuery.isError) return <div>에러</div>;
+  if (roundQuery.isLoading) return <div>로딩중</div>;
   return (
     <>
       <div className="flex justify-center h-10 bg-gray-100">
-        {roundQuery.data.map((item: Round) => (
+        {roundQuery.data.map((item: Round, roundIndex: number) => (
           <div
             className={`flex items-center justify-center w-2/4 text-neutral-600 font-semibold ${
               currentTab === `${item.text}`
                 ? 'bg-gray-200'
                 : 'bg-gray-100  text-gray-300'
             }`}
-            key={item.id}
+            key={item.id + roundIndex}
           >
-            <button type="button" onClick={() => setCurrentTab(item.text)}>
+            <button type="button" onClick={onChangeTab} value={item.text}>
               {item.text} 모집
             </button>
           </div>
@@ -45,7 +53,10 @@ export default function TabBox() {
             <button
               className="w-8 bg-gray-400 h-5 rounded ml-1"
               type="button"
-              onClick={() => onPostRound(value as string)}
+              onClick={() => {
+                onPostRound(value as string);
+                onTogglePlus();
+              }}
             >
               추가
             </button>
@@ -77,19 +88,22 @@ export default function TabBox() {
             </tr>
           </thead>
           <tbody>
-            {membersQuery.data.map(
-              ({
-                address,
-                birthday,
-                cellular,
-                email,
-                gender,
-                id,
-                name,
-                transportation,
-                win,
-              }) => (
-                <tr className="text-center mt-4">
+            {membersData.map(
+              (
+                {
+                  address,
+                  birthday,
+                  cellular,
+                  email,
+                  gender,
+                  id,
+                  name,
+                  transportation,
+                  win,
+                },
+                memberIndex,
+              ) => (
+                <tr className="text-center mt-4" key={id + memberIndex}>
                   <td className="pt-2">{id}</td>
                   <td>2022.01.01</td>
                   <td>{name}</td>
@@ -101,7 +115,7 @@ export default function TabBox() {
                   <td>{email}</td>
                   <td className="flex flex-wrap justify-center truncate gap-1">
                     {transportation.map((item, index) => (
-                      <div>
+                      <div key={item + index}>
                         {addComma(index)} {item}
                       </div>
                     ))}

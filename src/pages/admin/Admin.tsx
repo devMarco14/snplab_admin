@@ -1,7 +1,33 @@
-import React from 'react';
+import React, { MouseEvent, useState } from 'react';
+import { CSVLink } from 'react-csv';
 import TabBox from './components/TabBox';
+import useAdminLoad from './hook/useAdminLoad';
 
 export default function Admin() {
+  const headers = [
+    { label: 'Num.', key: 'id' },
+    { label: '지원 날짜', key: '?' },
+    { label: '지원자명', key: 'name' },
+    { label: '성별', key: 'gender' },
+    { label: '생년월일', key: 'birthday' },
+    { label: '연락처', key: 'cellular' },
+    { label: '이메일', key: 'email' },
+    { label: '이용수단', key: 'transportation' },
+    { label: '거주지', key: 'address' },
+    { label: '당첨여부', key: 'win' },
+  ];
+  const [currentTab, setCurrentTab] = useState('1차');
+  const onChangeTab = (e: MouseEvent<HTMLButtonElement>) => {
+    setCurrentTab(e.currentTarget.value);
+  };
+  const {
+    data: membersData,
+    isError: isMembersError,
+    isLoading: isMemberLoading,
+  } = useAdminLoad(currentTab);
+
+  if (isMembersError) return <div>에러</div>;
+  if (isMemberLoading) return <div>로딩중</div>;
   return (
     <div>
       <header>
@@ -19,12 +45,24 @@ export default function Admin() {
             type="text"
             className="w-1/3 h-7 border border-solid border-black rounded-md ml-20"
           />
-          <button type="button" className="w-32 h-10 bg-gray-300 rounded-md">
-            엑셀 다운로드
-          </button>
+
+          <CSVLink
+            className="w-32 h-10 bg-gray-300 rounded-md"
+            data={membersData}
+            headers={headers}
+            filename="SNPLab 지원자 리스트"
+          >
+            <button type="button" className="w-32 h-10 bg-gray-300 rounded-md">
+              액셀 다운로드
+            </button>
+          </CSVLink>
         </div>
         <section className="w-11/12 h-screen bg-gray-200 ml-20 mt-5 mb-5">
-          <TabBox />
+          <TabBox
+            onChangeTab={onChangeTab}
+            membersData={membersData}
+            currentTab={currentTab}
+          />
         </section>
       </section>
     </div>
