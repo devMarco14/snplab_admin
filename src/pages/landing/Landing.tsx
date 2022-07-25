@@ -10,7 +10,7 @@ const button =
   'mb-4 rounded-lg border-solid border-2 p-4 bg-buttonActive text-slate-50 hover:bg-neutral-500 ease-in duration-300 ';
 
 export default function Landing() {
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isLoginFormVisible, setLoginFormVisible] = useState(false);
   const { isLoggedin, onLogout } = useContext(AdminAuthContext);
 
   const handleModalVisible = (event: React.MouseEvent) => {
@@ -18,10 +18,10 @@ export default function Landing() {
 
     switch (target.id) {
       case 'modal-bg':
-        setModalVisible(false);
+        setLoginFormVisible(false);
         break;
       case 'login-button':
-        setModalVisible(true);
+        setLoginFormVisible(true);
         break;
     }
   };
@@ -49,9 +49,9 @@ export default function Landing() {
           </button>
         )}
       </strong>
-      {isModalVisible && (
+      {isLoginFormVisible && (
         <Modal onClick={handleModalVisible}>
-          <AdminLoginForm onCancelClick={() => setModalVisible(false)} />
+          <AdminLoginForm onCancelClick={() => setLoginFormVisible(false)} />
         </Modal>
       )}
     </section>
