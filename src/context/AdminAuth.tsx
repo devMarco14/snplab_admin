@@ -39,7 +39,10 @@ export function AdminAuthProvider({ children }: ImportChildren) {
   );
 
   const onLogout = () => {
-    setLogin(false);
+    const isLogoutConfirmed = window.confirm('로그아웃 하시겠습니까?');
+
+    if (!isLogoutConfirmed) return;
+    isLogoutConfirmed && setLogin(false);
     localStorage.setItem('isLoggedin', 'false');
   };
 
