@@ -29,6 +29,12 @@ module.exports = {
         xlarge: '18px',
         xxlarge: '20px',
       },
+      keyframes: {
+        slideUp: {
+          '0%': { opacity: 0, paddingTop: '2.25rem' },
+          '100%': { opacity: 1, paddingTop: 0 },
+        },
+      },
     },
   },
   plugins: [],
