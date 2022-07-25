@@ -297,6 +297,10 @@
     {
       "id": 851,
       "text": "2차"
+    },
+    {
+      "id": 355,
+      "text": "3차"
     }
   ],
   "regionList": [
@@ -318,10 +322,42 @@
     "전라북도",
     "전라남도"
   ],
-  "현재차수": ["1차"],
   "members": [
     {
       "id": 1,
+      "round": "1차",
+      "name": "홍길동",
+      "gender": "남성",
+      "birthday": "1993.01.01",
+      "address": "서울특별시 강남구",
+      "cellular": "01000000000",
+      "email": "kildong@gmail.com",
+      "transportation": [
+        "버스",
+        "지하철",
+        "택시",
+        "KTX/기차",
+        "도보",
+        "자전거",
+        "전동킥보드",
+        "자가용"
+      ],
+      "win": true
+    },
+    {
+      "id": 4,
+      "round": "2차",
+      "name": "홍길동",
+      "gender": "남성",
+      "birthday": "1993.01.01",
+      "address": "서울특별시 강남구",
+      "cellular": "01000000000",
+      "email": "kildong@gmail.com",
+      "transportation": ["버스"],
+      "win": true
+    },
+    {
+      "id": 5,
       "round": "1차",
       "name": "홍길동",
       "gender": "남성",
