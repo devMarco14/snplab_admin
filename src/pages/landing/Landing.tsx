@@ -11,11 +11,16 @@ const button =
 export default function Landing() {
   const [isModalVisible, setModalVisible] = useState(false);
 
-  const handleModalClick = (event: React.MouseEvent) => {
+  const handleModalVisible = (event: React.MouseEvent) => {
     const target = event.target as HTMLElement;
 
-    if (target.id === 'modal-bg') {
-      setModalVisible((prevModalVisible) => !prevModalVisible);
+    switch (target.id) {
+      case 'modal-bg':
+        setModalVisible(false);
+        break;
+      case 'login-button':
+        setModalVisible(true);
+        break;
     }
   };
 
@@ -30,13 +35,13 @@ export default function Landing() {
           className={button}
           type="submit"
           id="login-button"
-          onClick={() => setModalVisible(true)}
+          onClick={handleModalVisible}
         >
           관리자 로그인
         </button>
       </strong>
       {isModalVisible && (
-        <Modal onClick={handleModalClick}>
+        <Modal onClick={handleModalVisible}>
           <AdminLoginForm onCancelClick={() => setModalVisible(false)} />
         </Modal>
       )}
