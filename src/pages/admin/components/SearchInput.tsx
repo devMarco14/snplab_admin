@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getWorkerInfo } from 'libs/api/admin';
 import { Members } from 'libs/types/members';
 
-export default function SearchInput() {
+export default function SearchInput({ filter }: any) {
   const [worker, setWorker] = useState<Members>();
   const [value, setValue] = useState('');
 
@@ -10,10 +10,12 @@ export default function SearchInput() {
     setValue(event.target.value);
   };
   useEffect(() => {
-    getWorkerInfo('name', value).then((data) => setWorker(data));
-  }, [value]);
+    if (value) {
+      getWorkerInfo(filter, value).then((data) => setWorker(data));
+    }
+  }, [value, filter]);
 
-  //   console.log(worker);
+  console.log(worker);
 
   return (
     <input

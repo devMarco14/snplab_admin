@@ -336,6 +336,30 @@
         "자가용"
       ],
       "win": true
+    },
+    {
+      "id": 1,
+      "round": "1차",
+      "name": "심채영",
+      "gender": "여성",
+      "birthday": "1996.02.22",
+      "address": "강원도 원주시",
+      "cellular": "01000000000",
+      "email": "kildong@gmail.com",
+      "transportation": ["버스", "지하철", "택시"],
+      "win": true
+    },
+    {
+      "id": 1,
+      "round": "1차",
+      "name": "심아롱",
+      "gender": "남성",
+      "birthday": "2015.02.01",
+      "address": "충청북도 단양군",
+      "cellular": "01000000000",
+      "email": "kildong@gmail.com",
+      "transportation": ["자전거", "전동킥보드", "자가용"],
+      "win": true
     }
   ]
 }

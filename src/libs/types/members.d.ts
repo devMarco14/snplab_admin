@@ -10,3 +10,11 @@ export interface Members {
   transportation: string[];
   win: boolean;
 }
+
+export interface SearchFilter {
+  name: string;
+  gender: string;
+  birthday: string;
+  transportation: string;
+  address: string;
+}

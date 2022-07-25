@@ -1,5 +1,11 @@
 import React from 'react';
+import SearchInput from './SearchInput';
+import SearchSelectBox from './SearchSelectBox';
 
 export default function SearchBar() {
-  return <div>SearchBar</div>;
+  return (
+    <div className="flex justify-center">
+      <SearchSelectBox />
+    </div>
+  );
 }

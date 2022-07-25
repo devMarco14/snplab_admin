@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchInput from './components/SearchInput';
+import SearchBar from './components/SearchBar';
 
 export default function Admin() {
   return (
@@ -14,8 +14,8 @@ export default function Admin() {
       </h1>
       <section>
         {/* <label htmlFor="search">검색</label> */}
-        <div className="flex justify-between">
-          <SearchInput />
+        <div className="flex justify-center">
+          <SearchBar />
 
           {/* <input
               id="search"
