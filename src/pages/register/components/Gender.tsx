@@ -46,7 +46,7 @@ function Gender({ genderChange, setGenderChange }: GenderProps) {
               className={`flex justify-center w-5 h-5 rounded-full mr-2 border border-solid border-gray-300 
      items-center ${
        genderChange === '남자'
-         ? 'bg-gray-400 text-zinc-50'
+         ? 'bg-gray-600 text-zinc-50'
          : 'bg-zinc-50 text-gray-400'
      }`}
             >

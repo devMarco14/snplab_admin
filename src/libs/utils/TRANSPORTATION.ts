@@ -1,4 +1,4 @@
-export const TRANSPORATION = [
+export const TRANSPORTATION = [
   { id: 1, item: '버스' },
   { id: 2, item: '지하철' },
   { id: 3, item: '택시' },

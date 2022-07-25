@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Gender from './components/Gender';
 import Terms from './components/Terms';
 import TextInput from './components/common/TextInput';
@@ -26,7 +26,7 @@ function RegisterPage() {
   const emailRef = React.useRef<any>(null);
 
   const [genderChange, setGenderChange] = React.useState<string | null>(null);
-
+  const [tranportation, setTranportation] = React.useState<string[]>([]);
   const [checkName, setCheckName] = React.useState<boolean | null>(null);
   const [checkBirthday, setCheckBirthday] = React.useState<boolean | null>(
     null,
@@ -53,7 +53,7 @@ function RegisterPage() {
     setCheckEmail(emailValidation(value));
   };
 
-  console.log(genderChange);
+  console.log(tranportation);
   return (
     <section className="w-full flex justify-center">
       <article className="max-w-xs px-4 text-blackFont">
@@ -124,20 +124,24 @@ function RegisterPage() {
           }}
           onChange={(event) => onEmailChange(event)}
         />
-        <Transporation />
+        <Transporation
+          tranportation={tranportation}
+          setTranportation={setTranportation}
+        />
         <Terms />
         <div
           className={`flex justify-center w-full h-9 mb-4 rounded-xl 
         ${
           checkName &&
           genderChange !== null &&
+          tranportation.length !== 0 &&
           checkBirthday &&
           checkAddress &&
           checkCellular &&
           checkEmail
-            ? 'bg-gray-800'
-            : 'bg-gray-100'
-        } ${checkName ? 'text-gray-400' : 'text-black'} items-center`}
+            ? 'bg-gray-600 text-white'
+            : 'bg-gray-100 text-gray-400'
+        }  items-center`}
         >
           지원하기
         </div>
