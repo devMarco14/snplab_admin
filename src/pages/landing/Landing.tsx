@@ -1,5 +1,5 @@
 import Modal from 'components/modal/Modal';
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Path from 'routes/Path';
 import AdminAuthContext from 'context/AdminAuth';
@@ -10,8 +10,8 @@ const button =
   'mb-4 rounded-lg border-solid border-2 p-4 bg-buttonActive text-slate-50 hover:bg-neutral-500 ease-in duration-300 ';
 
 export default function Landing() {
-  const [isLoginFormVisible, setLoginFormVisible] = useState(false);
-  const { isLoggedin, onLogout } = useContext(AdminAuthContext);
+  const [isLoginFormVisible, setLoginFormVisible] = React.useState(false);
+  const { isLoggedin, onLogout } = React.useContext(AdminAuthContext);
 
   const handleModalVisible = (event: React.MouseEvent) => {
     const target = event.target as HTMLElement;

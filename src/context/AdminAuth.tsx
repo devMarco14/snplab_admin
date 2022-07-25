@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import useAdminData from 'pages/landing/hooks/useAdminData';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ImportChildren } from 'types/interfaces';
 import Path from 'routes/Path';
@@ -27,7 +27,7 @@ export function AdminAuthProvider({ children }: ImportChildren) {
     isAdminLoggedin === 'true' && setLogin(true);
   }, []);
 
-  const onLogin = useCallback(
+  const onLogin = React.useCallback(
     (email: string, password: string) => {
       const isVerified = adminData.some(
         (admin: { email: string; password: string }) =>
@@ -46,7 +46,7 @@ export function AdminAuthProvider({ children }: ImportChildren) {
     [adminData, isLoggedin, navigate],
   );
 
-  const onLogout = useCallback(() => {
+  const onLogout = React.useCallback(() => {
     const isLogoutConfirmed = window.confirm('로그아웃 하시겠습니까?');
 
     if (!isLogoutConfirmed) return;

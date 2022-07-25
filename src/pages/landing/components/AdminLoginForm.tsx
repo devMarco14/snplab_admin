@@ -1,5 +1,5 @@
 import AdminAuthContext from 'context/AdminAuth';
-import React, { useContext, useRef } from 'react';
+import React from 'react';
 import { FiX as CancelIcon, FiUserCheck as UserIcon } from 'react-icons/fi';
 
 interface AdminLoginFormPropsType {
@@ -11,9 +11,9 @@ const button =
   'rounded-lg border-solid border-2 p-4 bg-blue-500 text-slate-50 hover:bg-blue-400 ease-in duration-300 ';
 
 function AdminLoginForm({ onCancelClick }: AdminLoginFormPropsType) {
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
-  const { onLogin } = useContext(AdminAuthContext);
+  const emailRef = React.useRef<HTMLInputElement>(null);
+  const passwordRef = React.useRef<HTMLInputElement>(null);
+  const { onLogin } = React.useContext(AdminAuthContext);
 
   const handleLogin = (event: React.FormEvent) => {
     event.preventDefault();
