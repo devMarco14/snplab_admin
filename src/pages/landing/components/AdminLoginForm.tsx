@@ -1,8 +1,8 @@
-import React, { useRef } from 'react';
+import AdminAuthContext from 'context/AdminAuth';
+import React, { useContext, useRef } from 'react';
 import { FiX as CancelIcon, FiUserCheck as UserIcon } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import Path from 'routes/Path';
-import useAdminData from '../hooks/useAdminData';
 
 interface AdminLoginFormPropsType {
   onCancelClick: (event: React.MouseEvent) => void;
@@ -15,25 +15,22 @@ const button =
 function AdminLoginForm({ onCancelClick }: AdminLoginFormPropsType) {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const { data: adminData } = useAdminData();
+  const { isLoggedin, onLogin } = useContext(AdminAuthContext);
   const navigate = useNavigate();
 
   const handleLogin = (event: React.FormEvent) => {
     event.preventDefault();
     if (!emailRef?.current?.value || !passwordRef?.current?.value) return;
 
-    const isAdmin = adminData.some(
-      (admin: { email: string; password: string }) =>
-        admin.email === emailRef?.current?.value &&
-        admin.password === passwordRef?.current?.value,
-    );
-
-    isAdmin && navigate(Path.Admin, { replace: true });
-    !isAdmin && alert('login fail!');
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+    onLogin(email, password);
 
     emailRef.current.value = '';
     passwordRef.current.value = '';
   };
+
+  isLoggedin && navigate(Path.Admin, { replace: true });
 
   return (
     <form
