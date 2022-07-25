@@ -1,4 +1,5 @@
 import React from 'react';
+import SearchInput from './components/SearchInput';
 
 export default function Admin() {
   return (
@@ -14,11 +15,13 @@ export default function Admin() {
       <section>
         {/* <label htmlFor="search">검색</label> */}
         <div className="flex justify-between">
-          <input
-            id="search"
-            type="text"
-            className="w-1/3 h-7 border border-solid border-black rounded-md ml-20"
-          />
+          <SearchInput />
+
+          {/* <input
+              id="search"
+              type="text"
+              className="w-1/3 h-7 border border-solid border-black rounded-md ml-20"
+            /> */}
           <button type="button" className="w-32 h-10 bg-gray-300 rounded-md">
             엑셀 다운로드
           </button>

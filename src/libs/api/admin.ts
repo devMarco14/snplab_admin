@@ -16,3 +16,8 @@ export const postRoundAPI = async (body: Round) => {
   const response = await request.post(`/round`, body);
   return response.data;
 };
+
+export const getWorkerInfo = async (key: string, value: string) => {
+  const response = await request.get(`/members?${key}=${value}`);
+  return response.data;
+};
