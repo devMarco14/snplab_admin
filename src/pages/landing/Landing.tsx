@@ -1,7 +1,8 @@
 import Modal from 'components/modal/Modal';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Path from 'routes/Path';
+import AdminAuthContext from 'context/AdminAuth';
 import Logo from './components/Logo';
 import AdminLoginForm from './components/AdminLoginForm';
 
@@ -10,6 +11,7 @@ const button =
 
 export default function Landing() {
   const [isModalVisible, setModalVisible] = useState(false);
+  const { isLoggedin, onLogout } = useContext(AdminAuthContext);
 
   const handleModalVisible = (event: React.MouseEvent) => {
     const target = event.target as HTMLElement;
@@ -31,14 +33,21 @@ export default function Landing() {
         <Link className={button} to={Path.Register}>
           지원하기
         </Link>
-        <button
-          className={button}
-          type="submit"
-          id="login-button"
-          onClick={handleModalVisible}
-        >
-          관리자 로그인
-        </button>
+        {!isLoggedin && (
+          <button
+            className={button}
+            type="submit"
+            id="login-button"
+            onClick={handleModalVisible}
+          >
+            관리자 로그인
+          </button>
+        )}
+        {isLoggedin && (
+          <button className={button} type="submit" onClick={onLogout}>
+            관리자 로그아웃
+          </button>
+        )}
       </strong>
       {isModalVisible && (
         <Modal onClick={handleModalVisible}>
