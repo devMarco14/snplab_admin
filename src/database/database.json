@@ -65,13 +65,7 @@
     },
     {
       "regionName": "대전광역시",
-      "subRegions": [
-        "대덕구",
-        "동구",
-        "서구",
-        "유성구",
-        "중구"
-      ]
+      "subRegions": ["대덕구", "동구", "서구", "유성구", "중구"]
     },
     {
       "regionName": "대구광역시",
@@ -88,36 +82,19 @@
     },
     {
       "regionName": "울산광역시",
-      "subRegions": [
-        "남구",
-        "동구",
-        "북구",
-        "중구",
-        "울주군"
-      ]
+      "subRegions": ["남구", "동구", "북구", "중구", "울주군"]
     },
     {
       "regionName": "광주광역시",
-      "subRegions": [
-        "광산구",
-        "남구",
-        "동구",
-        "북구",
-        "서구"
-      ]
+      "subRegions": ["광산구", "남구", "동구", "북구", "서구"]
     },
     {
       "regionName": "제주특별자치도",
-      "subRegions": [
-        "서귀포시",
-        "제주시"
-      ]
+      "subRegions": ["서귀포시", "제주시"]
     },
     {
       "regionName": "세종특별자치시",
-      "subRegions": [
-        "세종특별자치시"
-      ]
+      "subRegions": ["세종특별자치시"]
     },
     {
       "regionName": "경기도",
@@ -326,6 +303,27 @@
     {
       "id": 1,
       "round": "1차",
+      "name": "홍길동",
+      "gender": "남성",
+      "birthday": "1993.01.01",
+      "address": "서울특별시 강남구",
+      "cellular": "01000000000",
+      "email": "kildong@gmail.com",
+      "transportation": [
+        "버스",
+        "지하철",
+        "택시",
+        "KTX/기차",
+        "도보",
+        "자전거",
+        "전동킥보드",
+        "자가용"
+      ],
+      "win": true
+    },
+    {
+      "id": 2,
+      "round": "2차",
       "name": "홍길동",
       "gender": "남성",
       "birthday": "1993.01.01",
