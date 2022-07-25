@@ -47,7 +47,7 @@ export default function RegionList({
       return (
         <li
           key={`${region[0]}_${index}`}
-          className="flex-center h-[24%] small:h-[25%] font-bold transition-all duration-300"
+          className="flex-center h-[24%] small:h-[25%] font-bold transition-all duration-100 ease-linear"
           style={{
             transform: `translateY(${dynamicYCoordinate}%)`,
           }}
@@ -93,7 +93,7 @@ export default function RegionList({
   /* ############### 기능 개발중 ############### */
   const isMouseDown = React.useRef<boolean>(false);
   const startCoord = React.useRef<number>(0);
-  const movementDistance = React.useRef<number>(0);
+  const listCoord = React.useRef<number>(0);
 
   function handleMouseDown(event: React.MouseEvent | React.TouchEvent) {
     checkMouseDown(event);
@@ -133,15 +133,21 @@ export default function RegionList({
     } else {
       targetMovement = (event as React.TouchEvent).touches[0].clientY;
     }
-    const container = ulElement.current as HTMLElement;
-    const firstElement = Array.from(container.children)[0] as HTMLElement;
-    const elementHeight = firstElement.offsetHeight;
-    const movedDistanceWithDirection = startCoord.current - targetMovement;
-    const movementToIndex =
-      movedDistanceWithDirection > 0
-        ? Math.floor(movedDistanceWithDirection / elementHeight)
-        : Math.ceil(movedDistanceWithDirection / elementHeight);
-    movementDistance.current = movementToIndex;
+    const regionList = list as string[];
+    const maximumLength = -100 * (regionList.length - 2);
+    const movedDistanceWithDirection =
+      listCoord.current + targetMovement - startCoord.current;
+    if (dynamicYCoordinate === 0) {
+      if (movedDistanceWithDirection < 0) {
+        setDynamicYCoordinate(movedDistanceWithDirection);
+      }
+    } else if (dynamicYCoordinate === maximumLength) {
+      if (movedDistanceWithDirection > maximumLength) {
+        setDynamicYCoordinate(movedDistanceWithDirection);
+      }
+    } else {
+      setDynamicYCoordinate(movedDistanceWithDirection);
+    }
   };
 
   function handleMouseUp(event: React.MouseEvent | React.TouchEvent) {
@@ -152,35 +158,35 @@ export default function RegionList({
   const selectRegionByMouseMove = (
     event: React.MouseEvent | React.TouchEvent,
   ) => {
+    listCoord.current = dynamicYCoordinate;
     const regionList = list as string[];
-    const sortedRegionList = regionList.sort();
-    const indexToMove = movementDistance.current;
-    const processedDelta = indexToMove * 100;
     const maximumLength = -100 * (regionList.length - 2);
-    const movedDownwardDistance =
-      dynamicYCoordinate - processedDelta < maximumLength
-        ? maximumLength - (dynamicYCoordinate - processedDelta) - 100
-        : processedDelta;
-    const movedUpwardDistance =
-      dynamicYCoordinate - processedDelta > 0
-        ? processedDelta - dynamicYCoordinate + 100
-        : processedDelta;
-    const directionByProcessedDelta =
-      processedDelta > 0 ? movedDownwardDistance : movedUpwardDistance;
-    const absoluteIndex =
-      Math.abs(dynamicYCoordinate - directionByProcessedDelta) / 100 + 1;
-    switch (true) {
-      case processedDelta > 0 && dynamicYCoordinate > maximumLength:
-        setDynamicYCoordinate((prev) => prev - movedDownwardDistance);
-        setRegion(sortedRegionList[absoluteIndex]);
-        break;
-      case processedDelta < 0 && dynamicYCoordinate < 0:
-        setDynamicYCoordinate((prev) => prev - movedUpwardDistance);
-        setRegion(sortedRegionList[absoluteIndex]);
-        break;
-      default:
-        setDynamicYCoordinate((previousYCoordinate) => previousYCoordinate);
-        break;
+    if (listCoord.current > 0) {
+      setDynamicYCoordinate(0);
+      setRegion(regionList[1]);
+    } else if (listCoord.current < maximumLength - 100) {
+      setDynamicYCoordinate(maximumLength);
+      setRegion(regionList[regionList.length - 1]);
+    } else if (listCoord.current === 0) {
+      setRegion(regionList[1]);
+    } else if (listCoord.current === maximumLength) {
+      setRegion(regionList[regionList.length - 1]);
+    } else {
+      const rawYCoordinate = dynamicYCoordinate;
+      const processedCoordinate = rawYCoordinate - (rawYCoordinate % 100);
+      const rawRegionIndex = Math.abs(Math.floor(rawYCoordinate / 100));
+      let regionIndex =
+        // eslint-disable-next-line no-nested-ternary
+        rawRegionIndex === 0
+          ? rawRegionIndex + 1
+          : rawRegionIndex === regionList.length - 1
+          ? regionList.length - 1
+          : rawRegionIndex;
+      if (event.type === 'mouseleave') {
+        regionIndex += 1;
+      }
+      setDynamicYCoordinate(processedCoordinate);
+      setRegion(regionList[regionIndex]);
     }
   };
 
@@ -193,9 +199,11 @@ export default function RegionList({
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
       onTouchStart={handleMouseDown}
       onTouchMove={handleMouseMove}
       onTouchEnd={handleMouseUp}
+      onTouchCancel={handleMouseUp}
     >
       <h2 className="flex-center h-1/5 w-full text-base small:text-2xl font-bold">
         {headerCategory}
