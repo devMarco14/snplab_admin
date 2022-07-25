@@ -12,7 +12,7 @@ const useApplicantLoad = (round: string) => {
     },
   );
 
-  return { membersQuery };
+  return membersQuery;
 };
 
 export default useApplicantLoad;
