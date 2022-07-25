@@ -19,6 +19,11 @@ export function AdminAuthProvider({ children }: ImportChildren) {
   const [isLoggedin, setLogin] = React.useState<boolean | null>(null);
   const { data: adminData } = useAdminData();
 
+  React.useEffect(() => {
+    const isAdminLoggedin = localStorage.getItem('isLoggedin');
+    isAdminLoggedin === 'true' && setLogin(true);
+  }, []);
+
   const onLogin = useCallback(
     (email: string, password: string) => {
       const isAuthorized = adminData.some(
@@ -28,11 +33,15 @@ export function AdminAuthProvider({ children }: ImportChildren) {
 
       isLoggedin !== isAuthorized && setLogin(isAuthorized);
       !isAuthorized && alert('이메일, 비밀번호가 일치하지 않습니다');
+      localStorage.setItem('isLoggedin', isAuthorized);
     },
     [adminData, isLoggedin],
   );
 
-  const onLogout = () => setLogin(false);
+  const onLogout = () => {
+    setLogin(false);
+    localStorage.setItem('isLoggedin', 'false');
+  };
 
   const contextValue = React.useMemo(() => {
     return {
