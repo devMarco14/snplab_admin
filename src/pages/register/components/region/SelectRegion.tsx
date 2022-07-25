@@ -13,7 +13,7 @@ export default function SelectRegion({
   contents,
   closeModal,
 }: SelectRegionProps) {
-  const [currentRegion, setCurrentRegion] = React.useState<string>('');
+  const [currentRegion, setCurrentRegion] = React.useState<string>('기본값');
   const [currentCity, setCurrentCity] = React.useState<string>('');
   const { regionList } = useRegionLists();
   const { subRegionList } = useSubRegionLists(currentRegion);
@@ -30,10 +30,12 @@ export default function SelectRegion({
 
   React.useEffect(() => {
     if (subRegionList) {
-      subRegionLists.current = originalState.concat(
-        subRegionList.data[0].subRegions.sort(),
-      );
-      setCurrentCity(subRegionLists.current[1]);
+      if (subRegionList.data.length !== 0) {
+        subRegionLists.current = originalState.concat(
+          subRegionList.data[0].subRegions.sort(),
+        );
+        setCurrentCity(subRegionLists.current[1]);
+      }
     }
   }, [subRegionList, currentRegion, originalState]);
 
