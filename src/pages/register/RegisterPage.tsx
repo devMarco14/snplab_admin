@@ -25,6 +25,8 @@ function RegisterPage() {
   const cellularRef = React.useRef<any>(null);
   const emailRef = React.useRef<any>(null);
 
+  const [genderChange, setGenderChange] = React.useState<string | null>(null);
+
   const [checkName, setCheckName] = React.useState<boolean | null>(null);
   const [checkBirthday, setCheckBirthday] = React.useState<boolean | null>(
     null,
@@ -51,6 +53,7 @@ function RegisterPage() {
     setCheckEmail(emailValidation(value));
   };
 
+  console.log(genderChange);
   return (
     <section className="w-full flex justify-center">
       <article className="max-w-xs px-4 text-blackFont">
@@ -72,7 +75,7 @@ function RegisterPage() {
           }}
           onChange={(event) => onNameChange(event)}
         />
-        <Gender />
+        <Gender genderChange={genderChange} setGenderChange={setGenderChange} />
         <TextInput
           type="number"
           placeHolder="YYYY.MM.DD"
@@ -127,6 +130,7 @@ function RegisterPage() {
           className={`flex justify-center w-full h-9 mb-4 rounded-xl 
         ${
           checkName &&
+          genderChange !== null &&
           checkBirthday &&
           checkAddress &&
           checkCellular &&
