@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import useAdminData from 'pages/landing/hooks/useAdminData';
 import React, { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ImportChildren } from 'types/interfaces';
+import Path from 'routes/Path';
 
 interface AdminAuthContextType {
   isLoggedin: null | boolean;
@@ -18,6 +20,7 @@ const AdminAuthContext = React.createContext<AdminAuthContextType>({
 export function AdminAuthProvider({ children }: ImportChildren) {
   const [isLoggedin, setLogin] = React.useState<boolean | null>(null);
   const { data: adminData } = useAdminData();
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     const isAdminLoggedin = localStorage.getItem('isLoggedin');
@@ -26,25 +29,31 @@ export function AdminAuthProvider({ children }: ImportChildren) {
 
   const onLogin = useCallback(
     (email: string, password: string) => {
-      const isAuthorized = adminData.some(
+      const isVerified = adminData.some(
         (admin: { email: string; password: string }) =>
           admin.email === email && admin.password === password,
       );
 
-      isLoggedin !== isAuthorized && setLogin(isAuthorized);
-      !isAuthorized && alert('이메일, 비밀번호가 일치하지 않습니다');
-      localStorage.setItem('isLoggedin', isAuthorized);
+      if (!isVerified) {
+        alert('이메일, 비밀번호가 일치하지 않습니다');
+        return;
+      }
+
+      !isLoggedin && setLogin(true);
+      localStorage.setItem('isLoggedin', 'true');
+      navigate(Path.Admin, { replace: true });
     },
-    [adminData, isLoggedin],
+    [adminData, isLoggedin, navigate],
   );
 
-  const onLogout = () => {
+  const onLogout = useCallback(() => {
     const isLogoutConfirmed = window.confirm('로그아웃 하시겠습니까?');
 
     if (!isLogoutConfirmed) return;
-    isLogoutConfirmed && setLogin(false);
-    localStorage.setItem('isLoggedin', 'false');
-  };
+
+    setLogin(false);
+    localStorage.removeItem('isLoggedin');
+  }, []);
 
   const contextValue = React.useMemo(() => {
     return {
@@ -52,7 +61,7 @@ export function AdminAuthProvider({ children }: ImportChildren) {
       onLogin,
       onLogout,
     };
-  }, [isLoggedin, onLogin]);
+  }, [isLoggedin, onLogin, onLogout]);
 
   return (
     <AdminAuthContext.Provider value={contextValue}>

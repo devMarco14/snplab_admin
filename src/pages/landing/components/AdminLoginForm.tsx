@@ -1,8 +1,6 @@
 import AdminAuthContext from 'context/AdminAuth';
 import React, { useContext, useRef } from 'react';
 import { FiX as CancelIcon, FiUserCheck as UserIcon } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
-import Path from 'routes/Path';
 
 interface AdminLoginFormPropsType {
   onCancelClick: (event: React.MouseEvent) => void;
@@ -15,8 +13,7 @@ const button =
 function AdminLoginForm({ onCancelClick }: AdminLoginFormPropsType) {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const { isLoggedin, onLogin } = useContext(AdminAuthContext);
-  const navigate = useNavigate();
+  const { onLogin } = useContext(AdminAuthContext);
 
   const handleLogin = (event: React.FormEvent) => {
     event.preventDefault();
@@ -29,8 +26,6 @@ function AdminLoginForm({ onCancelClick }: AdminLoginFormPropsType) {
     emailRef.current.value = '';
     passwordRef.current.value = '';
   };
-
-  isLoggedin && navigate(Path.Admin, { replace: true });
 
   return (
     <form
