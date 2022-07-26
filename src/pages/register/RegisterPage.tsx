@@ -1,4 +1,6 @@
 import React from 'react';
+import { StringIndexedObjects } from 'types/interfaces';
+import Modal from 'components/modal/Modal';
 import Gender from './components/Gender';
 import Terms from './components/Terms';
 import TextInput from './components/common/TextInput';
@@ -11,19 +13,25 @@ import {
   emailValidation,
 } from './utils/Validator';
 import useInput from './hooks/useInput';
+import SelectRegion from './components/region/SelectRegion';
+import TermsDetail from './components/terms/TermsDetail';
 
 function RegisterPage() {
   const [name, onNameChange] = useInput('');
   const [birthday, onBirthdayChange] = useInput('');
-  const [address, onAddressChange] = useInput('');
+  /* ############### 수정 내용: 사용 함수 추가 및 수정 ############### */
+  const [address, , , setValueByModal] = useInput('');
+  /* ############################################# */
   const [cellular, , onMobileChange] = useInput('');
   const [email, onEmailChange] = useInput('');
 
-  const nameRef = React.useRef<any>(null);
-  const birthdayRef = React.useRef<any>(null);
-  const addressRef = React.useRef<any>(null);
-  const cellularRef = React.useRef<any>(null);
-  const emailRef = React.useRef<any>(null);
+  /* ############### 수정 내용: ref 타입 정의 ############### */
+  const nameRef = React.useRef<HTMLInputElement | null>(null);
+  const birthdayRef = React.useRef<HTMLInputElement | null>(null);
+  const addressRef = React.useRef<HTMLInputElement | null>(null);
+  const cellularRef = React.useRef<HTMLInputElement | null>(null);
+  const emailRef = React.useRef<HTMLInputElement | null>(null);
+  /* ############################################# */
 
   const [genderChange, setGenderChange] = React.useState<string | null>(null);
   const [tranportation, setTranportation] = React.useState<string[]>([]);
@@ -36,6 +44,21 @@ function RegisterPage() {
     null,
   );
   const [checkEmail, setCheckEmail] = React.useState<boolean | null>(null);
+  /* ############### 수정 내용: state 추가 ############### */
+  const [termsContents, setTermsContents] = React.useState('');
+  const [areTermsChecked, setTermsChecked] = React.useState<
+    StringIndexedObjects<boolean>
+  >({
+    gathering: false,
+    thirdparty: false,
+  });
+  const [modalStates, setModalStates] = React.useState<
+    StringIndexedObjects<boolean>
+  >({
+    region: false,
+    terms: false,
+  });
+  /* ############################################# */
 
   const handleName = (value: string) => {
     setCheckName(nameValidation(value));
@@ -52,6 +75,78 @@ function RegisterPage() {
   const handleEmail = (value: string) => {
     setCheckEmail(emailValidation(value));
   };
+  /* ############### 수정 내용: 함수 추가 ############### */
+  const setTerms = (value: string) => {
+    setTermsContents(value);
+  };
+
+  const onOpenModal = React.useCallback(openModal, [modalStates]);
+
+  function openModal(
+    event: React.MouseEvent | React.FocusEvent,
+    target: string,
+  ) {
+    setModalStates({
+      ...modalStates,
+      [target]: !modalStates[target],
+    });
+  }
+
+  const onCloseModal = React.useCallback(closeModal, [modalStates]);
+
+  function closeModal(event: React.MouseEvent, selectedRegion?: string) {
+    if ((event.target as HTMLElement).id) {
+      const modalKeys = Object.keys(modalStates);
+      const modalOpenValues = Object.values(modalStates);
+      const currentOpenedModals = modalOpenValues
+        .map((state: boolean, index: number) => {
+          let result = '';
+          if (state) {
+            result = modalKeys[index];
+          }
+          return result;
+        })
+        .filter((result: string) => result !== '');
+      currentOpenedModals.forEach((openedModal: string) => {
+        setModalStates({
+          ...modalStates,
+          [openedModal]: !modalStates[openedModal],
+        });
+      });
+      if (selectedRegion) {
+        setValueByModal(selectedRegion);
+        handleAddress(selectedRegion);
+      }
+    }
+  }
+
+  const handleCheck = React.useCallback(
+    (event: React.MouseEvent, state: StringIndexedObjects<boolean>) =>
+      onClickHandleCheck(event, state),
+    [],
+  );
+
+  function onClickHandleCheck(
+    event: React.MouseEvent,
+    state: StringIndexedObjects<boolean>,
+  ) {
+    const currentTargetId = event.currentTarget.id.split('-')[0];
+    if (currentTargetId) {
+      setTermsChecked({
+        ...state,
+        [currentTargetId]: !state[currentTargetId],
+      });
+    } else {
+      setTermsChecked({
+        ...state,
+      });
+    }
+  }
+  /* ############################################# */
+
+  const allTermsChecked = Object.values(areTermsChecked).filter(
+    (status: boolean) => status,
+  ).length;
 
   console.log(cellular);
   return (
@@ -71,7 +166,7 @@ function RegisterPage() {
           text="이름"
           ref={nameRef}
           onKeyUp={() => {
-            handleName(nameRef.current.value);
+            handleName((nameRef.current as HTMLInputElement).value);
           }}
           onChange={(event) => onNameChange(event)}
         />
@@ -84,7 +179,7 @@ function RegisterPage() {
           text="생년월일"
           ref={birthdayRef}
           onKeyUp={() => {
-            handleBirthday(birthdayRef.current.value);
+            handleBirthday((birthdayRef.current as HTMLInputElement).value);
           }}
           onChange={(event) => onBirthdayChange(event)}
         />
@@ -95,10 +190,12 @@ function RegisterPage() {
           valid={checkAddress || address === ''}
           text="거주지역"
           ref={addressRef}
-          onKeyUp={() => {
-            handleAddress(addressRef.current.value);
-          }}
-          onChange={(event) => onAddressChange(event)}
+          // onKeyUp={() => {
+          //   handleAddress((addressRef.current as HTMLInputElement).value);
+          // }}
+          onFocus={(event: React.FocusEvent) => openModal(event, 'region')}
+          onChange={() => undefined}
+          readOnly
         />
         <TextInput
           type="text"
@@ -108,7 +205,7 @@ function RegisterPage() {
           text="연락처"
           ref={cellularRef}
           onKeyUp={() => {
-            handleCellular(cellularRef.current.value);
+            handleCellular((cellularRef.current as HTMLInputElement).value);
           }}
           onChange={(event) => onMobileChange(event)}
         />
@@ -120,7 +217,7 @@ function RegisterPage() {
           text="이메일"
           ref={emailRef}
           onKeyUp={() => {
-            handleEmail(emailRef.current.value);
+            handleEmail((emailRef.current as HTMLInputElement).value);
           }}
           onChange={(event) => onEmailChange(event)}
         />
@@ -128,7 +225,15 @@ function RegisterPage() {
           tranportation={tranportation}
           setTranportation={setTranportation}
         />
-        <Terms />
+        <Terms
+          openModal={onOpenModal}
+          closeModal={onCloseModal}
+          modalStates={modalStates}
+          setTerms={setTerms}
+          checkedTerms={allTermsChecked}
+          allTerms={areTermsChecked}
+          changeCheck={handleCheck}
+        />
         <div
           className={`flex justify-center w-full h-9 mb-4 rounded-xl 
         ${
@@ -138,7 +243,8 @@ function RegisterPage() {
           checkBirthday &&
           checkAddress &&
           checkCellular &&
-          checkEmail
+          checkEmail &&
+          allTermsChecked === 2
             ? 'bg-gray-600 text-zinc-50'
             : 'bg-gray-100 text-gray-400'
         }  items-center`}
@@ -147,6 +253,16 @@ function RegisterPage() {
           지원하기
         </div>
       </article>
+      {modalStates.terms && (
+        <Modal onClick={onCloseModal}>
+          <TermsDetail contents={termsContents} closeModal={onCloseModal} />
+        </Modal>
+      )}
+      {modalStates.region && (
+        <Modal>
+          <SelectRegion closeModal={onCloseModal} />
+        </Modal>
+      )}
     </section>
   );
 }

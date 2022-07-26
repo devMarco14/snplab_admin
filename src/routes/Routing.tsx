@@ -2,7 +2,6 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Path from 'routes/Path';
 import Admin from 'pages/admin/Admin';
-import Register from 'pages/register/Register';
 import Landing from 'pages/landing/Landing';
 import NotFound from 'pages/NotFound';
 import RegisterPage from 'pages/register/RegisterPage';

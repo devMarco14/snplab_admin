@@ -5,15 +5,11 @@ import useSubRegionLists from 'pages/register/hooks/useSubRegionLists';
 import RegionList from './RegionList';
 
 interface SelectRegionProps {
-  contents: string;
   closeModal: (event: React.MouseEvent, selectedRegion?: string) => void;
 }
 
-export default function SelectRegion({
-  contents,
-  closeModal,
-}: SelectRegionProps) {
-  const [currentRegion, setCurrentRegion] = React.useState<string>('기본값');
+export default function SelectRegion({ closeModal }: SelectRegionProps) {
+  const [currentRegion, setCurrentRegion] = React.useState<string>('');
   const [currentCity, setCurrentCity] = React.useState<string>('');
   const { regionList } = useRegionLists();
   const { subRegionList } = useSubRegionLists(currentRegion);

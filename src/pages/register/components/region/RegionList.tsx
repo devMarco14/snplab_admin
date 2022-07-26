@@ -28,7 +28,7 @@ export default function RegionList({
   const headerCategory = category === 'main' ? '시/도' : '시/군/구';
 
   React.useEffect(() => {
-    if (ulElement.current) {
+    if (ulElement.current && current) {
       const lis = Array.from(ulElement.current.children);
       const processedCurrent =
         category === 'main' ? processRegionName(current as string) : current;

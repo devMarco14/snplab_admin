@@ -3,12 +3,15 @@ import { BsChevronLeft } from 'react-icons/bs';
 import { gathering, thirdparty } from 'pages/register/assets/termsText';
 import TermsBody from './TermsBody';
 
-interface TermsPropsType {
+interface TermsDetailPropsType {
   contents: string;
   closeModal: (event: React.MouseEvent) => void;
 }
 
-export default function Terms({ contents, closeModal }: TermsPropsType) {
+export default function TermsDetail({
+  contents,
+  closeModal,
+}: TermsDetailPropsType) {
   const bodyText = contents === 'gathering' ? gathering : thirdparty;
   const processedString = bodyText
     .split('\n')
