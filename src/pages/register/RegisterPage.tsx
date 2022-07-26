@@ -15,8 +15,7 @@ import {
 import useInput from './hooks/useInput';
 
 function RegisterPage() {
-  const [openModal, changeModal] = useToggle(false);
-
+  const [onModal, changeModal] = useToggle(false);
   const [name, onNameChange] = useInput('');
   const [birthday, onBirthdayChange] = useInput('');
   const [address, onAddressChange] = useInput('');
@@ -116,6 +115,7 @@ function RegisterPage() {
             handleAddress(addressRef?.current?.value);
           }}
           onChange={(event) => onAddressChange(event)}
+          readonly
         />
         <TextInput
           type="text"
@@ -159,7 +159,7 @@ function RegisterPage() {
         >
           지원하기
         </button>
-        {openModal && (
+        {onModal && (
           <Modal>
             <div className="modalChild flex justify-center w-72 h-20 mx-auto border border-solid border-gray-400 rounded-3xl bg-zinc-50 items-center">
               <div className="absolute left-5 top-6 font-bold">
