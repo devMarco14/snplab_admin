@@ -7,6 +7,8 @@ import {
 } from 'react-icons/ai';
 import { Members } from 'libs/types/members';
 import useToggle from 'hooks/useToggle';
+import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+import { TenArr } from 'libs/utils/constants';
 import useRoundHandler from '../hook/useRoundHandler';
 
 interface TabBoxProps {
@@ -71,8 +73,9 @@ export default function TabBox({
           {isPlus ? <ExitIcon /> : <AddIcon />}
         </button>
       </div>
-      <div>
-        <table className="w-full ">
+
+      <div className="flex flex-col justify-between h-full">
+        <table className="w-full">
           <thead>
             <tr className="font-bold">
               <th className="w-1/12 pt-3">Num.</th>
@@ -129,7 +132,32 @@ export default function TabBox({
             )}
           </tbody>
         </table>
+        <div className="flex justify-center w-full content-end pb-12">
+          <div className="flex items-center text-2xl">
+            <button
+              type="button"
+              className="text-gray-600 hover:scale-150 ease-in duration-100"
+            >
+              <BsChevronLeft />
+            </button>
+            {TenArr.map((num) => (
+              <button
+                type="button"
+                key={`page_nation_${num}`}
+                className={pageNation}
+              >
+                {num}
+              </button>
+            ))}
+            <button type="button">
+              <BsChevronRight className="text-gray-600 hover:scale-150 ease-in duration-100" />
+            </button>
+          </div>
+        </div>
       </div>
     </>
   );
 }
+
+const pageNation =
+  'text-lg px-2 mx-0.5 border-solid border-2 rounded-lg bg-zinc-50 bg-zinc-50 text-gray-400 cursor-pointer hover:bg-gray-200 hover:translate-y-[-4px] ease-in duration-100';
