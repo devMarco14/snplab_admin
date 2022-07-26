@@ -115,11 +115,12 @@ export default function TabBox({
                 <td>{cellular.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3')}</td>
                 <td>{email}</td>
                 <td className="flex flex-wrap justify-center truncate gap-1">
-                  {transportation.map((item, index) => (
-                    <div key={item + index}>
-                      {addComma(index)} {item}
-                    </div>
-                  ))}
+                  {transportation &&
+                    transportation.map((item, index) => (
+                      <div key={item + index}>
+                        {addComma(index)} {item}
+                      </div>
+                    ))}
                 </td>
                 <td>{address}</td>
                 <td>

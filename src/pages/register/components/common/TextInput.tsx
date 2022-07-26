@@ -7,6 +7,7 @@ interface InputProps {
   valid?: boolean | null;
   placeHolder?: string;
   text?: string;
+  name?: string;
   maxLength?: number;
   onKeyUp: any;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -26,6 +27,7 @@ const TextInput = React.forwardRef<HTMLInputElement, InputProps>(
           value={props.value}
           maxLength={props.maxLength}
           ref={ref}
+          name={props.name}
           onKeyUp={props.onKeyUp}
           onChange={(event) => props.onChange(event)}
         />

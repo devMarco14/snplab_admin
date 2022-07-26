@@ -2,10 +2,10 @@ import React from 'react';
 
 interface GenderProps {
   genderChange: string | null;
-  setGenderChange: (value: string) => void;
+  onChangeForm: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function Gender({ genderChange, setGenderChange }: GenderProps) {
+function Gender({ genderChange, onChangeForm }: GenderProps) {
   return (
     <div className="my-5">
       <div className="font-bold mb-4">성별</div>
@@ -31,9 +31,9 @@ function Gender({ genderChange, setGenderChange }: GenderProps) {
               type="radio"
               id="genderSelectFemale"
               value="여자"
-              name="genderSelect"
+              name="gender"
               checked={genderChange === '여자'}
-              onChange={(e) => setGenderChange(e.target.value)}
+              onChange={onChangeForm}
             />
           </label>
         </div>
@@ -58,9 +58,9 @@ function Gender({ genderChange, setGenderChange }: GenderProps) {
               type="radio"
               id="genderSelectMale"
               value="남자"
-              name="genderSelect"
+              name="gender"
               checked={genderChange === '남자'}
-              onChange={(e) => setGenderChange(e.target.value)}
+              onChange={onChangeForm}
             />
           </label>
         </div>

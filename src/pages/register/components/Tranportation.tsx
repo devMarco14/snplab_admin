@@ -1,15 +1,15 @@
 import React from 'react';
 import { TRANSPORTATION } from 'libs/utils/TRANSPORTATION';
 
-interface TranportationProps {
-  tranportation: string[];
-  setTranportation: (value: string[]) => void;
+interface transportationProps {
+  transportation: string[];
+  onChangeTransportationForm: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 function Transportation({
-  tranportation,
-  setTranportation,
-}: TranportationProps) {
+  transportation,
+  onChangeTransportationForm,
+}: transportationProps) {
   return (
     <div>
       <div className="mt-4 font-bold">주로 이용하는 교통 수단</div>
@@ -22,7 +22,7 @@ function Transportation({
             <div
               className={`flex h-7 mr-2 mt-1 rounded-3xl border border-solid 
           border-gray-300 px-2 ${
-            tranportation.includes(item)
+            transportation.includes(item)
               ? 'bg-gray-600 text-zinc-50'
               : 'text-gray-400'
           } items-center`}
@@ -34,18 +34,7 @@ function Transportation({
               type="checkbox"
               id={item}
               value={item}
-              onChange={(e) => {
-                if (tranportation.includes(e.target.value)) {
-                  // 있으면 delete
-                  // findIndex로 e.target.value가 몇번째 인덱스인지 찾기
-                  // 그 인덱스값을 transportaion 배열에서 지우기
-                  setTranportation(
-                    tranportation.filter((value) => value !== e.target.value),
-                  );
-                } else {
-                  setTranportation([...tranportation, e.target.value]);
-                }
-              }}
+              onChange={onChangeTransportationForm}
             />
           </label>
         ))}

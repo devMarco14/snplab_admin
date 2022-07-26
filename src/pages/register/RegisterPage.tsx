@@ -1,10 +1,10 @@
 import React from 'react';
 import useToggle from 'hooks/useToggle';
 import Modal from 'components/modal/Modal';
+import { Member } from 'types/interfaces';
 import Gender from './components/Gender';
 import Terms from './components/Terms';
 import TextInput from './components/common/TextInput';
-import Tranportation from './components/Tranportation';
 import {
   addressValidation,
   birthdayValidation,
@@ -13,24 +13,35 @@ import {
   emailValidation,
 } from './utils/Validator';
 import useInput from './hooks/useInput';
+import useRegisterForm from './hooks/useRegisterForm';
+import Transportation from './components/Tranportation';
 
 function RegisterPage() {
   const [openModal, changeModal] = useToggle(false);
 
-  const [name, onNameChange] = useInput('');
-  const [birthday, onBirthdayChange] = useInput('');
-  const [address, onAddressChange] = useInput('');
-  const [cellular, , onMobileChange] = useInput('');
-  const [email, onEmailChange] = useInput('');
+  // const [name, onNameChange] = useInput(''); // 이름
+  // const [birthday, onBirthdayChange] = useInput(''); // 생일
+  // const [address, onAddressChange] = useInput(''); // 주소
+  // const [cellular, , onMobileChange] = useInput(''); // 폰번호
+  // const [email, onEmailChange] = useInput(''); // 이메일
 
-  const nameRef = React.useRef<any>(null);
-  const birthdayRef = React.useRef<any>(null);
-  const addressRef = React.useRef<any>(null);
-  const cellularRef = React.useRef<any>(null);
-  const emailRef = React.useRef<any>(null);
+  const {
+    form,
+    onChangeForm,
+    onChangeTransportationForm,
+    onMobileChange,
+    onSubmitMember,
+  } = useRegisterForm();
 
-  const [genderChange, setGenderChange] = React.useState<string | null>(null);
-  const [tranportation, setTranportation] = React.useState<string[]>([]);
+  const nameRef = React.useRef<HTMLInputElement>(null);
+  const birthdayRef = React.useRef<HTMLInputElement>(null);
+  const addressRef = React.useRef<HTMLInputElement>(null);
+  const cellularRef = React.useRef<HTMLInputElement>(null);
+  const emailRef = React.useRef<HTMLInputElement>(null);
+
+  // const [genderChange, setGenderChange] = React.useState<string | null>(null); // 남녀
+  // const [transportation, settransportation] = React.useState<string[]>([]); // 대중교통
+
   const [checkName, setCheckName] = React.useState<boolean | null>(null);
   const [checkBirthday, setCheckBirthday] = React.useState<boolean | null>(
     null,
@@ -41,26 +52,34 @@ function RegisterPage() {
   );
   const [checkEmail, setCheckEmail] = React.useState<boolean | null>(null);
 
-  const handleName = (value: string) => {
+  const handleName = (value: string | undefined) => {
+    if (value === undefined) return;
     setCheckName(nameValidation(value));
   };
-  const handleBirthday = (value: string) => {
+  const handleBirthday = (value: string | undefined) => {
+    if (value === undefined) return;
     setCheckBirthday(birthdayValidation(value));
   };
-  const handleAddress = (value: string) => {
+  const handleAddress = (value: string | undefined) => {
+    if (value === undefined) return;
     setCheckAddress(addressValidation(value));
   };
-  const handleCellular = (value: string) => {
+  const handleCellular = (value: string | undefined) => {
+    if (value === undefined) return;
     setCheckCellular(cellularValidation(value));
   };
-  const handleEmail = (value: string) => {
+  const handleEmail = (value: string | undefined) => {
+    if (value === undefined) return;
     setCheckEmail(emailValidation(value));
   };
 
+  const { address, birthday, cellular, email, gender, name, transportation } =
+    form;
+
   const disabledCheck =
     checkName &&
-    genderChange !== null &&
-    tranportation.length !== 0 &&
+    gender !== null &&
+    transportation.length !== 0 &&
     checkBirthday &&
     checkAddress &&
     checkCellular &&
@@ -77,68 +96,73 @@ function RegisterPage() {
         </div>
         <TextInput
           type="text"
+          name="name"
           placeHolder="홍길동"
           value={name}
           valid={checkName || name === ''}
           text="이름"
           ref={nameRef}
           onKeyUp={() => {
-            handleName(nameRef.current.value);
+            handleName(nameRef?.current?.value);
           }}
-          onChange={(event) => onNameChange(event)}
+          onChange={onChangeForm}
         />
-        <Gender genderChange={genderChange} setGenderChange={setGenderChange} />
+        <Gender genderChange={gender} onChangeForm={onChangeForm} />
         <TextInput
           type="number"
+          name="birthday"
           placeHolder="YYYYMMDD"
           value={birthday}
           valid={checkBirthday || birthday === ''}
           text="생년월일"
           ref={birthdayRef}
           onKeyUp={() => {
-            handleBirthday(birthdayRef.current.value);
+            handleBirthday(birthdayRef?.current?.value);
           }}
-          onChange={(event) => onBirthdayChange(event)}
+          onChange={onChangeForm}
         />
         <TextInput
           type="text"
+          name="address"
           placeHolder="거주지역 선택"
           value={address}
           valid={checkAddress || address === ''}
           text="거주지역"
           ref={addressRef}
           onKeyUp={() => {
-            handleAddress(addressRef.current.value);
+            handleAddress(addressRef?.current?.value);
           }}
-          onChange={(event) => onAddressChange(event)}
+          onChange={onChangeForm}
         />
         <TextInput
           type="text"
+          name="cellular"
           placeHolder="'-'없이 입력해주세요"
           value={cellular}
           valid={checkCellular || cellular === ''}
           text="연락처"
           ref={cellularRef}
           onKeyUp={() => {
-            handleCellular(cellularRef.current.value);
+            handleCellular(cellularRef?.current?.value);
           }}
-          onChange={(event) => onMobileChange(event)}
+          onChange={onMobileChange}
         />
         <TextInput
           type="text"
+          name="email"
           placeHolder="MYD@snplab.com"
           value={email}
           valid={checkEmail || email === ''}
           text="이메일"
           ref={emailRef}
           onKeyUp={() => {
-            handleEmail(emailRef.current.value);
+            handleEmail(emailRef?.current?.value);
           }}
-          onChange={(event) => onEmailChange(event)}
+          onChange={onChangeForm}
         />
-        <Tranportation
-          tranportation={tranportation}
-          setTranportation={setTranportation}
+        <Transportation
+          transportation={transportation}
+          onChangeTransportationForm={onChangeTransportationForm}
         />
         <Terms />
         <button
@@ -149,7 +173,10 @@ function RegisterPage() {
             : 'bg-gray-100 text-gray-400'
         }  items-center`}
           type="button"
-          onClick={changeModal}
+          onClick={() => {
+            changeModal();
+            onSubmitMember();
+          }}
           disabled={!(disabledCheck === true)}
         >
           지원하기
@@ -163,7 +190,9 @@ function RegisterPage() {
               <button
                 className="absolute right-6 bottom-4 text-red-500"
                 type="button"
-                onClick={changeModal}
+                onClick={() => {
+                  changeModal();
+                }}
               >
                 확인
               </button>
