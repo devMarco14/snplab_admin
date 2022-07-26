@@ -23,14 +23,15 @@ function RegisterPage() {
   const [cellular, , onMobileChange] = useInput('');
   const [email, onEmailChange] = useInput('');
 
-  const nameRef = React.useRef<any>(null);
-  const birthdayRef = React.useRef<any>(null);
-  const addressRef = React.useRef<any>(null);
-  const cellularRef = React.useRef<any>(null);
-  const emailRef = React.useRef<any>(null);
+  const nameRef = React.useRef<HTMLInputElement>(null);
+  const birthdayRef = React.useRef<HTMLInputElement>(null);
+  const addressRef = React.useRef<HTMLInputElement>(null);
+  const cellularRef = React.useRef<HTMLInputElement>(null);
+  const emailRef = React.useRef<HTMLInputElement>(null);
 
   const [genderChange, setGenderChange] = React.useState<string | null>(null);
   const [tranportation, setTranportation] = React.useState<string[]>([]);
+
   const [checkName, setCheckName] = React.useState<boolean | null>(null);
   const [checkBirthday, setCheckBirthday] = React.useState<boolean | null>(
     null,
@@ -41,19 +42,24 @@ function RegisterPage() {
   );
   const [checkEmail, setCheckEmail] = React.useState<boolean | null>(null);
 
-  const handleName = (value: string) => {
+  const handleName = (value: string | undefined) => {
+    if (value === undefined) return;
     setCheckName(nameValidation(value));
   };
-  const handleBirthday = (value: string) => {
+  const handleBirthday = (value: string | undefined) => {
+    if (value === undefined) return;
     setCheckBirthday(birthdayValidation(value));
   };
-  const handleAddress = (value: string) => {
+  const handleAddress = (value: string | undefined) => {
+    if (value === undefined) return;
     setCheckAddress(addressValidation(value));
   };
-  const handleCellular = (value: string) => {
+  const handleCellular = (value: string | undefined) => {
+    if (value === undefined) return;
     setCheckCellular(cellularValidation(value));
   };
-  const handleEmail = (value: string) => {
+  const handleEmail = (value: string | undefined) => {
+    if (value === undefined) return;
     setCheckEmail(emailValidation(value));
   };
 
@@ -83,7 +89,7 @@ function RegisterPage() {
           text="이름"
           ref={nameRef}
           onKeyUp={() => {
-            handleName(nameRef.current.value);
+            handleName(nameRef?.current?.value);
           }}
           onChange={(event) => onNameChange(event)}
         />
@@ -96,7 +102,7 @@ function RegisterPage() {
           text="생년월일"
           ref={birthdayRef}
           onKeyUp={() => {
-            handleBirthday(birthdayRef.current.value);
+            handleBirthday(birthdayRef?.current?.value);
           }}
           onChange={(event) => onBirthdayChange(event)}
         />
@@ -108,7 +114,7 @@ function RegisterPage() {
           text="거주지역"
           ref={addressRef}
           onKeyUp={() => {
-            handleAddress(addressRef.current.value);
+            handleAddress(addressRef?.current?.value);
           }}
           onChange={(event) => onAddressChange(event)}
         />
@@ -120,7 +126,7 @@ function RegisterPage() {
           text="연락처"
           ref={cellularRef}
           onKeyUp={() => {
-            handleCellular(cellularRef.current.value);
+            handleCellular(cellularRef?.current?.value);
           }}
           onChange={(event) => onMobileChange(event)}
         />
@@ -132,7 +138,7 @@ function RegisterPage() {
           text="이메일"
           ref={emailRef}
           onKeyUp={() => {
-            handleEmail(emailRef.current.value);
+            handleEmail(emailRef?.current?.value);
           }}
           onChange={(event) => onEmailChange(event)}
         />
@@ -176,3 +182,17 @@ function RegisterPage() {
 }
 
 export default RegisterPage;
+// http 리퀘스트 포스트 실행 =>
+// 전달인자 주소, 모은 데이터
+// {
+//   id: Math.floor(Math.random())*1000,
+//   round: "2차",
+//   name: name,
+//   gender: genderChange,
+//   birthday: birthday,
+//   address: address,
+//   cellular: cellular,
+//   email: email,
+//   transportation: tranportation,
+//   win: true
+// }
