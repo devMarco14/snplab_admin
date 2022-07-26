@@ -1,6 +1,6 @@
 enum Path {
   LandingPage = '/',
-  Register = '/register',
+  RegisterPage = '/register',
   Admin = '/admin',
 }
 

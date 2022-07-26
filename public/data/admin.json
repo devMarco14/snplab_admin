@@ -1,0 +1,7 @@
+{
+  "admin": [
+    { "email": "admin1@gamil.com", "password": "Admin1!!!" },
+    { "email": "admin2@gamil.com", "password": "Admin2!!!" },
+    { "email": "admin3@gamil.com", "password": "Admin3!!!" }
+  ]
+}

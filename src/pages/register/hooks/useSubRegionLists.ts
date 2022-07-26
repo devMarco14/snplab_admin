@@ -1,26 +1,34 @@
 import React from 'react';
-import { HttpRequest } from 'libs/api/httpRequest';
 import { AxiosResponse } from 'axios';
+import { useQuery } from '@tanstack/react-query';
+import { HttpRequest } from 'libs/api/httpRequest';
+import { debouncer } from '../utils';
 
 const useSubRegionLists = (currentRegion: string) => {
-  const [subRegionList, setSubRegionList] = React.useState<AxiosResponse>();
+  const [lastRegion, setLastRegion] = React.useState<string>(currentRegion);
   const httpRequest = new HttpRequest();
 
   React.useEffect(() => {
-    const getRegionLists = async () => {
-      try {
-        const response = await httpRequest.get(
-          `/region?regionName=${currentRegion}`,
-        );
-        setSubRegionList(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getRegionLists();
+    if (currentRegion !== lastRegion) {
+      debouncedRegionChange(currentRegion);
+    }
   }, [currentRegion]);
 
-  return { subRegionList };
+  const debouncedRegionChange = React.useCallback(
+    debouncer((value: string) => setLastRegion(value), 500),
+    [],
+  );
+
+  const { data } = useQuery<AxiosResponse>(
+    ['subregion', lastRegion],
+    () => httpRequest.get(`/region?regionName=${lastRegion}`),
+    {
+      staleTime: 1000 * 5 * 60,
+      cacheTime: 1000 * 5 * 60,
+    },
+  );
+
+  return { subRegionList: data };
 };
 
 export default useSubRegionLists;
