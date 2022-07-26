@@ -1,21 +1,12 @@
 import React, { MouseEvent, useState } from 'react';
 import { CSVLink } from 'react-csv';
+import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+import { CSV_HEADER, TenArr } from 'libs/utils/constants';
 import TabBox from './components/TabBox';
 import useAdminLoad from './hook/useAdminLoad';
 
 export default function Admin() {
-  const headers = [
-    { label: 'Num.', key: 'id' },
-    { label: '지원 날짜', key: '?' },
-    { label: '지원자명', key: 'name' },
-    { label: '성별', key: 'gender' },
-    { label: '생년월일', key: 'birthday' },
-    { label: '연락처', key: 'cellular' },
-    { label: '이메일', key: 'email' },
-    { label: '이용수단', key: 'transportation' },
-    { label: '거주지', key: 'address' },
-    { label: '당첨여부', key: 'win' },
-  ];
+  const [pageNo, setPageNo] = useState(1);
   const [currentTab, setCurrentTab] = useState('1차');
   const onChangeTab = (e: MouseEvent<HTMLButtonElement>) => {
     setCurrentTab(e.currentTarget.value);
@@ -24,7 +15,7 @@ export default function Admin() {
     data: membersData,
     isError: isMembersError,
     isLoading: isMemberLoading,
-  } = useAdminLoad(currentTab);
+  } = useAdminLoad(currentTab, pageNo);
 
   if (isMembersError) return <div>에러</div>;
   if (isMemberLoading) return <div>로딩중</div>;
@@ -49,7 +40,7 @@ export default function Admin() {
           <CSVLink
             className="w-32 h-10 bg-gray-300 rounded-md"
             data={membersData}
-            headers={headers}
+            headers={CSV_HEADER}
             filename="SNPLab 지원자 리스트"
           >
             <button type="button" className="w-32 h-10 bg-gray-300 rounded-md">
@@ -57,12 +48,39 @@ export default function Admin() {
             </button>
           </CSVLink>
         </div>
-        <section className="w-11/12 h-screen bg-gray-200 ml-20 mt-5 mb-5">
+        <section className="w-11/12 h-screen bg-gray-200 ml-20 mt-5 mb-5 flex flex-col justify-between">
           <TabBox
             onChangeTab={onChangeTab}
             membersData={membersData}
             currentTab={currentTab}
           />
+
+          <div className="flex justify-center w-full content-end pb-12">
+            <div className="flex items-center text-2xl">
+              <button
+                type="button"
+                className="text-gray-600 hover:scale-150 ease-in duration-100"
+              >
+                <BsChevronLeft />
+              </button>
+              {TenArr.map((num) => (
+                <button
+                  type="button"
+                  key={`page_nation_${num}`}
+                  className={`${
+                    pageNo === num && 'text-sky-700'
+                  } text-lg px-2 mx-0.5 border-solid border-2 rounded-lg bg-zinc-50 text-gray-400 cursor-pointer hover:translate-y-[-4px] hover:text-sky-700 ease-in duration-100`}
+                  onClick={() => setPageNo(num)}
+                >
+                  {num}
+                </button>
+              ))}
+
+              <button type="button">
+                <BsChevronRight className="text-gray-600 hover:scale-150 ease-in duration-100" />
+              </button>
+            </div>
+          </div>
         </section>
       </section>
     </div>

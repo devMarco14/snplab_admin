@@ -7,8 +7,6 @@ import {
 } from 'react-icons/ai';
 import { Members } from 'libs/types/members';
 import useToggle from 'hooks/useToggle';
-import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
-import { TenArr } from 'libs/utils/constants';
 import useRoundHandler from '../hook/useRoundHandler';
 
 interface TabBoxProps {
@@ -27,7 +25,7 @@ export default function TabBox({
   if (roundQuery.isError) return <div>에러</div>;
   if (roundQuery.isLoading) return <div>로딩중</div>;
   return (
-    <>
+    <div>
       <div className="flex justify-center h-10 bg-gray-100">
         {roundQuery.data.map((item: Round, roundIndex: number) => (
           <div
@@ -74,90 +72,64 @@ export default function TabBox({
         </button>
       </div>
 
-      <div className="flex flex-col justify-between h-full">
-        <table className="w-full">
-          <thead>
-            <tr className="font-bold">
-              <th className="w-1/12 pt-3">Num.</th>
-              <th className="w-1/12">지원 날짜</th>
-              <th className="w-1/12">지원자명</th>
-              <th className="w-1/12">성별</th>
-              <th className="w-1/12">생년월일</th>
-              <th className="w-1/12">연락처</th>
-              <th className="w-2/12">이메일</th>
-              <th className="w-2/12">이용수단</th>
-              <th className="w-1/12">거주지</th>
-              <th className="w-1/12">당첨여부</th>
-            </tr>
-          </thead>
-          <tbody>
-            {membersData.map(
-              (
-                {
-                  address,
-                  birthday,
-                  cellular,
-                  email,
-                  gender,
-                  id,
-                  name,
-                  transportation,
-                  win,
-                },
-                memberIndex,
-              ) => (
-                <tr className="text-center mt-4" key={id + memberIndex}>
-                  <td className="pt-2">{id}</td>
-                  <td>2022.01.01</td>
-                  <td>{name}</td>
-                  <td>{gender}</td>
-                  <td>{birthday}</td>
-                  <td>
-                    {cellular.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3')}
-                  </td>
-                  <td>{email}</td>
-                  <td className="flex flex-wrap justify-center truncate gap-1">
-                    {transportation.map((item, index) => (
-                      <div key={item + index}>
-                        {addComma(index)} {item}
-                      </div>
-                    ))}
-                  </td>
-                  <td>{address}</td>
-                  <td>
-                    <input type="checkbox" />
-                  </td>
-                </tr>
-              ),
-            )}
-          </tbody>
-        </table>
-        <div className="flex justify-center w-full content-end pb-12">
-          <div className="flex items-center text-2xl">
-            <button
-              type="button"
-              className="text-gray-600 hover:scale-150 ease-in duration-100"
-            >
-              <BsChevronLeft />
-            </button>
-            {TenArr.map((num) => (
-              <button
-                type="button"
-                key={`page_nation_${num}`}
-                className={pageNation}
+      <table className="w-full mt-3">
+        <thead>
+          <tr className="h-14 ">
+            <th className="w-1/12">Num.</th>
+            <th className="w-1/12">지원 날짜</th>
+            <th className="w-1/12">지원자명</th>
+            <th className="w-1/12">성별</th>
+            <th className="w-1/12">생년월일</th>
+            <th className="w-1/12">연락처</th>
+            <th className="w-2/12">이메일</th>
+            <th className="w-2/12">이용수단</th>
+            <th className="w-1/12">거주지</th>
+            <th className="w-1/12">당첨여부</th>
+          </tr>
+        </thead>
+        <tbody>
+          {membersData.map(
+            (
+              {
+                address,
+                birthday,
+                cellular,
+                email,
+                gender,
+                id,
+                name,
+                transportation,
+                win,
+              },
+              memberIndex,
+            ) => (
+              <tr
+                className="text-center align-middle mt-4 h-14"
+                key={id + memberIndex}
               >
-                {num}
-              </button>
-            ))}
-            <button type="button">
-              <BsChevronRight className="text-gray-600 hover:scale-150 ease-in duration-100" />
-            </button>
-          </div>
-        </div>
-      </div>
-    </>
+                <td>{id}</td>
+                <td>2022.01.01</td>
+                <td>{name}</td>
+                <td>{gender}</td>
+                <td>{birthday}</td>
+                <td>{cellular.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3')}</td>
+                <td>{email}</td>
+                <td className="flex flex-wrap justify-center truncate gap-1">
+                  {transportation.map((item, index) => (
+                    <div key={item + index}>
+                      {addComma(index)} {item}
+                    </div>
+                  ))}
+                </td>
+                <td>{address}</td>
+                <td>
+                  <input type="checkbox" />
+                </td>
+              </tr>
+            ),
+          )}
+        </tbody>
+      </table>
+    </div>
   );
 }
-
-const pageNation =
-  'text-lg px-2 mx-0.5 border-solid border-2 rounded-lg bg-zinc-50 bg-zinc-50 text-gray-400 cursor-pointer hover:bg-gray-200 hover:translate-y-[-4px] ease-in duration-100';
