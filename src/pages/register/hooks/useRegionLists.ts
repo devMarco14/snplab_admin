@@ -1,24 +1,21 @@
 import React from 'react';
-import { HttpRequest } from 'libs/api/httpRequest';
 import { AxiosResponse } from 'axios';
+import { useQuery } from '@tanstack/react-query';
+import { HttpRequest } from 'libs/api/httpRequest';
 
 const useRegionLists = () => {
-  const [regionList, setRegionList] = React.useState<AxiosResponse>();
   const httpRequest = new HttpRequest();
 
-  React.useEffect(() => {
-    const getRegionLists = async () => {
-      try {
-        const response = await httpRequest.get('/regionList');
-        setRegionList(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getRegionLists();
-  }, []);
+  const { data } = useQuery<AxiosResponse>(
+    ['region'],
+    () => httpRequest.get('/regionList'),
+    {
+      staleTime: 1000 * 5 * 60,
+      cacheTime: 1000 * 5 * 60,
+    },
+  );
 
-  return { regionList };
+  return { regionList: data };
 };
 
 export default useRegionLists;

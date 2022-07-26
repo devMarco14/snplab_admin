@@ -6,18 +6,18 @@ import RegionList from './RegionList';
 
 interface SelectRegionProps {
   contents: string;
-  closeModal: (event: React.MouseEvent) => void;
+  closeModal: (event: React.MouseEvent, selectedRegion?: string) => void;
 }
 
 export default function SelectRegion({
   contents,
   closeModal,
 }: SelectRegionProps) {
-  const [currentRegion, setCurrentRegion] = React.useState<string>('경기도');
-  const [currentCity, setCurrentCity] = React.useState<string>('고양시');
+  const [currentRegion, setCurrentRegion] = React.useState<string>('기본값');
+  const [currentCity, setCurrentCity] = React.useState<string>('');
   const { regionList } = useRegionLists();
   const { subRegionList } = useSubRegionLists(currentRegion);
-  const originalState = [''];
+  const originalState = React.useMemo(() => [''], []);
   const regionLists = React.useRef<string[]>(originalState);
   const subRegionLists = React.useRef<string[]>(originalState);
 
@@ -26,16 +26,30 @@ export default function SelectRegion({
       regionLists.current = originalState.concat(regionList.data.sort());
       setCurrentRegion(regionLists.current[1]);
     }
-  }, [regionList]);
+  }, [regionList, originalState]);
 
   React.useEffect(() => {
     if (subRegionList) {
-      subRegionLists.current = originalState.concat(
-        subRegionList.data[0].subRegions.sort(),
-      );
-      setCurrentCity(subRegionLists.current[1]);
+      if (subRegionList.data.length !== 0) {
+        subRegionLists.current = originalState.concat(
+          subRegionList.data[0].subRegions.sort(),
+        );
+        setCurrentCity(subRegionLists.current[1]);
+      }
     }
-  }, [subRegionList, currentRegion]);
+  }, [subRegionList, currentRegion, originalState]);
+
+  const changeRegion = (value: string) => {
+    setCurrentRegion(value);
+  };
+
+  const changeCity = (value: string) => {
+    setCurrentCity(value);
+  };
+
+  function selectRegion(event: React.MouseEvent) {
+    closeModal(event, `${currentRegion} ${currentCity}`);
+  }
 
   return (
     <article className="absolute bottom-0 flex flex-col w-full h-3/5 bg-white small:w-[550px] small:h-[80%] small:modalChild">
@@ -61,18 +75,20 @@ export default function SelectRegion({
           category="main"
           list={regionLists.current}
           current={currentRegion}
+          setRegion={changeRegion}
         />
         <RegionList
           category="sub"
           list={subRegionLists.current}
           current={currentCity}
+          setRegion={changeCity}
         />
       </section>
       <button
         type="button"
         id="region-submit"
         className="h-[7%] min-h-[50px] m-5 rounded-2xl bg-buttonActive font-bold text-white text-sm small:text-xl"
-        onClick={closeModal}
+        onClick={selectRegion}
       >
         확인
       </button>

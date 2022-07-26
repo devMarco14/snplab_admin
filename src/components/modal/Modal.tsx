@@ -5,7 +5,7 @@ import { ImportChildren } from 'types/interfaces';
 import PortalWrapper from './PortalWrapper';
 
 interface ModalPropsType extends ImportChildren {
-  onClick: (event: React.MouseEvent) => void;
+  onClick?: (event: React.MouseEvent) => void;
 }
 
 export default function Modal({ children, onClick }: ModalPropsType) {

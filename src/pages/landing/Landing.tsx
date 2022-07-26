@@ -30,7 +30,7 @@ export default function Landing() {
     <section className="relative flex flex-col justify-around w-full max-w-md h-screen mx-auto p-8 text-center">
       <Logo />
       <strong className="flex flex-col font-normal animate-[slideUp_1500ms_ease-out_forwards]">
-        <Link className={button} to={Path.Register}>
+        <Link className={button} to={Path.RegisterPage}>
           지원하기
         </Link>
         {!isLoggedin && (
