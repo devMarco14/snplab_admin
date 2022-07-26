@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { BrowserRouter as Router } from 'react-router-dom';
 import './index.css';
+import { AdminAuthProvider } from 'context/AdminAuth';
 import App from './App';
 
 const queryClient = new QueryClient({
@@ -21,7 +22,9 @@ root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <Router>
-        <App />
+        <AdminAuthProvider>
+          <App />
+        </AdminAuthProvider>
       </Router>
     </QueryClientProvider>
   </React.StrictMode>,
