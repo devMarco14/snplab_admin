@@ -16,7 +16,7 @@ function RegisterPage() {
   const [name, onNameChange] = useInput('');
   const [birthday, onBirthdayChange] = useInput('');
   const [address, onAddressChange] = useInput('');
-  const [cellular, onCellularChange] = useInput('');
+  const [cellular, , onMobileChange] = useInput('');
   const [email, onEmailChange] = useInput('');
 
   const nameRef = React.useRef<any>(null);
@@ -53,7 +53,7 @@ function RegisterPage() {
     setCheckEmail(emailValidation(value));
   };
 
-  console.log(tranportation);
+  console.log(cellular);
   return (
     <section className="w-full flex justify-center">
       <article className="max-w-xs px-4 text-blackFont">
@@ -101,7 +101,7 @@ function RegisterPage() {
           onChange={(event) => onAddressChange(event)}
         />
         <TextInput
-          type="number"
+          type="text"
           placeHolder="'-'없이 입력해주세요"
           value={cellular}
           valid={checkCellular || cellular === ''}
@@ -110,7 +110,7 @@ function RegisterPage() {
           onKeyUp={() => {
             handleCellular(cellularRef.current.value);
           }}
-          onChange={(event) => onCellularChange(event)}
+          onChange={(event) => onMobileChange(event)}
         />
         <TextInput
           type="text"

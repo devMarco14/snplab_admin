@@ -15,7 +15,7 @@ export const addressValidation = (value: string) => {
 };
 
 export const cellularValidation = (value: string) => {
-  const checkCellularRef = /^[0-9]{2,3}[0-9]{3,4}[0-9]{4}$/;
+  const checkCellularRef = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/;
   return checkCellularRef.test(value);
 };
 

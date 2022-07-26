@@ -7,6 +7,10 @@ export default function useInput(initialValue: string | number) {
   ) => {
     setValue(event.target.value);
   };
-
-  return [value, onChange] as const;
+  const onMobileChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    setValue(event.target.value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'));
+  };
+  return [value, onChange, onMobileChange] as const;
 }
