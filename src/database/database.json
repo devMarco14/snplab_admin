@@ -59,8 +59,13 @@
         "수영구",
         "연제구",
         "영도구",
-        "중구"
+        "중구",
+        "해운대구"
       ]
+    },
+    {
+      "regionName": "대전광역시",
+      "subRegions": ["대덕구", "동구", "서구", "유성구", "중구"]
     },
     {
       "regionName": "대구광역시",
@@ -284,6 +289,20 @@
       ]
     }
   ],
+  "round": [
+    {
+      "id": 1,
+      "text": "1차"
+    },
+    {
+      "id": 851,
+      "text": "2차"
+    },
+    {
+      "id": 355,
+      "text": "3차"
+    }
+  ],
   "regionList": [
     "서울특별시",
     "인천광역시",
@@ -303,22 +322,64 @@
     "전라북도",
     "전라남도"
   ],
-  "round": [
-    {
-      "id": 1,
-      "text": "1차"
-    },
-    {
-      "id": 851,
-      "text": "2차"
-    }
-  ],
-
-  "현재차수": ["1차"],
   "members": [
     {
       "id": 1,
       "round": "1차",
+      "name": "홍길동",
+      "gender": "남성",
+      "birthday": "1993.01.01",
+      "address": "서울특별시 강남구",
+      "cellular": "01000000000",
+      "email": "kildong@gmail.com",
+      "transportation": [
+        "버스",
+        "지하철",
+        "택시",
+        "KTX/기차",
+        "도보",
+        "자전거",
+        "전동킥보드",
+        "자가용"
+      ],
+      "win": true
+    },
+    {
+      "id": 4,
+      "round": "2차",
+      "name": "홍길동",
+      "gender": "남성",
+      "birthday": "1993.01.01",
+      "address": "서울특별시 강남구",
+      "cellular": "01000000000",
+      "email": "kildong@gmail.com",
+      "transportation": ["버스"],
+      "win": true
+    },
+    {
+      "id": 5,
+      "round": "1차",
+      "name": "홍길동",
+      "gender": "남성",
+      "birthday": "1993.01.01",
+      "address": "서울특별시 강남구",
+      "cellular": "01000000000",
+      "email": "kildong@gmail.com",
+      "transportation": [
+        "버스",
+        "지하철",
+        "택시",
+        "KTX/기차",
+        "도보",
+        "자전거",
+        "전동킥보드",
+        "자가용"
+      ],
+      "win": true
+    },
+    {
+      "id": 2,
+      "round": "2차",
       "name": "홍길동",
       "gender": "남성",
       "birthday": "1993.01.01",
