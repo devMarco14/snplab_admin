@@ -22,15 +22,14 @@ function RegisterPage() {
   const [address, onAddressChange] = useInput('');
   const [cellular, , onMobileChange] = useInput('');
   const [email, onEmailChange] = useInput('');
+  const [genderChange, setGenderChange] = React.useState<string | null>(null);
+  const [tranportation, setTranportation] = React.useState<string[]>([]);
 
   const nameRef = React.useRef<HTMLInputElement>(null);
   const birthdayRef = React.useRef<HTMLInputElement>(null);
   const addressRef = React.useRef<HTMLInputElement>(null);
   const cellularRef = React.useRef<HTMLInputElement>(null);
   const emailRef = React.useRef<HTMLInputElement>(null);
-
-  const [genderChange, setGenderChange] = React.useState<string | null>(null);
-  const [tranportation, setTranportation] = React.useState<string[]>([]);
 
   const [checkName, setCheckName] = React.useState<boolean | null>(null);
   const [checkBirthday, setCheckBirthday] = React.useState<boolean | null>(
