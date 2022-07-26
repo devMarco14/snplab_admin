@@ -31,7 +31,6 @@ function RegisterPage() {
   const addressRef = React.useRef<HTMLInputElement | null>(null);
   const cellularRef = React.useRef<HTMLInputElement | null>(null);
   const emailRef = React.useRef<HTMLInputElement | null>(null);
-  // const windowScrollLocation = React.useRef<number>(0);
   /* ############################################# */
 
   const [genderChange, setGenderChange] = React.useState<string | null>(null);

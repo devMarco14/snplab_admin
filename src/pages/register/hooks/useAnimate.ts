@@ -6,7 +6,6 @@ const useAnimate = (list: string[], setRegion: (value: string) => void) => {
   const isMouseDown = React.useRef<boolean>(false);
   const startYCoordinate = React.useRef<number>(0);
   const reservedYCoordinate = React.useRef<number>(50);
-  const foo = React.useRef<number>(0);
 
   function selectRegionByOnWheel(event: React.WheelEvent) {
     const regionList = list as string[];
@@ -69,16 +68,14 @@ const useAnimate = (list: string[], setRegion: (value: string) => void) => {
     let targetMovement: number;
     if (event.type === 'mousemove') {
       targetMovement = (event as React.MouseEvent).clientY;
-      foo.current = (event as React.MouseEvent).clientY;
     } else {
       targetMovement = (event as React.TouchEvent).touches[0].clientY;
-      foo.current = (event as React.TouchEvent).touches[0].clientY;
     }
     const regionList = list as string[];
     const maximumLength = -100 * (regionList.length - 2);
+    const movementFromStart = startYCoordinate.current - targetMovement;
     const movedDistanceWithDirection =
-      reservedYCoordinate.current + targetMovement - startYCoordinate.current;
-    const flag = startYCoordinate.current - targetMovement;
+      reservedYCoordinate.current - movementFromStart;
     const processedCoordinate =
       movedDistanceWithDirection - (movedDistanceWithDirection % 100);
     switch (true) {
@@ -89,7 +86,7 @@ const useAnimate = (list: string[], setRegion: (value: string) => void) => {
         setDynamicYCoordinate(maximumLength);
         break;
       default:
-        if (flag < 0) {
+        if (movementFromStart < 0) {
           setDynamicYCoordinate(processedCoordinate);
         } else if (processedCoordinate > maximumLength) {
           setDynamicYCoordinate(processedCoordinate - 100);

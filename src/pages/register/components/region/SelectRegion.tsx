@@ -54,12 +54,7 @@ export default function SelectRegion({
   }
 
   return (
-    <article
-      className="absolute bottom-0 flex flex-col w-full h-3/5 bg-white small:w-[550px] small:h-[80%] small:modalChild"
-      style={{
-        bottom: window.innerWidth >= 640 ? '50%' : `-${windowScrollLocation}px`,
-      }}
-    >
+    <article className="absolute bottom-0 flex flex-col w-full h-3/5 bg-white small:w-[550px] small:h-[80%] small:modalChild">
       <section className="flex-center max-h-[7%] h-[7%] min-h-[3rem] px-5">
         <button
           type="button"
