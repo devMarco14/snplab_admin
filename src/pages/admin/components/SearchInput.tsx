@@ -9,6 +9,34 @@ export default function SearchInput({ selectValue }: { selectValue: string }) {
   const [value, setValue] = useState('');
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
 
+  const changeText = (selectedValue: string) => {
+    let placeholderContent;
+    switch (selectedValue) {
+      case 'name':
+        placeholderContent = '지원자명을 검색하세요';
+        return placeholderContent;
+      case 'gender':
+        placeholderContent = "'여성' 또는 '남성'으로만 검색하세요";
+        return placeholderContent;
+      case 'birthday':
+        placeholderContent = '예시) 2022.01.01';
+        return placeholderContent;
+      case 'transportation':
+        placeholderContent =
+          '버스, 지하철, 택시, KTX/기차, 도보, 자전거, 전동킥보드, 자가용';
+        return placeholderContent;
+      case 'address':
+        placeholderContent = '시/도/군/구로 검색하세요';
+        return placeholderContent;
+    }
+  };
+
+  useEffect(() => {
+    if (selectValue) {
+      getWorkerInfo(selectValue, value).then((data) => setWorker(data));
+    }
+  }, [value, selectValue]);
+
   const getInputValue = () => {
     if (inputRef) {
       const inputValue = inputRef.current.value;
@@ -16,14 +44,6 @@ export default function SearchInput({ selectValue }: { selectValue: string }) {
     }
   };
 
-  // 데이터 불러와서 worker에 넣기
-  useEffect(() => {
-    if (selectValue) {
-      getWorkerInfo(selectValue, value).then((data) => setWorker(data));
-    }
-  }, [value, selectValue]);
-
-  // 엔터 눌렀을 때만 검색
   const pressEnter = (event: React.KeyboardEvent<HTMLInputElement>): void => {
     if (event.key === 'Enter' && !event.nativeEvent.isComposing) {
       getInputValue();
@@ -36,10 +56,11 @@ export default function SearchInput({ selectValue }: { selectValue: string }) {
   return (
     <form className="flex">
       <input
-        className="w-[260px]"
+        className="pl-2 w-[400px]"
         type="text"
         onKeyDown={pressEnter}
         ref={inputRef}
+        placeholder={changeText(selectValue)}
       />
       <button type="submit" onClick={clickButton}>
         <SearchIcon className="w-[20px] h-[20px] text-gray-400 mr-2" />

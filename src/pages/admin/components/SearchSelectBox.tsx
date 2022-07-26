@@ -18,7 +18,7 @@ export default function SearchSelectBox() {
   };
 
   return (
-    <div className="min-w-96 flex justify-between content-center border border-solid border-black rounded-md">
+    <div className="min-w-[500px] flex justify-between content-center border border-solid border-black rounded-md">
       <div>
         <select onChange={getValue} value={key} className="mt-2">
           {Object.keys(searchFilter).map((filter: string) => {
