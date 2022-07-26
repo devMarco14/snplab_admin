@@ -31,6 +31,7 @@ function RegisterPage() {
   const addressRef = React.useRef<HTMLInputElement | null>(null);
   const cellularRef = React.useRef<HTMLInputElement | null>(null);
   const emailRef = React.useRef<HTMLInputElement | null>(null);
+  // const windowScrollLocation = React.useRef<number>(0);
   /* ############################################# */
 
   const [genderChange, setGenderChange] = React.useState<string | null>(null);
@@ -46,6 +47,7 @@ function RegisterPage() {
   const [checkEmail, setCheckEmail] = React.useState<boolean | null>(null);
   /* ############### 수정 내용: state 추가 ############### */
   const [termsContents, setTermsContents] = React.useState('');
+  const [windowScrollLocation, setScrollLocation] = React.useState<number>(0);
   const [areTermsChecked, setTermsChecked] = React.useState<
     StringIndexedObjects<boolean>
   >({
@@ -148,9 +150,21 @@ function RegisterPage() {
     (status: boolean) => status,
   ).length;
 
+  React.useEffect(() => {
+    const isAnyModalActive = Object.values(modalStates).filter(
+      (modalState: boolean) => modalState,
+    ).length;
+    setScrollLocation(window.scrollY);
+    if (isAnyModalActive >= 1) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [modalStates]);
+
   console.log(cellular);
   return (
-    <section className="w-full flex justify-center">
+    <section className="w-full flex justify-center overflow-y-scroll">
       <article className="max-w-xs px-4 text-blackFont">
         <div className="w-4/5 mt-4">
           <h1 className="text-md font-bold">
@@ -255,12 +269,19 @@ function RegisterPage() {
       </article>
       {modalStates.terms && (
         <Modal onClick={onCloseModal}>
-          <TermsDetail contents={termsContents} closeModal={onCloseModal} />
+          <TermsDetail
+            contents={termsContents}
+            closeModal={onCloseModal}
+            windowScrollLocation={windowScrollLocation}
+          />
         </Modal>
       )}
       {modalStates.region && (
         <Modal>
-          <SelectRegion closeModal={onCloseModal} />
+          <SelectRegion
+            closeModal={onCloseModal}
+            windowScrollLocation={windowScrollLocation}
+          />
         </Modal>
       )}
     </section>

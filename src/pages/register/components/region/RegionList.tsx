@@ -73,7 +73,7 @@ export default function RegionList({
 
   return (
     <section
-      className="relative w-full h-full px-5"
+      className="relative w-full h-full px-5 select-none"
       onWheel={selectRegionByOnWheel}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
@@ -89,7 +89,7 @@ export default function RegionList({
       </h2>
       <ul
         ref={ulElement}
-        className="h-full w-full pt-[15px] small:pt-[25px] overflow-hidden cursor-grab active:cursor-grabbing select-none"
+        className="h-full w-full pt-[15px] small:pt-[25px] overflow-hidden cursor-grab active:cursor-grabbing"
       >
         {category === 'main'
           ? returnProcessedList(list as string[])
