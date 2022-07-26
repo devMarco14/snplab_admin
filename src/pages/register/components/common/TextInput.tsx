@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-curly-brace-presence */
-import React, { forwardRef, MutableRefObject } from 'react';
+import React, { MutableRefObject } from 'react';
 
 interface InputProps {
   type: 'text' | 'number';

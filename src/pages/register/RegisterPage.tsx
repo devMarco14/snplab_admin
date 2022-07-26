@@ -2,7 +2,7 @@ import React from 'react';
 import Gender from './components/Gender';
 import Terms from './components/Terms';
 import TextInput from './components/common/TextInput';
-import Transporation from './components/Transporation';
+import Tranportation from './components/Tranportation';
 import {
   addressValidation,
   birthdayValidation,
@@ -78,7 +78,7 @@ function RegisterPage() {
         <Gender genderChange={genderChange} setGenderChange={setGenderChange} />
         <TextInput
           type="number"
-          placeHolder="YYYY.MM.DD"
+          placeHolder="YYYYMMDD"
           value={birthday}
           valid={checkBirthday || birthday === ''}
           text="생년월일"
@@ -124,7 +124,7 @@ function RegisterPage() {
           }}
           onChange={(event) => onEmailChange(event)}
         />
-        <Transporation
+        <Tranportation
           tranportation={tranportation}
           setTranportation={setTranportation}
         />
@@ -139,9 +139,10 @@ function RegisterPage() {
           checkAddress &&
           checkCellular &&
           checkEmail
-            ? 'bg-gray-600 text-white'
+            ? 'bg-gray-600 text-zinc-50'
             : 'bg-gray-100 text-gray-400'
         }  items-center`}
+          //  onClick={()={alert('지원이 완료되었습니다'){window.location ={LandingPage}}}}
         >
           지원하기
         </div>

@@ -23,8 +23,8 @@ function Transportation({
               className={`flex h-7 mr-2 mt-1 rounded-3xl border border-solid 
           border-gray-300 px-2 ${
             tranportation.includes(item)
-              ? 'bg-gray-600 text-white'
-              : 'bg-white text-gray-400'
+              ? 'bg-gray-600 text-zinc-50'
+              : 'text-gray-400'
           } items-center`}
             >
               {item}
