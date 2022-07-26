@@ -2,8 +2,10 @@ import { Round } from 'libs/types/round';
 import { HttpRequest } from './httpRequest';
 
 const request = new HttpRequest();
-export const getApplicantAPI = async (round: string) => {
-  const response = await request.get(`/members?round=${round}`);
+export const getApplicantAPI = async (round: string, pageNo: number) => {
+  const response = await request.get(
+    `/members?round=${round}&_page=${pageNo}&_limit=10`,
+  );
   return response.data;
 };
 
