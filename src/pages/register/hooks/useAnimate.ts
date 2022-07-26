@@ -5,7 +5,8 @@ const useAnimate = (list: string[], setRegion: (value: string) => void) => {
   const [dynamicYCoordinate, setDynamicYCoordinate] = React.useState<number>(0);
   const isMouseDown = React.useRef<boolean>(false);
   const startYCoordinate = React.useRef<number>(0);
-  const reservedYCoordinate = React.useRef<number>(0);
+  const reservedYCoordinate = React.useRef<number>(50);
+  const foo = React.useRef<number>(0);
 
   function selectRegionByOnWheel(event: React.WheelEvent) {
     const regionList = list as string[];
@@ -68,68 +69,54 @@ const useAnimate = (list: string[], setRegion: (value: string) => void) => {
     let targetMovement: number;
     if (event.type === 'mousemove') {
       targetMovement = (event as React.MouseEvent).clientY;
+      foo.current = (event as React.MouseEvent).clientY;
     } else {
       targetMovement = (event as React.TouchEvent).touches[0].clientY;
+      foo.current = (event as React.TouchEvent).touches[0].clientY;
     }
     const regionList = list as string[];
     const maximumLength = -100 * (regionList.length - 2);
     const movedDistanceWithDirection =
       reservedYCoordinate.current + targetMovement - startYCoordinate.current;
-    if (dynamicYCoordinate === 0) {
-      if (movedDistanceWithDirection < 0) {
-        setDynamicYCoordinate(movedDistanceWithDirection);
-      }
-    } else if (dynamicYCoordinate === maximumLength) {
-      if (movedDistanceWithDirection > maximumLength) {
-        setDynamicYCoordinate(movedDistanceWithDirection);
-      }
-    } else {
-      setDynamicYCoordinate(movedDistanceWithDirection);
+    const flag = startYCoordinate.current - targetMovement;
+    const processedCoordinate =
+      movedDistanceWithDirection - (movedDistanceWithDirection % 100);
+    switch (true) {
+      case processedCoordinate > 0:
+        setDynamicYCoordinate(0);
+        break;
+      case processedCoordinate < maximumLength:
+        setDynamicYCoordinate(maximumLength);
+        break;
+      default:
+        if (flag < 0) {
+          setDynamicYCoordinate(processedCoordinate);
+        } else if (processedCoordinate > maximumLength) {
+          setDynamicYCoordinate(processedCoordinate - 100);
+        }
+        break;
     }
   };
 
   function handleMouseUp(event: React.MouseEvent | React.TouchEvent) {
     checkMouseDown(event);
-    selectRegionByMouseMove(event);
+    selectRegionByMouseMove();
   }
 
-  const selectRegionByMouseMove = (
-    event: React.MouseEvent | React.TouchEvent,
-  ) => {
+  const selectRegionByMouseMove = () => {
     reservedYCoordinate.current = dynamicYCoordinate;
     const regionList = list as string[];
     const maximumLength = -100 * (regionList.length - 2);
-    const rawYCoordinate = dynamicYCoordinate;
-    const processedCoordinate = rawYCoordinate - (rawYCoordinate % 100);
-    const rawRegionIndex = Math.abs(Math.floor(rawYCoordinate / 100));
-    let regionIndex =
-      // eslint-disable-next-line no-nested-ternary
-      rawRegionIndex === 0
-        ? rawRegionIndex + 1
-        : rawRegionIndex === regionList.length - 1
-        ? regionList.length - 1
-        : rawRegionIndex;
+    const rawRegionIndex = Math.abs(Math.ceil(dynamicYCoordinate / 100));
     switch (true) {
-      case reservedYCoordinate.current > 0:
-        setDynamicYCoordinate(0);
+      case reservedYCoordinate.current >= 0:
         setRegion(regionList[1]);
         break;
-      case reservedYCoordinate.current < maximumLength - 100:
-        setDynamicYCoordinate(maximumLength);
-        setRegion(regionList[regionList.length - 1]);
-        break;
-      case reservedYCoordinate.current === 0:
-        setRegion(regionList[1]);
-        break;
-      case reservedYCoordinate.current === maximumLength:
+      case reservedYCoordinate.current <= maximumLength:
         setRegion(regionList[regionList.length - 1]);
         break;
       default:
-        if (event.type === 'mouseleave') {
-          regionIndex += 1;
-        }
-        setDynamicYCoordinate(processedCoordinate);
-        setRegion(regionList[regionIndex]);
+        setRegion(regionList[rawRegionIndex + 1]);
         break;
     }
   };
