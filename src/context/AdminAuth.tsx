@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import useAdminData from 'pages/landing/hooks/useAdminData';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ImportChildren } from 'types/interfaces';
 import Path from 'routes/Path';
+import useAdminAuthLoad from 'pages/landing/hooks/useAdminAuthLoad';
 
 interface AdminAuthContextType {
   isLoggedin: null | boolean;
@@ -19,7 +19,7 @@ const AdminAuthContext = React.createContext<AdminAuthContextType>({
 
 export function AdminAuthProvider({ children }: ImportChildren) {
   const [isLoggedin, setLogin] = React.useState<boolean | null>(null);
-  const { data: adminData } = useAdminData();
+  const { data: adminAuthData } = useAdminAuthLoad();
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -29,7 +29,7 @@ export function AdminAuthProvider({ children }: ImportChildren) {
 
   const onLogin = React.useCallback(
     (email: string, password: string) => {
-      const isVerified = adminData.some(
+      const isVerified = adminAuthData.some(
         (admin: { email: string; password: string }) =>
           admin.email === email && admin.password === password,
       );
@@ -43,7 +43,7 @@ export function AdminAuthProvider({ children }: ImportChildren) {
       localStorage.setItem('isLoggedin', 'true');
       navigate(Path.Admin, { replace: true });
     },
-    [adminData, isLoggedin, navigate],
+    [adminAuthData, isLoggedin, navigate],
   );
 
   const onLogout = React.useCallback(() => {
