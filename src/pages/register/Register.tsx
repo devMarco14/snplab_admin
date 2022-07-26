@@ -7,6 +7,7 @@ import TermsSection from './components/terms/TermsSection';
 
 export default function Register() {
   const [termsContents, setTermsContents] = React.useState('');
+  const [regionValue, setRegionValue] = React.useState('');
   const [modalStates, setModalStates] = React.useState<
     StringIndexedObjects<boolean>
   >({
@@ -32,7 +33,7 @@ export default function Register() {
 
   const onCloseModal = React.useCallback(closeModal, [modalStates]);
 
-  function closeModal(event: React.MouseEvent) {
+  function closeModal(event: React.MouseEvent, selectedRegion?: string) {
     if ((event.target as HTMLElement).id) {
       const modalKeys = Object.keys(modalStates);
       const modalOpenValues = Object.values(modalStates);
@@ -51,6 +52,9 @@ export default function Register() {
           [openedModal]: !modalStates[openedModal],
         });
       });
+      if (selectedRegion) {
+        setRegionValue(selectedRegion);
+      }
     }
   }
 
@@ -58,13 +62,28 @@ export default function Register() {
     <>
       <section className="flex-center flex-col w-[300px] border-b-[2px] border-solid border-lightgrayFont py-[10px]">
         <p className="w-full mb-7 font-bold">거주지역</p>
-        <input
-          type="text"
-          placeholder="거주지역 선택"
-          className="w-full"
-          id="region-input"
-          onFocus={(event: React.FocusEvent) => openModal(event, 'region')}
-        />
+        <div className="w-full px-2 flex">
+          <input
+            type="text"
+            placeholder="거주지역 선택"
+            className="w-full"
+            id="region-input"
+            defaultValue={regionValue}
+            onFocus={(event: React.FocusEvent) => openModal(event, 'region')}
+            readOnly
+          />
+          <button
+            type="button"
+            className={`flex-center w-[20px] h-[20px] text-lg ${
+              regionValue ? 'flex' : 'hidden'
+            }`}
+            onClick={() => {
+              setRegionValue('');
+            }}
+          >
+            ×
+          </button>
+        </div>
       </section>
       <TermsSection
         openModal={onOpenModal}
@@ -78,7 +97,7 @@ export default function Register() {
         </Modal>
       )}
       {modalStates.region && (
-        <Modal onClick={onCloseModal}>
+        <Modal>
           <SelectRegion contents="gathering" closeModal={onCloseModal} />
         </Modal>
       )}

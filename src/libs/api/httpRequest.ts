@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import Constants from 'libs/utils/constants';
+import { BASE_URL } from 'libs/utils/constants';
 
 /* ############### 이하 any로 작성한 타입 전부 수정할 것 ############### */
 
@@ -14,7 +14,7 @@ export class HttpRequest {
 
   constructor() {
     this.axios = axios.create({
-      baseURL: Constants.BASE_URL,
+      baseURL: BASE_URL,
     });
   }
 

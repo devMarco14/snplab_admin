@@ -191,6 +191,8 @@
 
 @layer utilities {
   .selectedItem {
+    @apply text-xl;
+    @apply small:text-3xl;
     @apply text-blackFont;
     @apply bg-listSelected;
     @apply rounded-xl;
@@ -198,5 +200,8 @@
 
   .deSelectedItem {
     @apply text-grayFont;
+    @apply bg-white;
+    @apply text-xs;
+    @apply small:text-lg;
   }
 }
