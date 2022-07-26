@@ -12,9 +12,5 @@ export interface Members {
 }
 
 export interface SearchFilter {
-  name: string;
-  gender: string;
-  birthday: string;
-  transportation: string;
-  address: string;
+  [key: string]: string;
 }

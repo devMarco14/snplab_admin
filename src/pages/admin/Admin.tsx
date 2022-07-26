@@ -13,15 +13,8 @@ export default function Admin() {
         학습용 교통 데이터 수집을 위한 크라우드 워커 지원 현황
       </h1>
       <section>
-        {/* <label htmlFor="search">검색</label> */}
         <div className="flex justify-center">
           <SearchBar />
-
-          {/* <input
-              id="search"
-              type="text"
-              className="w-1/3 h-7 border border-solid border-black rounded-md ml-20"
-            /> */}
           <button type="button" className="w-32 h-10 bg-gray-300 rounded-md">
             엑셀 다운로드
           </button>
