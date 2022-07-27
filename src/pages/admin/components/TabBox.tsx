@@ -8,6 +8,7 @@ import {
 import { Members } from 'libs/types/members';
 import useToggle from 'hooks/useToggle';
 import useRoundHandler from '../hook/useRoundHandler';
+import useUpdateMember from '../hook/useUpdateMember';
 
 interface TabBoxProps {
   membersData: Members[];
@@ -21,6 +22,7 @@ export default function TabBox({
   currentTab,
 }: TabBoxProps) {
   const { onPostRound, roundQuery, onChange, value } = useRoundHandler();
+  const { onPutWin } = useUpdateMember();
   const [isPlus, onTogglePlus] = useToggle();
   if (roundQuery.isError) return <div>에러</div>;
   if (roundQuery.isLoading) return <div>로딩중</div>;
@@ -115,15 +117,22 @@ export default function TabBox({
                 <td>{cellular.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3')}</td>
                 <td>{email}</td>
                 <td className="flex flex-wrap justify-center truncate gap-1">
-                  {transportation.map((item, index) => (
-                    <div key={item + index}>
-                      {addComma(index)} {item}
-                    </div>
-                  ))}
+                  {transportation &&
+                    transportation.map((item, index) => (
+                      <div key={item + index}>
+                        {addComma(index)} {item}
+                      </div>
+                    ))}
                 </td>
                 <td>{address}</td>
                 <td>
-                  <input type="checkbox" />
+                  <input
+                    type="checkbox"
+                    checked={win}
+                    onChange={() => {
+                      onPutWin({ id, isWin: win });
+                    }}
+                  />
                 </td>
               </tr>
             ),

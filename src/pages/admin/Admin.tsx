@@ -4,7 +4,7 @@ import {
   BsChevronLeft as PreviousPageIcon,
   BsChevronRight as NexstPageIcon,
 } from 'react-icons/bs';
-import { CSV_HEADER, TenArr } from 'libs/utils/constants';
+import { CSV_HEADER } from 'libs/utils/constants';
 import TabBox from './components/TabBox';
 import useAdminLoad from './hook/useAdminLoad';
 import SearchSelectBox from './components/SearchSelectBox';
@@ -78,24 +78,29 @@ export default function Admin() {
               <button
                 type="button"
                 className="text-gray-600 hover:scale-150 ease-in duration-100"
+                onClick={() => setPageNo(pageNo - 1)}
               >
                 <PreviousPageIcon />
               </button>
-              {TenArr.map((num) => (
+              {Array.from({ length: 10 }, (_v, k) => k + 1).map((num) => (
                 <button
                   type="button"
                   key={`page_nation_${num}`}
                   className={`${
-                    pageNo === num && 'text-sky-700'
-                  } text-lg px-2 mx-0.5 border-solid border-2 rounded-lg bg-zinc-50 text-gray-400 cursor-pointer hover:translate-y-[-4px] hover:text-sky-700 ease-in duration-100`}
+                    pageNo === num ? 'text-sky-700' : 'text-gray-400'
+                  } text-lg px-2 mx-0.5 border-solid border-2 rounded-lg bg-zinc-50  cursor-pointer hover:translate-y-[-4px] hover:text-sky-700 ease-in duration-100`}
                   onClick={() => setPageNo(num)}
                 >
                   {num}
                 </button>
               ))}
 
-              <button type="button">
-                <NexstPageIcon className="text-gray-600 hover:scale-150 ease-in duration-100" />
+              <button
+                type="button"
+                className="text-gray-600 hover:scale-150 ease-in duration-100"
+                onClick={() => setPageNo(pageNo + 1)}
+              >
+                <NexstPageIcon />
               </button>
             </div>
           </div>

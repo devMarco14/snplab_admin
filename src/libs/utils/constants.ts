@@ -1,5 +1,4 @@
 export const BASE_URL = 'http://localhost:8080';
-export const TenArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 export const CSV_HEADER = [
   { label: 'Num.', key: 'id' },
   { label: '지원 날짜', key: '?' },
