@@ -12,5 +12,9 @@ export default function useInput(initialValue: string | number) {
   ) => {
     setValue(event.target.value.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'));
   };
-  return [value, onChange, onMobileChange] as const;
+  /* ############### 거주지역 입력을 위해 추가 ############### */
+  const setValueByModal = (inputVal: string) => {
+    setValue(inputVal);
+  };
+  return [value, onChange, onMobileChange, setValueByModal] as const;
 }
