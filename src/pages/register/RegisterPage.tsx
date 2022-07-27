@@ -163,7 +163,7 @@ function RegisterPage() {
 
   console.log(cellular);
   return (
-    <section className="w-full flex justify-center overflow-y-scroll">
+    <section className="w-full flex justify-center">
       <article className="max-w-xs px-4 text-blackFont">
         <div className="w-4/5 mt-4">
           <h1 className="text-md font-bold">

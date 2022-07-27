@@ -23,9 +23,9 @@ export default function TermsDetail({
 
   return (
     <article
-      className="absolute sm:modalChild flex flex-col z-10 bg-white w-screen min-w-[330px] h-screen overflow-x-hidden overflow-y-auto small:w-[550px] small:h-[800px]"
+      className="absolute modalChild flex flex-col z-10 bg-white w-[320px] h-screen overflow-x-hidden overflow-y-auto sm:w-[550px] sm:h-[800px]"
       style={{
-        top: window.innerWidth >= 640 ? '50%' : `${windowScrollLocation}px`,
+        // top: window.innerWidth >= 640 ? '50%' : `${windowScrollLocation}px`,
         height:
           // eslint-disable-next-line no-nested-ternary
           window.innerWidth > window.innerHeight
