@@ -1,10 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { SearchFilter } from 'libs/types/members';
 import SearchInput from './SearchInput';
 
-export default function SearchSelectBox() {
-  const [key, setKey] = useState<string>('name');
+interface searchSelectBoxProps {
+  searchKey: string;
+  getSearchKey: React.ChangeEventHandler<HTMLSelectElement>;
+  searchValue: string;
+  getSearchValue: any;
+}
 
+export default function SearchSelectBox({
+  searchKey,
+  getSearchKey,
+  searchValue,
+  getSearchValue,
+}: searchSelectBoxProps) {
   const searchFilter: SearchFilter = {
     name: '지원자명',
     gender: '성별',
@@ -13,13 +23,9 @@ export default function SearchSelectBox() {
     address: '거주지',
   };
 
-  const getValue = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setKey(event.target.value);
-  };
-
   return (
-    <div className="min-w-[500px] h-10 flex justify-between content-center border border-solid border-black rounded-md">
-      <select onChange={getValue} value={key} className="ml-1">
+    <div className="min-w-[500px] h-10 flex justify-between content-center border-2 border-solid border-gray-400 rounded-md">
+      <select onChange={getSearchKey} value={searchKey} className="ml-1">
         {Object.keys(searchFilter).map((filter: string) => {
           return (
             <option key={filter} value={filter}>
@@ -28,7 +34,11 @@ export default function SearchSelectBox() {
           );
         })}
       </select>
-      <SearchInput selectValue={key} />
+      <SearchInput
+        selectValue={searchKey}
+        searchValue={searchValue}
+        getSearchValue={getSearchValue}
+      />
     </div>
   );
 }

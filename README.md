@@ -11,7 +11,8 @@
 ### # <a href="https://github.com/chaengs">심채영</a>
 
 ```
-
+- 지원 현황 검색 기능
+- 검색어 필터링
 ```
 
 ### # <a href="https://github.com/leejiho9898">이지호</a>
@@ -38,7 +39,8 @@
 ### # <a href="https://github.com/HyeonJu-C">천현주</a>
 
 ```
-
+- 랜딩페이지 마크업, 스타일링
+- 관리자 로그인 기능 및 관리자 전용 페이지 보호
 ```
 
 <br />

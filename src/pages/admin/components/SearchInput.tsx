@@ -1,31 +1,27 @@
 /* eslint-disable consistent-return */
 import React, { useEffect, useState, useRef } from 'react';
-import { getWorkerInfo } from 'libs/api/admin';
-import { Members } from 'libs/types/members';
 import { HiOutlineSearch as SearchIcon } from 'react-icons/hi';
 import { dynamicPlaceholder } from 'libs/utils/dynamicPlaceholder';
 
-export default function SearchInput({ selectValue }: { selectValue: string }) {
-  const [worker, setWorker] = useState<Members>();
-  const [value, setValue] = useState('');
+interface searchInputProps {
+  selectValue: string;
+  searchValue: string;
+  getSearchValue: any;
+}
+
+export default function SearchInput({
+  selectValue,
+  searchValue,
+  getSearchValue,
+}: searchInputProps) {
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-
-  useEffect(() => {
-    if (selectValue) {
-      getWorkerInfo(selectValue, value).then((data) => setWorker(data));
-    }
-  }, [value, selectValue]);
-
-  const getInputValue = () => {
-    if (inputRef) {
-      const inputValue = inputRef.current.value;
-      setValue(inputValue);
-    }
-  };
 
   const getSearchResult = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    getInputValue();
+    if (inputRef) {
+      const inputValue = inputRef.current.value;
+      getSearchValue(inputValue);
+    }
   };
 
   return (

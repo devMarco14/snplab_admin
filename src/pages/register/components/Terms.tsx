@@ -55,8 +55,8 @@ function Terms({
           <div
             className={`flex justify-center w-5 h-5 rounded-full border border-solid items-center cursor-pointer ${
               checkedTerms === 2
-                ? 'border-blackFont text-blackFont'
-                : 'border-gray-300 text-gray-400'
+                ? 'bg-gray-600 text-zinc-50'
+                : 'bg-zinc-50 text-gray-400'
             }`}
             onClick={(event: React.MouseEvent) => {
               changeCheck(event, {
