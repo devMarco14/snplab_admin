@@ -1,4 +1,6 @@
 import React from 'react';
+import useToggle from 'hooks/useToggle';
+import Modal from 'components/modal/Modal';
 import Gender from './components/Gender';
 import Terms from './components/Terms';
 import TextInput from './components/common/TextInput';
@@ -13,20 +15,22 @@ import {
 import useInput from './hooks/useInput';
 
 function RegisterPage() {
+  const [openModal, changeModal] = useToggle(false);
+
   const [name, onNameChange] = useInput('');
   const [birthday, onBirthdayChange] = useInput('');
   const [address, onAddressChange] = useInput('');
   const [cellular, , onMobileChange] = useInput('');
   const [email, onEmailChange] = useInput('');
-
-  const nameRef = React.useRef<any>(null);
-  const birthdayRef = React.useRef<any>(null);
-  const addressRef = React.useRef<any>(null);
-  const cellularRef = React.useRef<any>(null);
-  const emailRef = React.useRef<any>(null);
-
   const [genderChange, setGenderChange] = React.useState<string | null>(null);
   const [tranportation, setTranportation] = React.useState<string[]>([]);
+
+  const nameRef = React.useRef<HTMLInputElement>(null);
+  const birthdayRef = React.useRef<HTMLInputElement>(null);
+  const addressRef = React.useRef<HTMLInputElement>(null);
+  const cellularRef = React.useRef<HTMLInputElement>(null);
+  const emailRef = React.useRef<HTMLInputElement>(null);
+
   const [checkName, setCheckName] = React.useState<boolean | null>(null);
   const [checkBirthday, setCheckBirthday] = React.useState<boolean | null>(
     null,
@@ -37,23 +41,36 @@ function RegisterPage() {
   );
   const [checkEmail, setCheckEmail] = React.useState<boolean | null>(null);
 
-  const handleName = (value: string) => {
+  const handleName = (value: string | undefined) => {
+    if (value === undefined) return;
     setCheckName(nameValidation(value));
   };
-  const handleBirthday = (value: string) => {
+  const handleBirthday = (value: string | undefined) => {
+    if (value === undefined) return;
     setCheckBirthday(birthdayValidation(value));
   };
-  const handleAddress = (value: string) => {
+  const handleAddress = (value: string | undefined) => {
+    if (value === undefined) return;
     setCheckAddress(addressValidation(value));
   };
-  const handleCellular = (value: string) => {
+  const handleCellular = (value: string | undefined) => {
+    if (value === undefined) return;
     setCheckCellular(cellularValidation(value));
   };
-  const handleEmail = (value: string) => {
+  const handleEmail = (value: string | undefined) => {
+    if (value === undefined) return;
     setCheckEmail(emailValidation(value));
   };
 
-  console.log(cellular);
+  const disabledCheck =
+    checkName &&
+    genderChange !== null &&
+    tranportation.length !== 0 &&
+    checkBirthday &&
+    checkAddress &&
+    checkCellular &&
+    checkEmail;
+
   return (
     <section className="w-full flex justify-center">
       <article className="max-w-xs px-4 text-blackFont">
@@ -71,7 +88,7 @@ function RegisterPage() {
           text="이름"
           ref={nameRef}
           onKeyUp={() => {
-            handleName(nameRef.current.value);
+            handleName(nameRef?.current?.value);
           }}
           onChange={(event) => onNameChange(event)}
         />
@@ -84,7 +101,7 @@ function RegisterPage() {
           text="생년월일"
           ref={birthdayRef}
           onKeyUp={() => {
-            handleBirthday(birthdayRef.current.value);
+            handleBirthday(birthdayRef?.current?.value);
           }}
           onChange={(event) => onBirthdayChange(event)}
         />
@@ -96,7 +113,7 @@ function RegisterPage() {
           text="거주지역"
           ref={addressRef}
           onKeyUp={() => {
-            handleAddress(addressRef.current.value);
+            handleAddress(addressRef?.current?.value);
           }}
           onChange={(event) => onAddressChange(event)}
         />
@@ -108,7 +125,7 @@ function RegisterPage() {
           text="연락처"
           ref={cellularRef}
           onKeyUp={() => {
-            handleCellular(cellularRef.current.value);
+            handleCellular(cellularRef?.current?.value);
           }}
           onChange={(event) => onMobileChange(event)}
         />
@@ -120,7 +137,7 @@ function RegisterPage() {
           text="이메일"
           ref={emailRef}
           onKeyUp={() => {
-            handleEmail(emailRef.current.value);
+            handleEmail(emailRef?.current?.value);
           }}
           onChange={(event) => onEmailChange(event)}
         />
@@ -129,26 +146,52 @@ function RegisterPage() {
           setTranportation={setTranportation}
         />
         <Terms />
-        <div
+        <button
           className={`flex justify-center w-full h-9 mb-4 rounded-xl 
         ${
-          checkName &&
-          genderChange !== null &&
-          tranportation.length !== 0 &&
-          checkBirthday &&
-          checkAddress &&
-          checkCellular &&
-          checkEmail
+          disabledCheck
             ? 'bg-gray-600 text-zinc-50'
             : 'bg-gray-100 text-gray-400'
         }  items-center`}
-          //  onClick={()={alert('지원이 완료되었습니다'){window.location ={LandingPage}}}}
+          type="button"
+          onClick={changeModal}
+          disabled={!(disabledCheck === true)}
         >
           지원하기
-        </div>
+        </button>
+        {openModal && (
+          <Modal>
+            <div className="modalChild flex justify-center w-72 h-20 mx-auto border border-solid border-gray-400 rounded-3xl bg-zinc-50 items-center">
+              <div className="absolute left-5 top-6 font-bold">
+                지원이 완료되었습니다.
+              </div>
+              <button
+                className="absolute right-6 bottom-4 text-red-500"
+                type="button"
+                onClick={changeModal}
+              >
+                확인
+              </button>
+            </div>
+          </Modal>
+        )}
       </article>
     </section>
   );
 }
 
 export default RegisterPage;
+// http 리퀘스트 포스트 실행 =>
+// 전달인자 주소, 모은 데이터
+// {
+//   id: Math.floor(Math.random())*1000,
+//   round: "2차",
+//   name: name,
+//   gender: genderChange,
+//   birthday: birthday,
+//   address: address,
+//   cellular: cellular,
+//   email: email,
+//   transportation: tranportation,
+//   win: true
+// }
