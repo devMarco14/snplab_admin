@@ -48,6 +48,11 @@ export default function Landing() {
             관리자 로그아웃
           </button>
         )}
+        {isLoggedin && (
+          <Link to="/admin" className={buttonClass}>
+            관리자 페이지로 이동
+          </Link>
+        )}
       </strong>
       {isLoginFormVisible && (
         <Modal onClick={handleModalVisible}>
