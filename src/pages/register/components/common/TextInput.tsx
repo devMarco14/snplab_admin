@@ -13,7 +13,7 @@ interface InputProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onFocus?: (event: React.FocusEvent) => void;
   defaultValue?: string;
-  readonly?: boolean;
+  readOnly?: boolean;
 }
 // props.name 추가
 // eslint-disable-next-line react/function-component-definition
@@ -33,9 +33,9 @@ const TextInput = React.forwardRef<HTMLInputElement, InputProps>(
           name={props.name}
           onKeyUp={props.onKeyUp}
           onChange={(event) => props.onChange(event)}
-          onFocus={() => props.onFocus}
+          onFocus={props.onFocus}
           defaultValue={props.defaultValue}
-          readOnly={props.readonly}
+          readOnly={props.readOnly}
         />
       </div>
     );

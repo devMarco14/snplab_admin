@@ -16,15 +16,6 @@ import {
 import useRegisterForm from './hooks/useRegisterForm';
 
 function RegisterPage() {
-  // const [onModal, changeModal] = useToggle(false);
-  // const [name, onNameChange] = useInput('');
-  // const [birthday, onBirthdayChange] = useInput('');
-  // const [address, onAddressChange] = useInput('');
-  // const [cellular, , onMobileChange] = useInput('');
-  // const [email, onEmailChange] = useInput('');
-  // const [genderChange, setGenderChange] = React.useState<string | null>(null);
-  // const [transportation, settransportation] = React.useState<string[]>([]);
-
   const [onModal, changeModal] = useToggle();
 
   const navigate = useNavigate();
@@ -207,17 +198,3 @@ function RegisterPage() {
 }
 
 export default RegisterPage;
-// http 리퀘스트 포스트 실행 =>
-// 전달인자 주소, 모은 데이터
-// {
-//   id: Math.floor(Math.random())*1000,
-//   round: "2차",
-//   name: name,
-//   gender: genderChange,
-//   birthday: birthday,
-//   address: address,
-//   cellular: cellular,
-//   email: email,
-//   transportation: transportation,
-//   win: true
-// }
