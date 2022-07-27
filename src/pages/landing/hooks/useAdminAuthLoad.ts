@@ -1,9 +1,11 @@
 /* eslint-disable prettier/prettier */
+import { HttpRequest } from 'libs/api/httpRequest';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+
+const request = new HttpRequest('data/');
 
 const getAdminAuthData = () => {
-    return axios.get('data/admin.json');
+    return request.get('admin.json');
 };
 
 function useAdminAuthLoad() {
