@@ -2,6 +2,7 @@ import React, { MouseEvent, useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { CSV_HEADER, TenArr } from 'libs/utils/constants';
+import SearchBar from './components/SearchBar';
 import TabBox from './components/TabBox';
 import useAdminLoad from './hook/useAdminLoad';
 
@@ -29,14 +30,10 @@ export default function Admin() {
         학습용 교통 데이터 수집을 위한 크라우드 워커 지원 현황
       </h1>
       <section>
-        {/* <label htmlFor="search">검색</label> */}
+        <div className="flex justify-center">
+          <SearchBar />
+        </div>
         <div className="flex justify-between">
-          <input
-            id="search"
-            type="text"
-            className="w-1/3 h-7 border border-solid border-black rounded-md ml-20"
-          />
-
           <CSVLink
             className="w-32 h-10 bg-gray-300 rounded-md"
             data={membersData}

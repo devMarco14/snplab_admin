@@ -10,3 +10,7 @@ export interface Members {
   transportation: string[];
   win: boolean;
 }
+
+export interface SearchFilter {
+  [key: string]: string;
+}
