@@ -7,8 +7,8 @@ const useApplicantLoad = (round: string, pageNo: number) => {
     ['members', round, pageNo],
     () => getApplicantAPI(round, pageNo),
     {
-      staleTime: 1000 * 5 * 60,
-      cacheTime: 1000 * 5 * 60,
+      staleTime: 1000 * 5 * 60, // 데이터를 다시 받아오는 주기
+      cacheTime: 1000 * 5 * 60, // 캐싱된 데이터를 유지하는 기간
     },
   );
 
