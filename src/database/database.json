@@ -365,7 +365,7 @@
         "전동킥보드",
         "자가용"
       ],
-      "win": true
+      "win": false
     },
     {
       "id": 4,
@@ -400,7 +400,7 @@
         "전동킥보드",
         "자가용"
       ],
-      "win": true
+      "win": false
     },
     {
       "id": 2,
@@ -435,7 +435,7 @@
       "transportation": [
         "지하철"
       ],
-      "win": false
+      "win": true
     }
   ]
 }
