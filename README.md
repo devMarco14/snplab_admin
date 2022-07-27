@@ -27,7 +27,9 @@
 ### # <a href="https://github.com/godcl1623">이치행<a>
 
 ```
-
+- 공통 모달 및 지원 페이지 내 모달 관련 로직 구현
+- 이용 약관 양식 구현
+- 거주지역 선택 화면 및 관련 로직 구현
 ```
 
 ### # <a href="https://github.com/devMarco14">임종혁</a>
