@@ -8,6 +8,7 @@ import {
 import { Members } from 'libs/types/members';
 import useToggle from 'hooks/useToggle';
 import useRoundHandler from '../hook/useRoundHandler';
+import useUpdateMember from '../hook/useUpdateMember';
 
 interface TabBoxProps {
   membersData: Members[];
@@ -21,6 +22,7 @@ export default function TabBox({
   currentTab,
 }: TabBoxProps) {
   const { onPostRound, roundQuery, onChange, value } = useRoundHandler();
+  const { onPutWin } = useUpdateMember();
   const [isPlus, onTogglePlus] = useToggle();
   if (roundQuery.isError) return <div>에러</div>;
   if (roundQuery.isLoading) return <div>로딩중</div>;
@@ -124,7 +126,13 @@ export default function TabBox({
                 </td>
                 <td>{address}</td>
                 <td>
-                  <input type="checkbox" />
+                  <input
+                    type="checkbox"
+                    checked={win}
+                    onChange={() => {
+                      onPutWin({ id, isWin: win });
+                    }}
+                  />
                 </td>
               </tr>
             ),
