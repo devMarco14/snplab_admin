@@ -8,13 +8,12 @@ interface GetWithParams {
   config: any;
   callback: any;
 }
-
 export class HttpRequest {
   axios: AxiosInstance;
 
-  constructor() {
+  constructor(baseURL = BASE_URL) {
     this.axios = axios.create({
-      baseURL: BASE_URL,
+      baseURL,
     });
   }
 

@@ -9,8 +9,10 @@ interface InputProps {
   text?: string;
   name?: string;
   maxLength?: number;
-  onKeyUp: any;
+  onKeyUp?: () => void;
+  onFocus?: (event: React.FocusEvent) => void;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  readOnly?: boolean;
 }
 // props.name 추가
 // eslint-disable-next-line react/function-component-definition
@@ -29,7 +31,9 @@ const TextInput = React.forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           name={props.name}
           onKeyUp={props.onKeyUp}
+          onFocus={props.onFocus}
           onChange={(event) => props.onChange(event)}
+          readOnly={props.readOnly}
         />
       </div>
     );
