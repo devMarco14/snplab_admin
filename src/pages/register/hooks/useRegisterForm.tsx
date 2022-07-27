@@ -1,10 +1,8 @@
 import { postApplicantAPI } from 'libs/api/register';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Member } from 'types/interfaces';
 
 export default function useRegisterForm() {
-  const navigate = useNavigate();
   const [form, setForms] = React.useState<Member>({
     id: Math.floor(Math.random() * 1000),
     name: '',
