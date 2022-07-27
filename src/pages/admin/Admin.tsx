@@ -2,11 +2,13 @@ import React, { MouseEvent, useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { CSV_HEADER, TenArr } from 'libs/utils/constants';
-import SearchBar from './components/SearchBar';
 import TabBox from './components/TabBox';
 import useAdminLoad from './hook/useAdminLoad';
+import SearchSelectBox from './components/SearchSelectBox';
 
 export default function Admin() {
+  const [key, setKey] = useState<string>('name');
+  const [searchValue, setSearchValue] = useState('');
   const [pageNo, setPageNo] = useState(1);
   const [currentTab, setCurrentTab] = useState('1차');
   const onChangeTab = (e: MouseEvent<HTMLButtonElement>) => {
@@ -16,7 +18,7 @@ export default function Admin() {
     data: membersData,
     isError: isMembersError,
     isLoading: isMemberLoading,
-  } = useAdminLoad(currentTab, pageNo);
+  } = useAdminLoad(currentTab, pageNo, key, searchValue);
 
   if (isMembersError) return <div>에러</div>;
   if (isMemberLoading) return <div>로딩중</div>;
@@ -31,7 +33,12 @@ export default function Admin() {
       </h1>
       <section>
         <div className="flex justify-center">
-          <SearchBar />
+          <SearchSelectBox
+            key={key}
+            setKey={setKey}
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+          />
         </div>
         <div className="flex justify-between">
           <CSVLink

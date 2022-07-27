@@ -1,9 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { SearchFilter } from 'libs/types/members';
 import SearchInput from './SearchInput';
 
-export default function SearchSelectBox() {
-  const [key, setKey] = useState<string>('name');
+interface searchSelectBoxProps {
+  key: string;
+  setKey: React.Dispatch<React.SetStateAction<string>>;
+  searchValue: string;
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export default function SearchSelectBox({
+  key,
+  setKey,
+  searchValue,
+  setSearchValue,
+}: searchSelectBoxProps) {
+  // const [key, setKey] = useState<string>('name');
 
   const searchFilter: SearchFilter = {
     name: '지원자명',
@@ -28,7 +40,11 @@ export default function SearchSelectBox() {
           );
         })}
       </select>
-      <SearchInput selectValue={key} />
+      <SearchInput
+        selectValue={key}
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
+      />
     </div>
   );
 }

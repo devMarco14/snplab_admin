@@ -5,21 +5,24 @@ import { Members } from 'libs/types/members';
 import { HiOutlineSearch as SearchIcon } from 'react-icons/hi';
 import { dynamicPlaceholder } from 'libs/utils/dynamicPlaceholder';
 
-export default function SearchInput({ selectValue }: { selectValue: string }) {
-  const [worker, setWorker] = useState<Members>();
-  const [value, setValue] = useState('');
-  const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+interface searchInputProps {
+  selectValue: string;
+  searchValue: string;
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+}
 
-  useEffect(() => {
-    if (selectValue) {
-      getWorkerInfo(selectValue, value).then((data) => setWorker(data));
-    }
-  }, [value, selectValue]);
+export default function SearchInput({
+  selectValue,
+  searchValue,
+  setSearchValue,
+}: searchInputProps) {
+  const [worker, setWorker] = useState<Members>();
+  const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
 
   const getInputValue = () => {
     if (inputRef) {
       const inputValue = inputRef.current.value;
-      setValue(inputValue);
+      setSearchValue(inputValue);
     }
   };
 
