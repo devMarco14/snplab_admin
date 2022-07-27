@@ -2,6 +2,7 @@ import React from 'react';
 import useToggle from 'hooks/useToggle';
 import Modal from 'components/modal/Modal';
 import { useNavigate } from 'react-router-dom';
+import { StringIndexedObjects } from 'types/interfaces';
 import Gender from './components/Gender';
 import Terms from './components/Terms';
 import TextInput from './components/common/TextInput';
@@ -16,7 +17,6 @@ import {
 import useRegisterForm from './hooks/useRegisterForm';
 import TermsDetail from './components/terms/TermsDetail';
 import SelectRegion from './components/region/SelectRegion';
-import { StringIndexedObjects } from 'types/interfaces';
 
 function RegisterPage() {
   const [onModal, changeModal] = useToggle();
@@ -29,6 +29,7 @@ function RegisterPage() {
     onChangeTransportationForm,
     onMobileChange,
     onSubmitMember,
+    onFocusRegion,
   } = useRegisterForm();
 
   const nameRef = React.useRef<HTMLInputElement>(null);
@@ -122,7 +123,8 @@ function RegisterPage() {
         });
       });
       if (selectedRegion) {
-        setValueByModal(selectedRegion);
+        // setValueByModal(selectedRegion);
+        onFocusRegion(selectedRegion);
         handleAddress(selectedRegion);
       }
     }
@@ -178,7 +180,8 @@ function RegisterPage() {
     checkBirthday &&
     checkAddress &&
     checkCellular &&
-    checkEmail;
+    checkEmail &&
+    allTermsChecked === 2;
 
   return (
     <section className="w-full flex justify-center">
