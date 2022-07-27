@@ -1,8 +1,8 @@
 import React, { MouseEvent, useState } from 'react';
-import SearchBar from './components/SearchBar';
 import { CSVLink } from 'react-csv';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { CSV_HEADER, TenArr } from 'libs/utils/constants';
+import SearchBar from './components/SearchBar';
 import TabBox from './components/TabBox';
 import useAdminLoad from './hook/useAdminLoad';
 
@@ -30,21 +30,10 @@ export default function Admin() {
         학습용 교통 데이터 수집을 위한 크라우드 워커 지원 현황
       </h1>
       <section>
-<<<<<<< HEAD
         <div className="flex justify-center">
           <SearchBar />
-          <button type="button" className="w-32 h-10 bg-gray-300 rounded-md">
-            엑셀 다운로드
-          </button>
-=======
-        {/* <label htmlFor="search">검색</label> */}
+        </div>
         <div className="flex justify-between">
-          <input
-            id="search"
-            type="text"
-            className="w-1/3 h-7 border border-solid border-black rounded-md ml-20"
-          />
-
           <CSVLink
             className="w-32 h-10 bg-gray-300 rounded-md"
             data={membersData}
@@ -55,7 +44,6 @@ export default function Admin() {
               액셀 다운로드
             </button>
           </CSVLink>
->>>>>>> 607f392070afe59601211b7437990bf8cd2f6899
         </div>
         <section className="w-11/12 h-screen bg-gray-200 ml-20 mt-5 mb-5 flex flex-col justify-between">
           <TabBox

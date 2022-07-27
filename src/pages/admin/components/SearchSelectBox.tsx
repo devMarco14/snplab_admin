@@ -18,18 +18,16 @@ export default function SearchSelectBox() {
   };
 
   return (
-    <div className="min-w-[500px] flex justify-between content-center border border-solid border-black rounded-md">
-      <div>
-        <select onChange={getValue} value={key} className="mt-2">
-          {Object.keys(searchFilter).map((filter: string) => {
-            return (
-              <option key={filter} value={filter}>
-                {searchFilter[filter]}
-              </option>
-            );
-          })}
-        </select>
-      </div>
+    <div className="min-w-[500px] h-10 flex justify-between content-center border border-solid border-black rounded-md">
+      <select onChange={getValue} value={key} className="ml-1">
+        {Object.keys(searchFilter).map((filter: string) => {
+          return (
+            <option key={filter} value={filter}>
+              {searchFilter[filter]}
+            </option>
+          );
+        })}
+      </select>
       <SearchInput selectValue={key} />
     </div>
   );

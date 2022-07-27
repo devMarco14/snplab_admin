@@ -44,26 +44,21 @@ export default function SearchInput({ selectValue }: { selectValue: string }) {
     }
   };
 
-  const pressEnter = (event: React.KeyboardEvent<HTMLInputElement>): void => {
-    if (event.key === 'Enter' && !event.nativeEvent.isComposing) {
-      getInputValue();
-    }
-  };
-
-  const clickButton = () => {
+  const getSearchResult = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
     getInputValue();
   };
+
   return (
-    <form className="flex">
+    <form className="flex" onSubmit={getSearchResult}>
       <input
         className="pl-2 w-[400px]"
         type="text"
-        onKeyDown={pressEnter}
         ref={inputRef}
         placeholder={changeText(selectValue)}
       />
-      <button type="submit" onClick={clickButton}>
-        <SearchIcon className="w-[20px] h-[20px] text-gray-400 mr-2" />
+      <button type="submit">
+        <SearchIcon className="w-[20px] h-[20px] text-gray-400 mr-3" />
       </button>
     </form>
   );
