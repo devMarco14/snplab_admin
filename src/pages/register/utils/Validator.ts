@@ -1,5 +1,5 @@
 export const nameValidation = (value: string) => {
-  const checkName = /^[가-힣]+$/;
+  const checkName = /^[가-힣]{2,4}/;
   return checkName.test(value);
 };
 

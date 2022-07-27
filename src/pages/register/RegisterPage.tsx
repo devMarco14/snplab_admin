@@ -1,10 +1,11 @@
 import React from 'react';
-import { StringIndexedObjects } from 'types/interfaces';
+import useToggle from 'hooks/useToggle';
 import Modal from 'components/modal/Modal';
+import { useNavigate } from 'react-router-dom';
 import Gender from './components/Gender';
 import Terms from './components/Terms';
 import TextInput from './components/common/TextInput';
-import Tranportation from './components/Tranportation';
+import Transportation from './components/Transportation';
 import {
   addressValidation,
   birthdayValidation,
@@ -12,29 +13,30 @@ import {
   cellularValidation,
   emailValidation,
 } from './utils/Validator';
-import useInput from './hooks/useInput';
-import SelectRegion from './components/region/SelectRegion';
+import useRegisterForm from './hooks/useRegisterForm';
 import TermsDetail from './components/terms/TermsDetail';
+import SelectRegion from './components/region/SelectRegion';
+import { StringIndexedObjects } from 'types/interfaces';
 
 function RegisterPage() {
-  const [name, onNameChange] = useInput('');
-  const [birthday, onBirthdayChange] = useInput('');
-  /* ############### 수정 내용: 사용 함수 추가 및 수정 ############### */
-  const [address, , , setValueByModal] = useInput('');
-  /* ############################################# */
-  const [cellular, , onMobileChange] = useInput('');
-  const [email, onEmailChange] = useInput('');
+  const [onModal, changeModal] = useToggle();
 
-  /* ############### 수정 내용: ref 타입 정의 ############### */
-  const nameRef = React.useRef<HTMLInputElement | null>(null);
-  const birthdayRef = React.useRef<HTMLInputElement | null>(null);
-  const addressRef = React.useRef<HTMLInputElement | null>(null);
-  const cellularRef = React.useRef<HTMLInputElement | null>(null);
-  const emailRef = React.useRef<HTMLInputElement | null>(null);
-  /* ############################################# */
+  const navigate = useNavigate();
 
-  const [genderChange, setGenderChange] = React.useState<string | null>(null);
-  const [tranportation, setTranportation] = React.useState<string[]>([]);
+  const {
+    form,
+    onChangeForm,
+    onChangeTransportationForm,
+    onMobileChange,
+    onSubmitMember,
+  } = useRegisterForm();
+
+  const nameRef = React.useRef<HTMLInputElement>(null);
+  const birthdayRef = React.useRef<HTMLInputElement>(null);
+  const addressRef = React.useRef<HTMLInputElement>(null);
+  const cellularRef = React.useRef<HTMLInputElement>(null);
+  const emailRef = React.useRef<HTMLInputElement>(null);
+
   const [checkName, setCheckName] = React.useState<boolean | null>(null);
   const [checkBirthday, setCheckBirthday] = React.useState<boolean | null>(
     null,
@@ -61,19 +63,24 @@ function RegisterPage() {
   });
   /* ############################################# */
 
-  const handleName = (value: string) => {
+  const handleName = (value: string | undefined) => {
+    if (value === undefined) return;
     setCheckName(nameValidation(value));
   };
-  const handleBirthday = (value: string) => {
+  const handleBirthday = (value: string | undefined) => {
+    if (value === undefined) return;
     setCheckBirthday(birthdayValidation(value));
   };
-  const handleAddress = (value: string) => {
+  const handleAddress = (value: string | undefined) => {
+    if (value === undefined) return;
     setCheckAddress(addressValidation(value));
   };
-  const handleCellular = (value: string) => {
+  const handleCellular = (value: string | undefined) => {
+    if (value === undefined) return;
     setCheckCellular(cellularValidation(value));
   };
-  const handleEmail = (value: string) => {
+  const handleEmail = (value: string | undefined) => {
+    if (value === undefined) return;
     setCheckEmail(emailValidation(value));
   };
   /* ############### 수정 내용: 함수 추가 ############### */
@@ -161,7 +168,18 @@ function RegisterPage() {
     }
   }, [modalStates]);
 
-  console.log(cellular);
+  const { address, birthday, cellular, email, gender, name, transportation } =
+    form;
+
+  const disabledCheck =
+    checkName &&
+    Gender !== null &&
+    transportation.length !== 0 &&
+    checkBirthday &&
+    checkAddress &&
+    checkCellular &&
+    checkEmail;
+
   return (
     <section className="w-full flex justify-center">
       <article className="max-w-xs px-4 text-blackFont">
@@ -173,31 +191,34 @@ function RegisterPage() {
         </div>
         <TextInput
           type="text"
+          name="name"
           placeHolder="홍길동"
           value={name}
           valid={checkName || name === ''}
           text="이름"
           ref={nameRef}
           onKeyUp={() => {
-            handleName((nameRef.current as HTMLInputElement).value);
+            handleName(nameRef?.current?.value);
           }}
-          onChange={(event) => onNameChange(event)}
+          onChange={onChangeForm}
         />
-        <Gender genderChange={genderChange} setGenderChange={setGenderChange} />
+        <Gender genderChange={gender} onChangeForm={onChangeForm} />
         <TextInput
           type="number"
+          name="birthday"
           placeHolder="YYYYMMDD"
           value={birthday}
           valid={checkBirthday || birthday === ''}
           text="생년월일"
           ref={birthdayRef}
           onKeyUp={() => {
-            handleBirthday((birthdayRef.current as HTMLInputElement).value);
+            handleBirthday(birthdayRef?.current?.value);
           }}
-          onChange={(event) => onBirthdayChange(event)}
+          onChange={onChangeForm}
         />
         <TextInput
           type="text"
+          name="address"
           placeHolder="거주지역 선택"
           value={address}
           valid={checkAddress || address === ''}
@@ -209,34 +230,40 @@ function RegisterPage() {
           onFocus={(event: React.FocusEvent) => openModal(event, 'region')}
           onChange={() => undefined}
           readOnly
+          // onKeyUp={() => {
+          //   handleAddress(addressRef?.current?.value);
+          // }}
+          // onChange={onChangeForm}
         />
         <TextInput
           type="text"
+          name="cellular"
           placeHolder="'-'없이 입력해주세요"
           value={cellular}
           valid={checkCellular || cellular === ''}
           text="연락처"
           ref={cellularRef}
           onKeyUp={() => {
-            handleCellular((cellularRef.current as HTMLInputElement).value);
+            handleCellular(cellularRef?.current?.value);
           }}
-          onChange={(event) => onMobileChange(event)}
+          onChange={onMobileChange}
         />
         <TextInput
           type="text"
+          name="email"
           placeHolder="MYD@snplab.com"
           value={email}
           valid={checkEmail || email === ''}
           text="이메일"
           ref={emailRef}
           onKeyUp={() => {
-            handleEmail((emailRef.current as HTMLInputElement).value);
+            handleEmail(emailRef?.current?.value);
           }}
-          onChange={(event) => onEmailChange(event)}
+          onChange={onChangeForm}
         />
-        <Tranportation
-          tranportation={tranportation}
-          setTranportation={setTranportation}
+        <Transportation
+          transportation={transportation}
+          onChangeTransportationForm={onChangeTransportationForm}
         />
         <Terms
           openModal={onOpenModal}
@@ -247,24 +274,41 @@ function RegisterPage() {
           allTerms={areTermsChecked}
           changeCheck={handleCheck}
         />
-        <div
+        <button
           className={`flex justify-center w-full h-9 mb-4 rounded-xl 
         ${
-          checkName &&
-          genderChange !== null &&
-          tranportation.length !== 0 &&
-          checkBirthday &&
-          checkAddress &&
-          checkCellular &&
-          checkEmail &&
-          allTermsChecked === 2
+          disabledCheck
             ? 'bg-gray-600 text-zinc-50'
             : 'bg-gray-100 text-gray-400'
         }  items-center`}
-          //  onClick={()={alert('지원이 완료되었습니다'){window.location ={LandingPage}}}}
+          type="button"
+          onClick={() => {
+            changeModal();
+            onSubmitMember();
+          }}
+          disabled={!(disabledCheck === true)}
         >
           지원하기
-        </div>
+        </button>
+        {onModal && (
+          <Modal>
+            <div className="modalChild flex justify-center w-72 h-20 mx-auto border border-solid border-gray-400 rounded-3xl bg-zinc-50 items-center">
+              <div className="absolute left-5 top-6 font-bold">
+                지원이 완료되었습니다.
+              </div>
+              <button
+                className="absolute right-6 bottom-4 text-red-500"
+                type="button"
+                onClick={() => {
+                  changeModal();
+                  navigate('/');
+                }}
+              >
+                확인
+              </button>
+            </div>
+          </Modal>
+        )}
       </article>
       {modalStates.terms && (
         <Modal onClick={onCloseModal}>

@@ -1,7 +1,8 @@
 import Modal from 'components/modal/Modal';
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Path from 'routes/Path';
+import AdminAuthContext from 'context/AdminAuth';
 import Logo from './components/Logo';
 import AdminLoginForm from './components/AdminLoginForm';
 
@@ -9,17 +10,18 @@ const button =
   'mb-4 rounded-lg border-solid border-2 p-4 bg-buttonActive text-slate-50 hover:bg-neutral-500 ease-in duration-300 ';
 
 export default function Landing() {
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isLoginFormVisible, setLoginFormVisible] = React.useState(false);
+  const { isLoggedin, onLogout } = React.useContext(AdminAuthContext);
 
   const handleModalVisible = (event: React.MouseEvent) => {
     const target = event.target as HTMLElement;
 
     switch (target.id) {
       case 'modal-bg':
-        setModalVisible(false);
+        setLoginFormVisible(false);
         break;
       case 'login-button':
-        setModalVisible(true);
+        setLoginFormVisible(true);
         break;
     }
   };
@@ -31,18 +33,25 @@ export default function Landing() {
         <Link className={button} to={Path.RegisterPage}>
           지원하기
         </Link>
-        <button
-          className={button}
-          type="submit"
-          id="login-button"
-          onClick={handleModalVisible}
-        >
-          관리자 로그인
-        </button>
+        {!isLoggedin && (
+          <button
+            className={button}
+            type="submit"
+            id="login-button"
+            onClick={handleModalVisible}
+          >
+            관리자 로그인
+          </button>
+        )}
+        {isLoggedin && (
+          <button className={button} type="submit" onClick={onLogout}>
+            관리자 로그아웃
+          </button>
+        )}
       </strong>
-      {isModalVisible && (
+      {isLoginFormVisible && (
         <Modal onClick={handleModalVisible}>
-          <AdminLoginForm onCancelClick={() => setModalVisible(false)} />
+          <AdminLoginForm onCancelClick={() => setLoginFormVisible(false)} />
         </Modal>
       )}
     </section>
