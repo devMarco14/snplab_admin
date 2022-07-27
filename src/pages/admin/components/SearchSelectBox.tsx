@@ -24,7 +24,7 @@ export default function SearchSelectBox({
   };
 
   return (
-    <div className="min-w-[500px] h-10 flex justify-between content-center border border-solid border-black rounded-md">
+    <div className="min-w-[500px] h-10 flex justify-between content-center border-2 border-solid border-gray-400 rounded-md">
       <select onChange={getSearchKey} value={searchKey} className="ml-1">
         {Object.keys(searchFilter).map((filter: string) => {
           return (

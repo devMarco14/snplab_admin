@@ -1,7 +1,5 @@
 /* eslint-disable consistent-return */
 import React, { useEffect, useState, useRef } from 'react';
-import { getWorkerInfo } from 'libs/api/admin';
-import { Members } from 'libs/types/members';
 import { HiOutlineSearch as SearchIcon } from 'react-icons/hi';
 import { dynamicPlaceholder } from 'libs/utils/dynamicPlaceholder';
 
@@ -17,13 +15,6 @@ export default function SearchInput({
   getSearchValue,
 }: searchInputProps) {
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-
-  const getInputValue = () => {
-    if (inputRef) {
-      const inputValue = inputRef.current.value;
-      getSearchValue(inputValue);
-    }
-  };
 
   const getSearchResult = (event: { preventDefault: () => void }) => {
     event.preventDefault();
