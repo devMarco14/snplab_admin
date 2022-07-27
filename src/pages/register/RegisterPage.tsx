@@ -2,6 +2,7 @@ import React from 'react';
 import useToggle from 'hooks/useToggle';
 import Modal from 'components/modal/Modal';
 import { useNavigate } from 'react-router-dom';
+import { StringIndexedObjects } from 'types/interfaces';
 import Gender from './components/Gender';
 import Terms from './components/Terms';
 import TextInput from './components/common/TextInput';
@@ -14,6 +15,8 @@ import {
   emailValidation,
 } from './utils/Validator';
 import useRegisterForm from './hooks/useRegisterForm';
+import TermsDetail from './components/terms/TermsDetail';
+import SelectRegion from './components/region/SelectRegion';
 
 function RegisterPage() {
   const [onModal, changeModal] = useToggle();
@@ -26,6 +29,7 @@ function RegisterPage() {
     onChangeTransportationForm,
     onMobileChange,
     onSubmitMember,
+    onFocusRegion,
   } = useRegisterForm();
 
   const nameRef = React.useRef<HTMLInputElement>(null);
@@ -43,6 +47,22 @@ function RegisterPage() {
     null,
   );
   const [checkEmail, setCheckEmail] = React.useState<boolean | null>(null);
+  /* ############### 수정 내용: state 추가 ############### */
+  const [termsContents, setTermsContents] = React.useState('');
+  const [windowScrollLocation, setScrollLocation] = React.useState<number>(0);
+  const [areTermsChecked, setTermsChecked] = React.useState<
+    StringIndexedObjects<boolean>
+  >({
+    gathering: false,
+    thirdparty: false,
+  });
+  const [modalStates, setModalStates] = React.useState<
+    StringIndexedObjects<boolean>
+  >({
+    region: false,
+    terms: false,
+  });
+  /* ############################################# */
 
   const handleName = (value: string | undefined) => {
     if (value === undefined) return;
@@ -64,6 +84,91 @@ function RegisterPage() {
     if (value === undefined) return;
     setCheckEmail(emailValidation(value));
   };
+  /* ############### 수정 내용: 함수 추가 ############### */
+  const setTerms = (value: string) => {
+    setTermsContents(value);
+  };
+
+  const onOpenModal = React.useCallback(openModal, [modalStates]);
+
+  function openModal(
+    event: React.MouseEvent | React.FocusEvent,
+    target: string,
+  ) {
+    setModalStates({
+      ...modalStates,
+      [target]: !modalStates[target],
+    });
+  }
+
+  const onCloseModal = React.useCallback(closeModal, [modalStates]);
+
+  function closeModal(event: React.MouseEvent, selectedRegion?: string) {
+    if ((event.target as HTMLElement).id) {
+      const modalKeys = Object.keys(modalStates);
+      const modalOpenValues = Object.values(modalStates);
+      const currentOpenedModals = modalOpenValues
+        .map((state: boolean, index: number) => {
+          let result = '';
+          if (state) {
+            result = modalKeys[index];
+          }
+          return result;
+        })
+        .filter((result: string) => result !== '');
+      currentOpenedModals.forEach((openedModal: string) => {
+        setModalStates({
+          ...modalStates,
+          [openedModal]: !modalStates[openedModal],
+        });
+      });
+      if (selectedRegion) {
+        // setValueByModal(selectedRegion);
+        onFocusRegion(selectedRegion);
+        handleAddress(selectedRegion);
+      }
+    }
+  }
+
+  const handleCheck = React.useCallback(
+    (event: React.MouseEvent, state: StringIndexedObjects<boolean>) =>
+      onClickHandleCheck(event, state),
+    [],
+  );
+
+  function onClickHandleCheck(
+    event: React.MouseEvent,
+    state: StringIndexedObjects<boolean>,
+  ) {
+    const currentTargetId = event.currentTarget.id.split('-')[0];
+    if (currentTargetId) {
+      setTermsChecked({
+        ...state,
+        [currentTargetId]: !state[currentTargetId],
+      });
+    } else {
+      setTermsChecked({
+        ...state,
+      });
+    }
+  }
+  /* ############################################# */
+
+  const allTermsChecked = Object.values(areTermsChecked).filter(
+    (status: boolean) => status,
+  ).length;
+
+  React.useEffect(() => {
+    const isAnyModalActive = Object.values(modalStates).filter(
+      (modalState: boolean) => modalState,
+    ).length;
+    setScrollLocation(window.scrollY);
+    if (isAnyModalActive >= 1) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [modalStates]);
 
   const { address, birthday, cellular, email, gender, name, transportation } =
     form;
@@ -75,7 +180,8 @@ function RegisterPage() {
     checkBirthday &&
     checkAddress &&
     checkCellular &&
-    checkEmail;
+    checkEmail &&
+    allTermsChecked === 2;
 
   return (
     <section className="w-full flex justify-center">
@@ -121,10 +227,16 @@ function RegisterPage() {
           valid={checkAddress || address === ''}
           text="거주지역"
           ref={addressRef}
-          onKeyUp={() => {
-            handleAddress(addressRef?.current?.value);
-          }}
-          onChange={onChangeForm}
+          // onKeyUp={() => {
+          //   handleAddress((addressRef.current as HTMLInputElement).value);
+          // }}
+          onFocus={(event: React.FocusEvent) => openModal(event, 'region')}
+          onChange={() => undefined}
+          readOnly
+          // onKeyUp={() => {
+          //   handleAddress(addressRef?.current?.value);
+          // }}
+          // onChange={onChangeForm}
         />
         <TextInput
           type="text"
@@ -156,7 +268,15 @@ function RegisterPage() {
           transportation={transportation}
           onChangeTransportationForm={onChangeTransportationForm}
         />
-        <Terms />
+        <Terms
+          openModal={onOpenModal}
+          closeModal={onCloseModal}
+          modalStates={modalStates}
+          setTerms={setTerms}
+          checkedTerms={allTermsChecked}
+          allTerms={areTermsChecked}
+          changeCheck={handleCheck}
+        />
         <button
           className={`flex justify-center w-full h-9 mb-4 rounded-xl 
         ${
@@ -193,6 +313,23 @@ function RegisterPage() {
           </Modal>
         )}
       </article>
+      {modalStates.terms && (
+        <Modal onClick={onCloseModal}>
+          <TermsDetail
+            contents={termsContents}
+            closeModal={onCloseModal}
+            windowScrollLocation={windowScrollLocation}
+          />
+        </Modal>
+      )}
+      {modalStates.region && (
+        <Modal>
+          <SelectRegion
+            closeModal={onCloseModal}
+            windowScrollLocation={windowScrollLocation}
+          />
+        </Modal>
+      )}
     </section>
   );
 }

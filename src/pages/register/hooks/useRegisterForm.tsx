@@ -60,11 +60,24 @@ export default function useRegisterForm() {
       throw new Error();
     }
   };
+
+  /* ############### 수정 내용: 지역 변경 내용 반영 ############### */
+  const onFocusRegion = React.useCallback(
+    (value: string) => {
+      setForms({
+        ...form,
+        address: value,
+      });
+    },
+    [form],
+  );
+
   return {
     form,
     onChangeForm,
     onChangeTransportationForm,
     onMobileChange,
     onSubmitMember,
+    onFocusRegion,
   };
 }

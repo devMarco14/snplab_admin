@@ -7,7 +7,8 @@
   body,
   #root {
     height: 100%;
-    /* overflow: hidden; */
+    overflow-x: hidden;
+    overflow-y: auto;
   }
   * {
     box-sizing: border-box;
@@ -191,7 +192,7 @@
 
 @layer utilities {
   .selectedItem {
-    @apply text-xl;
+    @apply text-base;
     @apply small:text-3xl;
     @apply text-blackFont;
     @apply bg-listSelected;
@@ -202,6 +203,6 @@
     @apply text-grayFont;
     @apply bg-white;
     @apply text-xs;
-    @apply small:text-lg;
+    @apply small:text-xl;
   }
 }

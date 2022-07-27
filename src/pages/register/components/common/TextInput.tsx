@@ -9,10 +9,9 @@ interface InputProps {
   text?: string;
   name?: string;
   maxLength?: number;
-  onKeyUp: any;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyUp?: () => void;
   onFocus?: (event: React.FocusEvent) => void;
-  defaultValue?: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   readOnly?: boolean;
 }
 // props.name 추가
@@ -32,9 +31,8 @@ const TextInput = React.forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           name={props.name}
           onKeyUp={props.onKeyUp}
-          onChange={(event) => props.onChange(event)}
           onFocus={props.onFocus}
-          defaultValue={props.defaultValue}
+          onChange={(event) => props.onChange(event)}
           readOnly={props.readOnly}
         />
       </div>

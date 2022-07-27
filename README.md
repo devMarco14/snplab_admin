@@ -1,4 +1,4 @@
-# [Wanted Pre Onboarding FE 5th] 팀 과제 #  3-1
+# [Wanted Pre Onboarding FE 5th] 팀 과제 #  3-2, 4-1
 
 - 주제: snplap_admin
 
