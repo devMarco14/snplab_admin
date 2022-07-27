@@ -6,8 +6,8 @@ interface AdminLoginFormPropsType {
   onCancelClick: (event: React.MouseEvent) => void;
 }
 
-const input = 'mb-2 p-2 rounded-lg border-solid border-2';
-const button =
+const inputClass = 'mb-2 p-2 rounded-lg border-solid border-2';
+const buttonClass =
   'rounded-lg border-solid border-2 p-4 bg-blue-500 text-slate-50 hover:bg-blue-400 ease-in duration-300 ';
 
 function AdminLoginForm({ onCancelClick }: AdminLoginFormPropsType) {
@@ -17,12 +17,12 @@ function AdminLoginForm({ onCancelClick }: AdminLoginFormPropsType) {
 
   const handleLogin = (event: React.FormEvent) => {
     event.preventDefault();
-    if (!emailRef?.current?.value || !passwordRef?.current?.value) return;
+    const email = emailRef?.current?.value;
+    const password = passwordRef?.current?.value;
 
-    const email = emailRef.current.value;
-    const password = passwordRef.current.value;
+    if (!email || !password) return;
+
     onLogin(email, password);
-
     emailRef.current.value = '';
     passwordRef.current.value = '';
   };
@@ -40,16 +40,16 @@ function AdminLoginForm({ onCancelClick }: AdminLoginFormPropsType) {
         <input
           type="email"
           placeholder="관리자 이메일"
-          className={input}
+          className={inputClass}
           ref={emailRef}
         />
         <input
           type="password"
           placeholder="관리자 비밀번호"
-          className={input}
+          className={inputClass}
           ref={passwordRef}
         />
-        <button type="submit" className={button}>
+        <button type="submit" className={buttonClass}>
           로그인
         </button>
         <button
