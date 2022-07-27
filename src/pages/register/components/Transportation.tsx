@@ -1,5 +1,5 @@
 import React from 'react';
-import { TRANSPORTATION } from 'libs/utils/TRANSPORTATION';
+import { TRANSPORTATION } from 'libs/utils/constants';
 
 interface TransportationProps {
   transportation: string[];
@@ -44,13 +44,3 @@ function Transportation({
 }
 
 export default Transportation;
-// if (transportation.includes(e.target.value)) {
-//   // 있으면 delete
-//   // findIndex로 e.target.value가 몇번째 인덱스인지 찾기
-//   // 그 인덱스값을 transportaion 배열에서 지우기
-//   settransportation(
-//     transportation.filter((value) => value !== e.target.value),
-//   );
-// } else {
-//   settransportation([...transportation, e.target.value]);
-// }
