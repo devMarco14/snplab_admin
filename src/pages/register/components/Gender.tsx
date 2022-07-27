@@ -28,10 +28,10 @@ function Gender({ genderChange, onChangeForm }: GenderProps) {
             <span>여자</span>
             <input
               className="hidden"
+              name="gender"
               type="radio"
               id="genderSelectFemale"
               value="여자"
-              name="gender"
               checked={genderChange === '여자'}
               onChange={onChangeForm}
             />
@@ -55,10 +55,10 @@ function Gender({ genderChange, onChangeForm }: GenderProps) {
             <span>남자</span>
             <input
               className="hidden"
+              name="gender"
               type="radio"
               id="genderSelectMale"
               value="남자"
-              name="gender"
               checked={genderChange === '남자'}
               onChange={onChangeForm}
             />

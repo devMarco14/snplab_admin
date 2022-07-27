@@ -21,6 +21,10 @@ export const postRoundAPI = async (body: Round) => {
 };
 
 export const patchMemberAPI = async (id: string, body: Partial<Member>) => {
-  const response = await request.patch(`/members/${id}`, body);
+  await request.patch(`/members/${id}`, body);
+};
+
+export const getWorkerInfo = async (key: string, value: string) => {
+  const response = await request.get(`/members?${key}_like=${value}`);
   return response.data;
 };

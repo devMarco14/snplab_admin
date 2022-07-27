@@ -2,24 +2,26 @@ import React from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import useRegionLists from 'pages/register/hooks/useRegionLists';
 import useSubRegionLists from 'pages/register/hooks/useSubRegionLists';
+import useDetectResize from 'pages/register/hooks/useDetectResize';
 import RegionList from './RegionList';
 
 interface SelectRegionProps {
-  contents: string;
   closeModal: (event: React.MouseEvent, selectedRegion?: string) => void;
+  windowScrollLocation: number;
 }
 
 export default function SelectRegion({
-  contents,
   closeModal,
+  windowScrollLocation,
 }: SelectRegionProps) {
-  const [currentRegion, setCurrentRegion] = React.useState<string>('기본값');
+  const [currentRegion, setCurrentRegion] = React.useState<string>('');
   const [currentCity, setCurrentCity] = React.useState<string>('');
   const { regionList } = useRegionLists();
   const { subRegionList } = useSubRegionLists(currentRegion);
   const originalState = React.useMemo(() => [''], []);
   const regionLists = React.useRef<string[]>(originalState);
   const subRegionLists = React.useRef<string[]>(originalState);
+  useDetectResize();
 
   React.useEffect(() => {
     if (regionList) {
@@ -52,7 +54,7 @@ export default function SelectRegion({
   }
 
   return (
-    <article className="absolute bottom-0 flex flex-col w-full h-3/5 bg-white small:w-[550px] small:h-[80%] small:modalChild">
+    <article className="absolute bottom-0 flex flex-col w-full h-3/5 bg-white sm:w-[550px] sm:h-[80%] sm:modalChild">
       <section className="flex-center max-h-[7%] h-[7%] min-h-[3rem] px-5">
         <button
           type="button"
@@ -87,7 +89,7 @@ export default function SelectRegion({
       <button
         type="button"
         id="region-submit"
-        className="h-[7%] min-h-[50px] m-5 rounded-2xl bg-buttonActive font-bold text-white text-sm small:text-xl"
+        className="small:h-[7%] small:min-h-[50px] m-5 rounded-2xl bg-buttonActive font-bold text-white text-sm small:text-xl"
         onClick={selectRegion}
       >
         확인

@@ -20,3 +20,4 @@ export interface Member {
   transportation: string[];
   win: boolean;
 }
+// post type 지정

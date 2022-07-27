@@ -1,7 +1,7 @@
 import React from 'react';
-import { TRANSPORTATION } from 'libs/utils/TRANSPORTATION';
+import { TRANSPORTATION } from 'libs/utils/constants';
 
-interface transportationProps {
+interface TransportationProps {
   transportation: string[];
   onChangeTransportationForm: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -9,7 +9,7 @@ interface transportationProps {
 function Transportation({
   transportation,
   onChangeTransportationForm,
-}: transportationProps) {
+}: TransportationProps) {
   return (
     <div>
       <div className="mt-4 font-bold">주로 이용하는 교통 수단</div>
