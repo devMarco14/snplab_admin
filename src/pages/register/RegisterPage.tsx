@@ -1,10 +1,11 @@
 import React from 'react';
 import useToggle from 'hooks/useToggle';
 import Modal from 'components/modal/Modal';
+import { useNavigate } from 'react-router-dom';
 import Gender from './components/Gender';
 import Terms from './components/Terms';
 import TextInput from './components/common/TextInput';
-import Tranportation from './components/Tranportation';
+import Transportation from './components/Transportation';
 import {
   addressValidation,
   birthdayValidation,
@@ -12,17 +13,29 @@ import {
   cellularValidation,
   emailValidation,
 } from './utils/Validator';
-import useInput from './hooks/useInput';
+import useRegisterForm from './hooks/useRegisterForm';
 
 function RegisterPage() {
-  const [onModal, changeModal] = useToggle(false);
-  const [name, onNameChange] = useInput('');
-  const [birthday, onBirthdayChange] = useInput('');
-  const [address, onAddressChange] = useInput('');
-  const [cellular, , onMobileChange] = useInput('');
-  const [email, onEmailChange] = useInput('');
-  const [genderChange, setGenderChange] = React.useState<string | null>(null);
-  const [tranportation, setTranportation] = React.useState<string[]>([]);
+  // const [onModal, changeModal] = useToggle(false);
+  // const [name, onNameChange] = useInput('');
+  // const [birthday, onBirthdayChange] = useInput('');
+  // const [address, onAddressChange] = useInput('');
+  // const [cellular, , onMobileChange] = useInput('');
+  // const [email, onEmailChange] = useInput('');
+  // const [genderChange, setGenderChange] = React.useState<string | null>(null);
+  // const [transportation, settransportation] = React.useState<string[]>([]);
+
+  const [onModal, changeModal] = useToggle();
+
+  const navigate = useNavigate();
+
+  const {
+    form,
+    onChangeForm,
+    onChangeTransportationForm,
+    onMobileChange,
+    onSubmitMember,
+  } = useRegisterForm();
 
   const nameRef = React.useRef<HTMLInputElement>(null);
   const birthdayRef = React.useRef<HTMLInputElement>(null);
@@ -61,10 +74,13 @@ function RegisterPage() {
     setCheckEmail(emailValidation(value));
   };
 
+  const { address, birthday, cellular, email, gender, name, transportation } =
+    form;
+
   const disabledCheck =
     checkName &&
-    genderChange !== null &&
-    tranportation.length !== 0 &&
+    Gender !== null &&
+    transportation.length !== 0 &&
     checkBirthday &&
     checkAddress &&
     checkCellular &&
@@ -81,6 +97,7 @@ function RegisterPage() {
         </div>
         <TextInput
           type="text"
+          name="name"
           placeHolder="홍길동"
           value={name}
           valid={checkName || name === ''}
@@ -89,11 +106,12 @@ function RegisterPage() {
           onKeyUp={() => {
             handleName(nameRef?.current?.value);
           }}
-          onChange={(event) => onNameChange(event)}
+          onChange={onChangeForm}
         />
-        <Gender genderChange={genderChange} setGenderChange={setGenderChange} />
+        <Gender genderChange={gender} onChangeForm={onChangeForm} />
         <TextInput
           type="number"
+          name="birthday"
           placeHolder="YYYYMMDD"
           value={birthday}
           valid={checkBirthday || birthday === ''}
@@ -102,10 +120,11 @@ function RegisterPage() {
           onKeyUp={() => {
             handleBirthday(birthdayRef?.current?.value);
           }}
-          onChange={(event) => onBirthdayChange(event)}
+          onChange={onChangeForm}
         />
         <TextInput
           type="text"
+          name="address"
           placeHolder="거주지역 선택"
           value={address}
           valid={checkAddress || address === ''}
@@ -114,11 +133,11 @@ function RegisterPage() {
           onKeyUp={() => {
             handleAddress(addressRef?.current?.value);
           }}
-          onChange={(event) => onAddressChange(event)}
-          readonly
+          onChange={onChangeForm}
         />
         <TextInput
           type="text"
+          name="cellular"
           placeHolder="'-'없이 입력해주세요"
           value={cellular}
           valid={checkCellular || cellular === ''}
@@ -127,10 +146,11 @@ function RegisterPage() {
           onKeyUp={() => {
             handleCellular(cellularRef?.current?.value);
           }}
-          onChange={(event) => onMobileChange(event)}
+          onChange={onMobileChange}
         />
         <TextInput
           type="text"
+          name="email"
           placeHolder="MYD@snplab.com"
           value={email}
           valid={checkEmail || email === ''}
@@ -139,11 +159,11 @@ function RegisterPage() {
           onKeyUp={() => {
             handleEmail(emailRef?.current?.value);
           }}
-          onChange={(event) => onEmailChange(event)}
+          onChange={onChangeForm}
         />
-        <Tranportation
-          tranportation={tranportation}
-          setTranportation={setTranportation}
+        <Transportation
+          transportation={transportation}
+          onChangeTransportationForm={onChangeTransportationForm}
         />
         <Terms />
         <button
@@ -168,7 +188,11 @@ function RegisterPage() {
               <button
                 className="absolute right-6 bottom-4 text-red-500"
                 type="button"
-                onClick={changeModal}
+                onClick={() => {
+                  changeModal();
+                  onSubmitMember();
+                  navigate('/');
+                }}
               >
                 확인
               </button>
@@ -192,6 +216,6 @@ export default RegisterPage;
 //   address: address,
 //   cellular: cellular,
 //   email: email,
-//   transportation: tranportation,
+//   transportation: transportation,
 //   win: true
 // }
