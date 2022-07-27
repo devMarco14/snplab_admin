@@ -11,7 +11,8 @@
 ### # <a href="https://github.com/chaengs">심채영</a>
 
 ```
-
+- 지원 현황 검색 기능
+- 검색어 필터링
 ```
 
 ### # <a href="https://github.com/leejiho9898">이지호</a>
