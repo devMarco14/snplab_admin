@@ -174,7 +174,10 @@ function RegisterPage() {
             : 'bg-gray-100 text-gray-400'
         }  items-center`}
           type="button"
-          onClick={changeModal}
+          onClick={() => {
+            changeModal();
+            onSubmitMember();
+          }}
           disabled={!(disabledCheck === true)}
         >
           지원하기
@@ -190,7 +193,6 @@ function RegisterPage() {
                 type="button"
                 onClick={() => {
                   changeModal();
-                  onSubmitMember();
                   navigate('/');
                 }}
               >
