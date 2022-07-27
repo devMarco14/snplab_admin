@@ -18,8 +18,10 @@
 ### # <a href="https://github.com/leejiho9898">이지호</a>
 
 ```
- 
-
+ - 지원 현황 목록 불러오기 hook (react-query 사용)
+ - 지원 현황 목록 페이지네이션
+ - CSV 다운로드 구현
+ - 지원자 당첨여부 toggle 기능 구현
 ```
 
 ### # <a href="https://github.com/godcl1623">이치행<a>
