@@ -8,27 +8,29 @@ import { dynamicPlaceholder } from 'libs/utils/dynamicPlaceholder';
 interface searchInputProps {
   selectValue: string;
   searchValue: string;
-  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  getSearchValue: any;
 }
 
 export default function SearchInput({
   selectValue,
   searchValue,
-  setSearchValue,
+  getSearchValue,
 }: searchInputProps) {
-  const [worker, setWorker] = useState<Members>();
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
 
   const getInputValue = () => {
     if (inputRef) {
       const inputValue = inputRef.current.value;
-      setSearchValue(inputValue);
+      getSearchValue(inputValue);
     }
   };
 
   const getSearchResult = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    getInputValue();
+    if (inputRef) {
+      const inputValue = inputRef.current.value;
+      getSearchValue(inputValue);
+    }
   };
 
   return (

@@ -7,7 +7,7 @@ import useAdminLoad from './hook/useAdminLoad';
 import SearchSelectBox from './components/SearchSelectBox';
 
 export default function Admin() {
-  const [key, setKey] = useState<string>('name');
+  const [searchKey, setSearchKey] = useState<string>('name');
   const [searchValue, setSearchValue] = useState('');
   const [pageNo, setPageNo] = useState(1);
   const [currentTab, setCurrentTab] = useState('1차');
@@ -18,7 +18,15 @@ export default function Admin() {
     data: membersData,
     isError: isMembersError,
     isLoading: isMemberLoading,
-  } = useAdminLoad(currentTab, pageNo, key, searchValue);
+  } = useAdminLoad(currentTab, pageNo, searchKey, searchValue);
+
+  const getSearchKey = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSearchKey(event.target.value);
+  };
+
+  const getSearchValue = (value: string) => {
+    setSearchValue(value);
+  };
 
   if (isMembersError) return <div>에러</div>;
   if (isMemberLoading) return <div>로딩중</div>;
@@ -34,10 +42,10 @@ export default function Admin() {
       <section>
         <div className="flex justify-center">
           <SearchSelectBox
-            key={key}
-            setKey={setKey}
+            searchKey={searchKey}
+            getSearchKey={getSearchKey}
             searchValue={searchValue}
-            setSearchValue={setSearchValue}
+            getSearchValue={getSearchValue}
           />
         </div>
         <div className="flex justify-between">
