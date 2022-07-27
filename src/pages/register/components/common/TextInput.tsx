@@ -7,11 +7,12 @@ interface InputProps {
   valid?: boolean | null;
   placeHolder?: string;
   text?: string;
+  name?: string;
   maxLength?: number;
   onKeyUp: any;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
-
+// props.name 추가
 // eslint-disable-next-line react/function-component-definition
 const TextInput = React.forwardRef<HTMLInputElement, InputProps>(
   (props, ref) => {
@@ -26,6 +27,7 @@ const TextInput = React.forwardRef<HTMLInputElement, InputProps>(
           value={props.value}
           maxLength={props.maxLength}
           ref={ref}
+          name={props.name}
           onKeyUp={props.onKeyUp}
           onChange={(event) => props.onChange(event)}
         />
