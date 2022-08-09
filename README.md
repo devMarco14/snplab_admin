@@ -198,7 +198,8 @@ $ npm install
 ### # develop 서버 실행
 
 ```
-$ npm start
+$ npm run server # json-server 실행
+$ npm start # 리액트 앱 실행
 ```
 
 ### # branch에서 작업
