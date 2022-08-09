@@ -206,3 +206,9 @@ $ npm start
 ```
 $ git checkout -b feature/page
 ```
+
+### # 로그인 정보
+```
+email: admin1@gamil.com
+password: Admin1!!!
+```
