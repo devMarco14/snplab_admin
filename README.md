@@ -12,42 +12,13 @@
 
 ### # <a href="https://github.com/chaengs">심채영</a>
 
-```
-- 지원 현황 검색 기능
-- 검색어 필터링
-```
-
 ### # <a href="https://github.com/leejiho9898">이지호</a>
-
-```
- - 지원 현황 목록 불러오기 hook (react-query 사용)
- - 지원 현황 목록 페이지네이션
- - CSV 다운로드 구현
- - 지원자 당첨여부 toggle 기능 구현
-```
 
 ### # <a href="https://github.com/godcl1623">이치행<a>
 
-```
-- 공통 모달 및 지원 페이지 내 모달 관련 로직 구현
-- 이용 약관 양식 구현
-- 거주지역 선택 화면 및 관련 로직 구현
-```
-
 ### # <a href="https://github.com/devMarco14">임종혁</a>
 
-```
-- 인풋 공통컴포넌트
-- 인풋 입력 값 유효성 
-- 폼 훅 사용하여 포스트 요청
-```
-
 ### # <a href="https://github.com/HyeonJu-C">천현주</a>
-
-```
-- 랜딩페이지 마크업, 스타일링
-- 관리자 로그인 기능 및 관리자 전용 페이지 보호
-```
 
 <br />
 
